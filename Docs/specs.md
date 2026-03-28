@@ -75,21 +75,43 @@ Un diccionario `{habilidad: número_de_MCQs}` que suma exactamente el total conf
 - Autenticación mediante `django.contrib.auth`.
 - Perfil extendido que almacena: scores de habilidades blandas y datos de gamificación.
 
-### 4.2 Evaluación Inicial
+### 4.2 Ingesta de Scores (JSON)
 
-- El usuario completa una evaluación que genera los 10 scores de habilidades blandas.
-- Los scores se almacenan en el perfil del usuario.
-- El sistema de lógica difusa calcula la distribución de MCQs.
+- No se implementa evaluación inicial en este prototipo.
+- Los scores de habilidades blandas se cargan desde un archivo JSON por usuario.
+- Formato del JSON:
+
+    ```json
+    {
+        "user_id": "alumno01",
+        "scores": {
+            "comunicacion": 45,
+            "trabajo_en_equipo": 70,
+            "liderazgo": 30,
+            "resolucion_de_problemas": 60,
+            "gestion_del_tiempo": 25,
+            "adaptabilidad": 80,
+            "creatividad": 55,
+            "inteligencia_emocional": 40,
+            "resolucion_de_conflictos": 65,
+            "pensamiento_critico": 50
+        }
+    }
+    ```
+
+- Al cargar el JSON, el sistema de lógica difusa calcula la distribución de MCQs.
 
 ### 4.3 Generación de Preguntas (LLM)
 
 - El sistema se comunica con una API de LLM para generar MCQs basadas en la habilidad blanda objetivo.
-- Cada MCQ incluye:
-    - Escenario contextualizado (situación).
-    - Pregunta.
-    - 4 opciones de respuesta (A, B, C, D) con una correcta.
-    - Texto de retroalimentación.
-- Se almacena en la base de datos: texto, opciones, respuesta correcta, retroalimentación, metadatos.
+- Se usan prompts genéricos que solicitan el formato estándar del proyecto (ver `Docs/MCQs-empatia.md` como referencia).
+- Cada MCQ generada debe incluir:
+    - **Escenario:** Situación contextualizada y detallada en segunda persona, con personajes y contexto emocional.
+    - **Pregunta:** Pregunta directa sobre la acción más empática/apropiada.
+    - **4 opciones (A, B, C, D):** Una correcta y tres incorrectas, cada una representando un patrón de respuesta distinto (ej. consejo no solicitado, minimización, cambio de enfoque a uno mismo, evaluación crítica).
+    - **Respuesta correcta:** Indicada por letra.
+    - **Explicación:** Por qué la respuesta correcta es la mejor, seguida de por qué cada opción incorrecta falla (con viñetas por cada opción incorrecta).
+- Se almacena en la base de datos: texto del escenario, pregunta, opciones, respuesta correcta, explicación completa, metadatos (habilidad, fecha de generación).
 - Las preguntas se generan por lotes al crear los módulos del usuario.
 
 ### 4.4 Módulos de MCQ
