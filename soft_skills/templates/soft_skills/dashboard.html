@@ -6,11 +6,11 @@
 <div class="container">
     <!-- Gamification Bar -->
     <div class="gam-bar">
-        <div class="gam-item">
+        <div class="gam-item gam-item--streak">
             <span class="gam-icon">&#128293;</span>
             <span class="gam-label">Racha: <strong>{{ profile.current_streak }} dias</strong></span>
         </div>
-        <div class="gam-item">
+        <div class="gam-item gam-item--level">
             <span class="gam-icon">&#11088;</span>
             <span class="gam-label">Nivel {{ level_info.level }}: <strong>{{ level_info.name }}</strong></span>
             <div class="progress-bar-sm">
@@ -18,7 +18,7 @@
             </div>
             <span class="gam-xp">{{ profile.total_xp }} XP{% if level_info.next_threshold %} / {{ level_info.next_threshold }} XP{% endif %}</span>
         </div>
-        <div class="gam-item">
+        <div class="gam-item gam-item--badges">
             <span class="gam-icon">&#127942;</span>
             <span class="gam-label"><strong>{{ badges.count }}</strong> medallas</span>
         </div>
@@ -46,24 +46,33 @@
     {% endif %}
 
     <!-- Module Grid -->
-    <h2>Tus modulos</h2>
+    <h2 class="modules-heading">Tus modulos</h2>
     <div class="module-grid">
         {% for module in modules %}
         <div class="module-card {% if module.is_completed %}module-completed{% endif %}">
-            <div class="module-icon">{{ module.skill.icon }}</div>
+            <div class="module-card-top">
+                <div class="module-icon">{{ module.skill.icon }}</div>
+                {% if module.is_completed %}
+                <span class="module-status module-status--completed">Completado</span>
+                {% elif module.is_started %}
+                <span class="module-status module-status--progress">En progreso</span>
+                {% else %}
+                <span class="module-status module-status--new">Nuevo</span>
+                {% endif %}
+            </div>
             <h3 class="module-name">{{ module.skill.name }}</h3>
             <div class="module-progress-text">{{ module.completed_questions }}/{{ module.total_questions }} preguntas</div>
             <div class="progress-bar">
-                <div class="progress-fill" style="width: {{ module.progress_percent }}%"></div>
+                <div class="progress-fill {% if module.is_completed %}progress-fill--teal{% endif %}" style="width: {{ module.progress_percent }}%"></div>
             </div>
             <div class="module-actions">
                 {% if module.is_completed %}
-                    <a href="{% url 'soft_skills:module_review' module.id %}" class="btn btn-secondary">Retroalimentacion</a>
-                    <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-outline">Resumen</a>
+                    <a href="{% url 'soft_skills:module_review' module.id %}" class="btn btn-teal btn-sm">Retroalimentacion</a>
+                    <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-outline btn-sm">Resumen</a>
                 {% elif module.is_started %}
-                    <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Continuar</a>
+                    <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary btn-sm">Continuar</a>
                 {% else %}
-                    <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Iniciar</a>
+                    <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary btn-sm">Iniciar</a>
                 {% endif %}
             </div>
         </div>

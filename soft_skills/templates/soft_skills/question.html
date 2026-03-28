@@ -10,7 +10,7 @@
         <h2>{{ module.skill.icon }} {{ module.skill.name }}</h2>
         <div class="question-progress-text">Pregunta {{ question_order }} de {{ total_questions }}</div>
         <div class="progress-bar">
-            <div class="progress-fill" style="width: {{ progress_percent }}%"></div>
+            <div class="progress-fill progress-fill--gold" style="width: {{ progress_percent }}%"></div>
         </div>
     </div>
 
@@ -67,15 +67,15 @@
     </div>
 
     {% elif feedback %}
-    <!-- Feedback modal overlay -->
+    <!-- Feedback after answering -->
     <div class="feedback-overlay">
         <div class="feedback-card {% if feedback.is_correct %}feedback-correct{% else %}feedback-incorrect{% endif %}">
             <div class="feedback-header">
                 {% if feedback.is_correct %}
-                <span class="feedback-icon">&#10004;</span>
+                <div class="feedback-result-icon">&#10004;</div>
                 <h3>Correcto!</h3>
                 {% else %}
-                <span class="feedback-icon">&#10008;</span>
+                <div class="feedback-result-icon">&#10008;</div>
                 <h3>Incorrecto</h3>
                 <p class="feedback-answer">La respuesta correcta es: <strong>{{ feedback.correct_answer }}</strong></p>
                 {% endif %}
