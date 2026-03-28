@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}{{ module.skill.name }} - Pregunta {{ question_order }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Module header -->
+    <div class="question-header">
+        <a href="{% url 'soft_skills:dashboard' %}" class="back-link">&larr; Volver al dashboard</a>
+        <h2>{{ module.skill.icon }} {{ module.skill.name }}</h2>
+        <div class="question-progress-text">Pregunta {{ question_order }} de {{ total_questions }}</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ progress_percent }}%"></div>
+        </div>
+    </div>
+
+    <!-- Scenario -->
+    <div class="scenario-card">
+        <h3>Escenario</h3>
+        <p>{{ question.scenario }}</p>
+    </div>
+
+    <!-- Question -->
+    <div class="question-text">
+        <p><strong>{{ question.question_text }}</strong></p>
+    </div>
+
+    {% if user_response %}
+    <!-- Already answered - show results -->
+    <div class="options-grid options-answered">
+        {% with correct=question.correct_answer selected=user_response.selected_answer %}
+        <div class="option-card {% if 'A' == correct %}option-correct{% elif 'A' == selected %}option-wrong{% endif %}">
+            <span class="option-letter">A</span>
+            <span class="option-text">{{ question.option_a }}</span>
+        </div>
+        <div class="option-card {% if 'B' == correct %}option-correct{% elif 'B' == selected %}option-wrong{% endif %}">
+            <span class="option-letter">B</span>
+            <span class="option-text">{{ question.option_b }}</span>
+        </div>
+        <div class="option-card {% if 'C' == correct %}option-correct{% elif 'C' == selected %}option-wrong{% endif %}">
+            <span class="option-letter">C</span>
+            <span class="option-text">{{ question.option_c }}</span>
+        </div>
+        <div class="option-card {% if 'D' == correct %}option-correct{% elif 'D' == selected %}option-wrong{% endif %}">
+            <span class="option-letter">D</span>
+            <span class="option-text">{{ question.option_d }}</span>
+        </div>
+        {% endwith %}
+    </div>
+
+    <div class="explanation-card">
+        <h3>Explicacion</h3>
+        <p>{{ question.explanation|linebreaksbr }}</p>
+    </div>
+
+    <div class="question-nav">
+        {% if prev_order %}
+        <a href="{% url 'soft_skills:question_view' module.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
+        {% else %}
+        <span></span>
+        {% endif %}
+        {% if next_order %}
+        <a href="{% url 'soft_skills:question_view' module.id next_order %}" class="btn btn-primary">Siguiente &rarr;</a>
+        {% elif module.is_completed %}
+        <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen</a>
+        {% endif %}
+    </div>
+
+    {% elif feedback %}
+    <!-- Feedback modal overlay -->
+    <div class="feedback-overlay">
+        <div class="feedback-card {% if feedback.is_correct %}feedback-correct{% else %}feedback-incorrect{% endif %}">
+            <div class="feedback-header">
+                {% if feedback.is_correct %}
+                <span class="feedback-icon">&#10004;</span>
+                <h3>Correcto!</h3>
+                {% else %}
+                <span class="feedback-icon">&#10008;</span>
+                <h3>Incorrecto</h3>
+                <p class="feedback-answer">La respuesta correcta es: <strong>{{ feedback.correct_answer }}</strong></p>
+                {% endif %}
+            </div>
+
+            <div class="feedback-xp">
+                <span class="xp-badge">+{{ feedback.xp_earned }} XP</span>
+                {% if feedback.streak_xp > 0 %}
+                <span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>
+                {% endif %}
+                {% if feedback.module_complete_xp > 0 %}
+                <span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP modulo completado</span>
+                {% endif %}
+            </div>
+
+            {% if feedback.new_badges %}
+            <div class="feedback-badges">
+                <p>Nuevas medallas:</p>
+                {% for badge in feedback.new_badges %}
+                <span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="feedback-explanation">
+                <h4>Explicacion</h4>
+                <p>{{ feedback.explanation|linebreaksbr }}</p>
+            </div>
+
+            <div class="feedback-actions">
+                {% if feedback.module_complete %}
+                <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen del modulo</a>
+                {% elif next_order %}
+                <a href="{% url 'soft_skills:question_view' module.id next_order %}" class="btn btn-primary">Siguiente pregunta &rarr;</a>
+                {% else %}
+                <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Finalizar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Answer form -->
+    <form method="post" action="{% url 'soft_skills:submit_answer' module.id %}" id="answer-form">
+        {% csrf_token %}
+        <input type="hidden" name="question_id" value="{{ question.id }}">
+        <input type="hidden" name="question_order" value="{{ question_order }}">
+        <input type="hidden" name="selected_answer" id="selected-answer" value="">
+
+        <div class="options-grid">
+            <div class="option-card option-selectable" data-answer="A" onclick="selectOption(this, 'A')">
+                <span class="option-letter">A</span>
+                <span class="option-text">{{ question.option_a }}</span>
+            </div>
+            <div class="option-card option-selectable" data-answer="B" onclick="selectOption(this, 'B')">
+                <span class="option-letter">B</span>
+                <span class="option-text">{{ question.option_b }}</span>
+            </div>
+            <div class="option-card option-selectable" data-answer="C" onclick="selectOption(this, 'C')">
+                <span class="option-letter">C</span>
+                <span class="option-text">{{ question.option_c }}</span>
+            </div>
+            <div class="option-card option-selectable" data-answer="D" onclick="selectOption(this, 'D')">
+                <span class="option-letter">D</span>
+                <span class="option-text">{{ question.option_d }}</span>
+            </div>
+        </div>
+
+        <div class="question-nav">
+            {% if prev_order %}
+            <a href="{% url 'soft_skills:question_view' module.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
+            {% else %}
+            <span></span>
+            {% endif %}
+            <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Enviar respuesta</button>
+        </div>
+    </form>
+
+    <script>
+    function selectOption(el, answer) {
+        document.querySelectorAll('.option-selectable').forEach(function(card) {
+            card.classList.remove('option-selected');
+        });
+        el.classList.add('option-selected');
+        document.getElementById('selected-answer').value = answer;
+        document.getElementById('submit-btn').disabled = false;
+    }
+    </script>
+    {% endif %}
+</div>
+{% endblock %}

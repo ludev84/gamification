@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Habilidades Blandas{% endblock %} | TecNM</title>
+    <link rel="stylesheet" href="{% static 'soft_skills/css/styles.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'soft_skills:dashboard' %}" class="nav-brand">Habilidades Blandas</a>
+            {% if user.is_authenticated %}
+            <div class="nav-links">
+                <span class="nav-user">{{ user.get_full_name|default:user.username }}</span>
+                <form method="post" action="{% url 'logout' %}" class="nav-logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link nav-logout-btn">Cerrar sesion</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Instituto Tecnologico de Merida - TecNM</p>
+        </div>
+    </footer>
+</body>
+</html>

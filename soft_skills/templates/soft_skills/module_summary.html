@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Resumen - {{ module.skill.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="summary-card">
+        <div class="summary-header">
+            <span class="summary-icon">{{ module.skill.icon }}</span>
+            <h1>{{ module.skill.name }}</h1>
+            {% if module.is_completed %}
+            <p class="summary-congrats">Modulo completado!</p>
+            {% else %}
+            <p>Modulo en progreso</p>
+            {% endif %}
+        </div>
+
+        {% if module.is_completed %}
+        <div class="summary-score">
+            <div class="score-circle {% if module.score_percent > 80 %}score-high{% elif module.score_percent > 50 %}score-mid{% else %}score-low{% endif %}">
+                <span class="score-number">{{ module.score_percent|floatformat:0 }}%</span>
+            </div>
+            <p>{{ correct_count }}/{{ module.total_questions }} respuestas correctas</p>
+        </div>
+
+        <div class="summary-xp">
+            <h3>XP obtenidos</h3>
+            <table class="xp-table">
+                <tr>
+                    <td>Respuestas correctas ({{ correct_count }} x 15 XP)</td>
+                    <td class="xp-value">+{{ correct_xp }} XP</td>
+                </tr>
+                <tr>
+                    <td>Respuestas incorrectas ({{ incorrect_count }} x 10 XP)</td>
+                    <td class="xp-value">+{{ incorrect_xp }} XP</td>
+                </tr>
+                <tr>
+                    <td>Modulo iniciado</td>
+                    <td class="xp-value">+15 XP</td>
+                </tr>
+                <tr>
+                    <td>Modulo completado</td>
+                    <td class="xp-value">+50 XP</td>
+                </tr>
+                {% if module.score_percent > 80 %}
+                <tr>
+                    <td>Bonus alto puntaje (&gt;80%)</td>
+                    <td class="xp-value">+25 XP</td>
+                </tr>
+                {% endif %}
+                <tr class="xp-total">
+                    <td>Total del modulo</td>
+                    <td class="xp-value">{{ module.xp_earned }} XP</td>
+                </tr>
+            </table>
+        </div>
+        {% else %}
+        <div class="summary-progress">
+            <p>{{ module.completed_questions }}/{{ module.total_questions }} preguntas contestadas</p>
+            <div class="progress-bar progress-bar-lg">
+                <div class="progress-fill" style="width: {{ module.progress_percent }}%"></div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="summary-actions">
+            <a href="{% url 'soft_skills:dashboard' %}" class="btn btn-secondary">Volver al Dashboard</a>
+            {% if module.is_completed %}
+            <a href="{% url 'soft_skills:module_review' module.id %}" class="btn btn-primary">Ver retroalimentacion</a>
+            {% else %}
+            <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Continuar</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
