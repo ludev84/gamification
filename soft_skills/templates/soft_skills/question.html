@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}{{ module.skill.name }} - Pregunta {{ question_order }}{% endblock %}
+{% block title %}{{ module.name }} - Pregunta {{ question_order }}{% endblock %}
 
 {% block content %}
 <div class="container">
-    <!-- Module header -->
+    <!-- Header -->
     <div class="question-header">
-        <a href="{% url 'soft_skills:dashboard' %}" class="back-link">&larr; Volver al dashboard</a>
-        <h2>{{ module.skill.icon }} {{ module.skill.name }}</h2>
+        <a href="{% url 'soft_skills:module_view' module.id %}" class="back-link">&larr; Volver a {{ module.name }}</a>
+        <h2>{{ module.icon }} {{ lesson.title }}</h2>
         <div class="question-progress-text">Pregunta {{ question_order }} de {{ total_questions }}</div>
         <div class="progress-bar">
             <div class="progress-fill progress-fill--gold" style="width: {{ progress_percent }}%"></div>
@@ -50,19 +50,26 @@
 
     <div class="explanation-card">
         <h3>Explicacion</h3>
-        <p>{{ question.explanation|linebreaksbr }}</p>
+        {% with selected=user_response.selected_answer correct=question.correct_answer %}
+        {% if selected != correct %}
+        <p><strong>Tu respuesta ({{ selected }}):</strong></p>
+        <p>{% if selected == 'A' %}{{ question.explanation_a }}{% elif selected == 'B' %}{{ question.explanation_b }}{% elif selected == 'C' %}{{ question.explanation_c }}{% else %}{{ question.explanation_d }}{% endif %}</p>
+        {% endif %}
+        <p><strong>Respuesta correcta ({{ correct }}):</strong></p>
+        <p>{% if correct == 'A' %}{{ question.explanation_a }}{% elif correct == 'B' %}{{ question.explanation_b }}{% elif correct == 'C' %}{{ question.explanation_c }}{% else %}{{ question.explanation_d }}{% endif %}</p>
+        {% endwith %}
     </div>
 
     <div class="question-nav">
         {% if prev_order %}
-        <a href="{% url 'soft_skills:question_view' module.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
+        <a href="{% url 'soft_skills:question_view' lesson.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
         {% else %}
         <span></span>
         {% endif %}
         {% if next_order %}
-        <a href="{% url 'soft_skills:question_view' module.id next_order %}" class="btn btn-primary">Siguiente &rarr;</a>
-        {% elif module.is_completed %}
-        <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen</a>
+        <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary">Siguiente &rarr;</a>
+        {% else %}
+        <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al modulo</a>
         {% endif %}
     </div>
 
@@ -86,6 +93,9 @@
                 {% if feedback.streak_xp > 0 %}
                 <span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>
                 {% endif %}
+                {% if feedback.lesson_complete_xp > 0 %}
+                <span class="xp-badge xp-lesson">+{{ feedback.lesson_complete_xp }} XP leccion completada</span>
+                {% endif %}
                 {% if feedback.module_complete_xp > 0 %}
                 <span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP modulo completado</span>
                 {% endif %}
@@ -102,16 +112,23 @@
 
             <div class="feedback-explanation">
                 <h4>Explicacion</h4>
-                <p>{{ feedback.explanation|linebreaksbr }}</p>
+                {% if feedback.selected_explanation %}
+                <p><strong>Tu respuesta:</strong> {{ feedback.selected_explanation|linebreaksbr }}</p>
+                {% endif %}
+                {% if not feedback.is_correct and feedback.correct_explanation %}
+                <p><strong>Respuesta correcta:</strong> {{ feedback.correct_explanation|linebreaksbr }}</p>
+                {% endif %}
             </div>
 
             <div class="feedback-actions">
                 {% if feedback.module_complete %}
                 <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen del modulo</a>
+                {% elif feedback.lesson_complete %}
+                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al modulo</a>
                 {% elif next_order %}
-                <a href="{% url 'soft_skills:question_view' module.id next_order %}" class="btn btn-primary">Siguiente pregunta &rarr;</a>
+                <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary">Siguiente pregunta &rarr;</a>
                 {% else %}
-                <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Finalizar</a>
+                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al modulo</a>
                 {% endif %}
             </div>
         </div>
@@ -119,7 +136,7 @@
 
     {% else %}
     <!-- Answer form -->
-    <form method="post" action="{% url 'soft_skills:submit_answer' module.id %}" id="answer-form">
+    <form method="post" action="{% url 'soft_skills:submit_answer' lesson.id %}" id="answer-form">
         {% csrf_token %}
         <input type="hidden" name="question_id" value="{{ question.id }}">
         <input type="hidden" name="question_order" value="{{ question_order }}">
@@ -146,7 +163,7 @@
 
         <div class="question-nav">
             {% if prev_order %}
-            <a href="{% url 'soft_skills:question_view' module.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
+            <a href="{% url 'soft_skills:question_view' lesson.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
             {% else %}
             <span></span>
             {% endif %}

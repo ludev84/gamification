@@ -1,91 +1,95 @@
 {% extends "base.html" %}
 
-{% block title %}Retroalimentacion - {{ module.skill.name }}{% endblock %}
+{% block title %}Retroalimentacion - {{ module.name }}{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="review-header">
         <a href="{% url 'soft_skills:dashboard' %}" class="back-link">&larr; Volver al dashboard</a>
-        <h1>{{ module.skill.icon }} {{ module.skill.name }} &mdash; Retroalimentacion</h1>
-        {% if module.is_completed %}
-        <p>Puntaje: {{ module.score_percent|floatformat:0 }}% | {{ module.xp_earned }} XP</p>
-        {% endif %}
+        <h1>{{ module.icon }} {{ module.name }} &mdash; Retroalimentacion</h1>
     </div>
 
-    <div class="review-list">
-        {% for item in questions_with_responses %}
-        <details class="review-question">
-            <summary class="review-summary">
-                <span class="review-chevron">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                </span>
-                <span class="review-number">Pregunta {{ item.order }}</span>
-                {% if item.response %}
-                    {% if item.response.is_correct %}
-                    <span class="review-badge review-correct">Correcta</span>
+    {% for lesson_item in lessons_with_questions %}
+    <div class="review-lesson">
+        <h2 class="review-lesson-title">{{ lesson_item.lesson.title }}</h2>
+
+        <div class="review-list">
+            {% for item in lesson_item.questions %}
+            <details class="review-question">
+                <summary class="review-summary">
+                    <span class="review-chevron">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </span>
+                    <span class="review-number">Pregunta {{ forloop.counter }}</span>
+                    {% if item.response %}
+                        {% if item.response.is_correct %}
+                        <span class="review-badge review-correct">Correcta</span>
+                        {% else %}
+                        <span class="review-badge review-wrong">Incorrecta</span>
+                        {% endif %}
                     {% else %}
-                    <span class="review-badge review-wrong">Incorrecta</span>
+                    <span class="review-badge review-pending">Sin responder</span>
                     {% endif %}
-                {% else %}
-                <span class="review-badge review-pending">Sin responder</span>
-                {% endif %}
-                <span class="review-question-text">{{ item.question.question_text|truncatewords:15 }}</span>
-            </summary>
+                    <span class="review-question-text">{{ item.question.question_text|truncatewords:15 }}</span>
+                </summary>
 
-            <div class="review-content">
-                <div class="scenario-card scenario-sm">
-                    <h4>Escenario</h4>
-                    <p>{{ item.question.scenario }}</p>
+                <div class="review-content">
+                    <div class="scenario-card scenario-sm">
+                        <h4>Escenario</h4>
+                        <p>{{ item.question.scenario }}</p>
+                    </div>
+
+                    <p class="review-question-full"><strong>{{ item.question.question_text }}</strong></p>
+
+                    <div class="review-options">
+                        {% with correct=item.question.correct_answer %}
+                        {% if item.response %}{% with selected=item.response.selected_answer %}
+                        <div class="option-review {% if 'A' == correct %}option-correct{% elif 'A' == selected %}option-wrong{% endif %}">
+                            <span class="option-letter">A</span> {{ item.question.option_a }}
+                        </div>
+                        <div class="option-review {% if 'B' == correct %}option-correct{% elif 'B' == selected %}option-wrong{% endif %}">
+                            <span class="option-letter">B</span> {{ item.question.option_b }}
+                        </div>
+                        <div class="option-review {% if 'C' == correct %}option-correct{% elif 'C' == selected %}option-wrong{% endif %}">
+                            <span class="option-letter">C</span> {{ item.question.option_c }}
+                        </div>
+                        <div class="option-review {% if 'D' == correct %}option-correct{% elif 'D' == selected %}option-wrong{% endif %}">
+                            <span class="option-letter">D</span> {{ item.question.option_d }}
+                        </div>
+                        {% endwith %}{% else %}
+                        <div class="option-review {% if 'A' == correct %}option-correct{% endif %}">
+                            <span class="option-letter">A</span> {{ item.question.option_a }}
+                        </div>
+                        <div class="option-review {% if 'B' == correct %}option-correct{% endif %}">
+                            <span class="option-letter">B</span> {{ item.question.option_b }}
+                        </div>
+                        <div class="option-review {% if 'C' == correct %}option-correct{% endif %}">
+                            <span class="option-letter">C</span> {{ item.question.option_c }}
+                        </div>
+                        <div class="option-review {% if 'D' == correct %}option-correct{% endif %}">
+                            <span class="option-letter">D</span> {{ item.question.option_d }}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="explanation-card">
+                        <h4>Explicaciones</h4>
+                        <p><strong>A:</strong> {{ item.question.explanation_a }}</p>
+                        <p><strong>B:</strong> {{ item.question.explanation_b }}</p>
+                        <p><strong>C:</strong> {{ item.question.explanation_c }}</p>
+                        <p><strong>D:</strong> {{ item.question.explanation_d }}</p>
+                    </div>
                 </div>
-
-                <p class="review-question-full"><strong>{{ item.question.question_text }}</strong></p>
-
-                <div class="review-options">
-                    {% with correct=item.question.correct_answer %}
-                    {% if item.response %}{% with selected=item.response.selected_answer %}
-                    <div class="option-review {% if 'A' == correct %}option-correct{% elif 'A' == selected %}option-wrong{% endif %}">
-                        <span class="option-letter">A</span> {{ item.question.option_a }}
-                    </div>
-                    <div class="option-review {% if 'B' == correct %}option-correct{% elif 'B' == selected %}option-wrong{% endif %}">
-                        <span class="option-letter">B</span> {{ item.question.option_b }}
-                    </div>
-                    <div class="option-review {% if 'C' == correct %}option-correct{% elif 'C' == selected %}option-wrong{% endif %}">
-                        <span class="option-letter">C</span> {{ item.question.option_c }}
-                    </div>
-                    <div class="option-review {% if 'D' == correct %}option-correct{% elif 'D' == selected %}option-wrong{% endif %}">
-                        <span class="option-letter">D</span> {{ item.question.option_d }}
-                    </div>
-                    {% endwith %}{% else %}
-                    <div class="option-review {% if 'A' == correct %}option-correct{% endif %}">
-                        <span class="option-letter">A</span> {{ item.question.option_a }}
-                    </div>
-                    <div class="option-review {% if 'B' == correct %}option-correct{% endif %}">
-                        <span class="option-letter">B</span> {{ item.question.option_b }}
-                    </div>
-                    <div class="option-review {% if 'C' == correct %}option-correct{% endif %}">
-                        <span class="option-letter">C</span> {{ item.question.option_c }}
-                    </div>
-                    <div class="option-review {% if 'D' == correct %}option-correct{% endif %}">
-                        <span class="option-letter">D</span> {{ item.question.option_d }}
-                    </div>
-                    {% endif %}
-                    {% endwith %}
-                </div>
-
-                <div class="explanation-card">
-                    <h4>Explicacion</h4>
-                    <p>{{ item.question.explanation|linebreaksbr }}</p>
-                </div>
-            </div>
-        </details>
-        {% endfor %}
+            </details>
+            {% endfor %}
+        </div>
     </div>
+    {% endfor %}
 
     <div class="review-actions">
         <a href="{% url 'soft_skills:dashboard' %}" class="btn btn-secondary">Volver al Dashboard</a>
-        {% if module.is_completed %}
         <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen</a>
-        {% endif %}
     </div>
 </div>
 {% endblock %}

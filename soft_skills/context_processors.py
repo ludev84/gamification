@@ -11,7 +11,7 @@ def gamification_context(request):
     except Exception:
         return {}
 
-    level_info = GamificationService.get_level_info(profile.total_xp)
+    level_info = GamificationService.get_level_info(request.user)
     badge_count = UserBadge.objects.filter(user=request.user).count()
 
     return {

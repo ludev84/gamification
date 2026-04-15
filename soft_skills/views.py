@@ -3,86 +3,159 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .models import Module, ModuleQuestion, UserBadge, UserResponse
+from .models import (
+    DailyActivity, Lesson, MCQuestion, Module, UserBadge, UserLessonProgress,
+    UserModuleProgress, UserResponse,
+)
 from .services.gamification import GamificationService
 
 
 @login_required
 def dashboard(request):
     profile = request.user.profile
-    modules = Module.objects.filter(user=request.user).select_related('skill').order_by('skill__order')
-    level_info = GamificationService.get_level_info(profile.total_xp)
+    level_info = GamificationService.get_level_info(request.user)
     badges = UserBadge.objects.filter(user=request.user).select_related('badge').order_by('-earned_at')
 
-    total_modules = modules.count()
-    completed_modules = modules.filter(is_completed=True).count()
+    # Only show modules assigned to this user
+    user_module_progress = UserModuleProgress.objects.filter(
+        user=request.user
+    ).select_related('module').order_by('module__order')
+
+    total_modules = user_module_progress.count()
+    completed_modules = user_module_progress.filter(is_completed=True).count()
     overall_progress = int((completed_modules / total_modules * 100)) if total_modules > 0 else 0
 
-    total_questions = sum(m.total_questions for m in modules)
-    completed_questions = sum(m.completed_questions for m in modules)
+    # Count total/completed lessons across assigned modules
+    assigned_module_ids = user_module_progress.values_list('module_id', flat=True)
+    total_lessons = Lesson.objects.filter(
+        module_id__in=assigned_module_ids, is_published=True
+    ).count()
+    completed_lessons = UserLessonProgress.objects.filter(
+        user=request.user, lesson__module_id__in=assigned_module_ids, is_completed=True
+    ).count()
 
     context = {
         'profile': profile,
-        'modules': modules,
+        'user_module_progress': user_module_progress,
         'level_info': level_info,
         'badges': badges,
         'total_modules': total_modules,
         'completed_modules': completed_modules,
         'overall_progress': overall_progress,
-        'total_questions': total_questions,
-        'completed_questions': completed_questions,
+        'total_lessons': total_lessons,
+        'completed_lessons': completed_lessons,
     }
     return render(request, 'soft_skills/dashboard.html', context)
 
 
 @login_required
 def module_view(request, module_id):
-    module = get_object_or_404(Module, id=module_id, user=request.user)
+    """Shows the lesson list for a module (Duolingo-style path)."""
+    module = get_object_or_404(Module, id=module_id, is_published=True)
 
-    if not module.is_started:
-        module.is_started = True
-        module.save()
+    # Check user has access (assigned by admin)
+    user_progress = get_object_or_404(UserModuleProgress, user=request.user, module=module)
+
+    # Award module start XP on first visit
+    if not user_progress.is_started:
+        user_progress.is_started = True
+        user_progress.started_at = timezone.now()
+        user_progress.save()
         GamificationService.award_module_start_xp(request.user)
 
-    if module.is_completed:
-        return redirect('soft_skills:module_summary', module_id=module.id)
+    lessons = Lesson.objects.filter(module=module, is_published=True).order_by('order')
 
-    # Find first unanswered question
-    answered_ids = set(
-        UserResponse.objects.filter(user=request.user, module=module)
-        .values_list('question_id', flat=True)
-    )
-    module_questions = ModuleQuestion.objects.filter(module=module).order_by('order')
+    # Build lesson data with unlock status and progress
+    lesson_data = []
+    for lesson in lessons:
+        is_unlocked = GamificationService.is_lesson_unlocked(request.user, lesson)
+        lesson_progress = UserLessonProgress.objects.filter(
+            user=request.user, lesson=lesson
+        ).first()
 
-    for mq in module_questions:
-        if mq.question_id not in answered_ids:
-            return redirect('soft_skills:question_view', module_id=module.id, question_order=mq.order)
+        total_questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).count()
+        answered_questions = UserResponse.objects.filter(
+            user=request.user, lesson=lesson
+        ).count()
 
-    # All answered, mark complete
-    return redirect('soft_skills:module_summary', module_id=module.id)
+        lesson_data.append({
+            'lesson': lesson,
+            'is_unlocked': is_unlocked,
+            'is_completed': lesson_progress.is_completed if lesson_progress else False,
+            'total_questions': total_questions,
+            'answered_questions': answered_questions,
+        })
+
+    context = {
+        'module': module,
+        'user_progress': user_progress,
+        'lesson_data': lesson_data,
+    }
+    return render(request, 'soft_skills/module_detail.html', context)
 
 
 @login_required
-def question_view(request, module_id, question_order):
-    module = get_object_or_404(Module, id=module_id, user=request.user)
-    mq = get_object_or_404(ModuleQuestion, module=module, order=question_order)
-    question = mq.question
+def lesson_view(request, lesson_id):
+    """Entry point for a lesson — redirects to first unanswered question."""
+    lesson = get_object_or_404(Lesson, id=lesson_id, is_published=True)
+    module = lesson.module
+
+    # Check user has access to the module
+    get_object_or_404(UserModuleProgress, user=request.user, module=module)
+
+    # Check lesson is unlocked
+    if not GamificationService.is_lesson_unlocked(request.user, lesson):
+        raise Http404
+
+    # Get-or-create lesson progress
+    UserLessonProgress.objects.get_or_create(user=request.user, lesson=lesson)
+
+    # Find first unanswered question
+    questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).order_by('order')
+    answered_ids = set(
+        UserResponse.objects.filter(user=request.user, lesson=lesson)
+        .values_list('question_id', flat=True)
+    )
+
+    for i, q in enumerate(questions, start=1):
+        if q.id not in answered_ids:
+            return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=i)
+
+    # All answered — redirect back to module
+    return redirect('soft_skills:module_view', module_id=module.id)
+
+
+@login_required
+def question_view(request, lesson_id, question_order):
+    lesson = get_object_or_404(Lesson, id=lesson_id, is_published=True)
+
+    # Check access
+    get_object_or_404(UserModuleProgress, user=request.user, module=lesson.module)
+
+    questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).order_by('order')
+    questions_list = list(questions)
+    total_questions = len(questions_list)
+
+    if question_order < 1 or question_order > total_questions:
+        raise Http404
+
+    question = questions_list[question_order - 1]
 
     # Check if already answered
-    user_response = UserResponse.objects.filter(user=request.user, question=question).first()
+    user_response = UserResponse.objects.filter(
+        user=request.user, lesson=lesson, question=question
+    ).first()
 
     # Check for feedback in session (after submit_answer redirect)
     feedback = request.session.pop('answer_feedback', None)
 
-    total_questions = module.total_questions
     progress_percent = int((question_order / total_questions) * 100) if total_questions > 0 else 0
-
-    # Get prev/next order numbers
     next_order = question_order + 1 if question_order < total_questions else None
     prev_order = question_order - 1 if question_order > 1 else None
 
     context = {
-        'module': module,
+        'lesson': lesson,
+        'module': lesson.module,
         'question': question,
         'question_order': question_order,
         'total_questions': total_questions,
@@ -96,120 +169,189 @@ def question_view(request, module_id, question_order):
 
 
 @login_required
-def submit_answer(request, module_id):
+def submit_answer(request, lesson_id):
     if request.method != 'POST':
         return redirect('soft_skills:dashboard')
 
-    module = get_object_or_404(Module, id=module_id, user=request.user)
+    lesson = get_object_or_404(Lesson, id=lesson_id, is_published=True)
+    module = lesson.module
+
+    # Check access
+    user_module_progress = get_object_or_404(UserModuleProgress, user=request.user, module=module)
+
     question_id = request.POST.get('question_id')
     selected_answer = request.POST.get('selected_answer', '').upper()
     question_order = int(request.POST.get('question_order', 1))
 
     if selected_answer not in ('A', 'B', 'C', 'D'):
-        return redirect('soft_skills:question_view', module_id=module.id, question_order=question_order)
+        return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=question_order)
 
-    mq = get_object_or_404(ModuleQuestion, module=module, question_id=question_id)
-    question = mq.question
+    question = get_object_or_404(MCQuestion, id=question_id, lesson=lesson)
 
     # Don't allow re-answering
-    if UserResponse.objects.filter(user=request.user, question=question).exists():
-        return redirect('soft_skills:question_view', module_id=module.id, question_order=question_order)
+    if UserResponse.objects.filter(user=request.user, lesson=lesson, question=question).exists():
+        return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=question_order)
 
     is_correct = selected_answer == question.correct_answer
 
-    # Award XP
+    # Award XP for response
     response_xp = GamificationService.award_response_xp(request.user, is_correct)
 
     # Create response
     UserResponse.objects.create(
         user=request.user,
-        module=module,
+        lesson=lesson,
         question=question,
         selected_answer=selected_answer,
         is_correct=is_correct,
         xp_earned=response_xp,
     )
 
-    # Update module progress
-    module.completed_questions += 1
+    # Track daily activity (questions)
+    today = timezone.localdate()
+    activity, _ = DailyActivity.objects.get_or_create(user=request.user, date=today)
+    activity.questions_answered += 1
+    activity.save()
 
-    # Update streak
-    streak, streak_xp = GamificationService.update_streak(request.user)
-
-    # Check if module is now complete
+    # Check if lesson is now complete
+    lesson_complete_xp = 0
+    streak_xp = 0
     module_complete_xp = 0
-    if module.completed_questions >= module.total_questions:
-        module.is_completed = True
-        module.completed_at = timezone.now()
-        correct_count = UserResponse.objects.filter(
-            user=request.user, module=module, is_correct=True
-        ).count()
-        module.score_percent = (correct_count / module.total_questions * 100) if module.total_questions > 0 else 0
-        module_complete_xp = GamificationService.award_module_complete_xp(request.user, module)
+    lesson_completed = False
+    module_completed = False
 
-    total_xp_earned = response_xp + streak_xp + module_complete_xp
-    module.xp_earned += total_xp_earned
-    module.save()
+    total_questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).count()
+    answered_count = UserResponse.objects.filter(user=request.user, lesson=lesson).count()
+
+    if answered_count >= total_questions:
+        lesson_completed = True
+        user_lesson_progress, _ = UserLessonProgress.objects.get_or_create(
+            user=request.user, lesson=lesson
+        )
+        if not user_lesson_progress.is_completed:
+            user_lesson_progress.is_completed = True
+            user_lesson_progress.completed_at = timezone.now()
+            user_lesson_progress.save()
+
+            lesson_complete_xp = GamificationService.award_lesson_complete_xp(
+                request.user, user_lesson_progress
+            )
+
+            # Update streak on lesson completion
+            _, streak_xp = GamificationService.update_streak(request.user)
+
+            # Check if all lessons in module are complete
+            all_lessons = Lesson.objects.filter(module=module, is_published=True)
+            completed_lessons = UserLessonProgress.objects.filter(
+                user=request.user, lesson__in=all_lessons, is_completed=True
+            ).count()
+
+            if completed_lessons >= all_lessons.count():
+                module_completed = True
+                user_module_progress.is_completed = True
+                user_module_progress.completed_at = timezone.now()
+
+                # Calculate score across all lessons in module
+                all_responses = UserResponse.objects.filter(
+                    user=request.user, lesson__in=all_lessons
+                )
+                total_resp = all_responses.count()
+                correct_count = all_responses.filter(is_correct=True).count()
+                user_module_progress.score_percent = (
+                    (correct_count / total_resp * 100) if total_resp > 0 else 0
+                )
+
+                module_complete_xp = GamificationService.award_module_complete_xp(
+                    request.user, user_module_progress
+                )
+                user_module_progress.save()
+
+    # Update module xp_earned
+    total_xp_earned = response_xp + lesson_complete_xp + streak_xp + module_complete_xp
+    user_module_progress.xp_earned += total_xp_earned
+    user_module_progress.save()
 
     # Check badges
     new_badges = GamificationService.check_and_award_badges(request.user)
+
+    # Get the explanation for the selected answer
+    selected_explanation = question.get_explanation(selected_answer)
+    correct_explanation = question.get_explanation(question.correct_answer)
 
     # Store feedback in session
     request.session['answer_feedback'] = {
         'is_correct': is_correct,
         'correct_answer': question.correct_answer,
-        'explanation': question.explanation,
+        'selected_explanation': selected_explanation,
+        'correct_explanation': correct_explanation,
         'xp_earned': response_xp,
         'streak_xp': streak_xp,
-        'module_complete': module.is_completed,
+        'lesson_complete': lesson_completed,
+        'lesson_complete_xp': lesson_complete_xp,
+        'module_complete': module_completed,
         'module_complete_xp': module_complete_xp,
         'new_badges': [{'name': b.name, 'icon': b.icon} for b in new_badges],
         'selected_answer': selected_answer,
     }
 
-    return redirect('soft_skills:question_view', module_id=module.id, question_order=question_order)
+    return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=question_order)
 
 
 @login_required
 def module_summary(request, module_id):
-    module = get_object_or_404(Module, id=module_id, user=request.user)
+    module = get_object_or_404(Module, id=module_id, is_published=True)
+    user_progress = get_object_or_404(UserModuleProgress, user=request.user, module=module)
+
+    # Get all responses across all lessons in this module
+    lessons = Lesson.objects.filter(module=module, is_published=True)
     responses = UserResponse.objects.filter(
-        user=request.user, module=module
-    ).select_related('question').order_by('question__modulequestion__order')
+        user=request.user, lesson__in=lessons
+    ).select_related('question').order_by('lesson__order', 'question__order')
 
     correct_count = responses.filter(is_correct=True).count()
     incorrect_count = responses.filter(is_correct=False).count()
-    correct_xp = correct_count * 15
-    incorrect_xp = incorrect_count * 10
+    correct_xp = correct_count * 10
+    incorrect_xp = incorrect_count * 5
 
     context = {
         'module': module,
+        'user_progress': user_progress,
         'responses': responses,
         'correct_count': correct_count,
         'incorrect_count': incorrect_count,
         'correct_xp': correct_xp,
         'incorrect_xp': incorrect_xp,
+        'lesson_count': lessons.count(),
     }
     return render(request, 'soft_skills/module_summary.html', context)
 
 
 @login_required
 def module_review(request, module_id):
-    module = get_object_or_404(Module, id=module_id, user=request.user)
+    module = get_object_or_404(Module, id=module_id, is_published=True)
+    get_object_or_404(UserModuleProgress, user=request.user, module=module)
 
-    module_questions = ModuleQuestion.objects.filter(module=module).select_related('question').order_by('order')
+    lessons = Lesson.objects.filter(module=module, is_published=True).order_by('order')
 
-    questions_with_responses = []
-    for mq in module_questions:
-        response = UserResponse.objects.filter(user=request.user, question=mq.question).first()
-        questions_with_responses.append({
-            'order': mq.order,
-            'question': mq.question,
-            'response': response,
+    lessons_with_questions = []
+    for lesson in lessons:
+        questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).order_by('order')
+        questions_data = []
+        for q in questions:
+            response = UserResponse.objects.filter(
+                user=request.user, lesson=lesson, question=q
+            ).first()
+            questions_data.append({
+                'question': q,
+                'response': response,
+            })
+        lessons_with_questions.append({
+            'lesson': lesson,
+            'questions': questions_data,
         })
 
     context = {
         'module': module,
-        'questions_with_responses': questions_with_responses,
+        'lessons_with_questions': lessons_with_questions,
     }
     return render(request, 'soft_skills/module_review.html', context)

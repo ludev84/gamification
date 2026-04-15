@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -123,11 +122,3 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Auth
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
-
-# LLM Configuration
-LLM_PROVIDER = os.environ.get('LLM_PROVIDER', 'openai')
-LLM_API_KEY = os.environ.get('LLM_API_KEY', '')
-LLM_MODEL = os.environ.get('LLM_MODEL', 'gpt-4o-mini')
-
-# Fuzzy system
-TOTAL_MCQS_PER_USER = int(os.environ.get('TOTAL_MCQS_PER_USER', '100'))

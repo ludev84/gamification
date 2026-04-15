@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ module.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="module-header">
+        <a href="{% url 'soft_skills:dashboard' %}" class="back-link">&larr; Volver al dashboard</a>
+        <h1>{{ module.icon }} {{ module.name }}</h1>
+        {% if module.description %}
+        <p>{{ module.description }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Lesson Path -->
+    <div class="lesson-path">
+        {% for item in lesson_data %}
+        <div class="lesson-node {% if item.is_completed %}lesson-completed{% elif item.is_unlocked %}lesson-unlocked{% else %}lesson-locked{% endif %}">
+            <div class="lesson-connector">
+                {% if not forloop.first %}
+                <div class="connector-line"></div>
+                {% endif %}
+            </div>
+            <div class="lesson-circle">
+                {% if item.is_completed %}
+                    <span class="lesson-check">&#10004;</span>
+                {% elif item.is_unlocked %}
+                    <span class="lesson-number">{{ forloop.counter }}</span>
+                {% else %}
+                    <span class="lesson-lock">&#128274;</span>
+                {% endif %}
+            </div>
+            <div class="lesson-info">
+                <h3 class="lesson-title">{{ item.lesson.title }}</h3>
+                <span class="lesson-progress-text">{{ item.answered_questions }}/{{ item.total_questions }} preguntas</span>
+                {% if item.is_unlocked and not item.is_completed %}
+                <a href="{% url 'soft_skills:lesson_view' item.lesson.id %}" class="btn btn-primary btn-sm">
+                    {% if item.answered_questions > 0 %}Continuar{% else %}Iniciar{% endif %}
+                </a>
+                {% elif item.is_completed %}
+                <span class="lesson-badge-complete">Completada</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if user_progress.is_completed %}
+    <div class="module-complete-banner">
+        <h2>Modulo completado!</h2>
+        <div class="module-complete-actions">
+            <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen</a>
+            <a href="{% url 'soft_skills:module_review' module.id %}" class="btn btn-teal">Retroalimentacion</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

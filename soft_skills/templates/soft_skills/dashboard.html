@@ -47,37 +47,40 @@
 
     <!-- Module Grid -->
     <h2 class="modules-heading">Tus modulos</h2>
+    {% if user_module_progress %}
     <div class="module-grid">
-        {% for module in modules %}
-        <div class="module-card {% if module.is_completed %}module-completed{% endif %}">
+        {% for ump in user_module_progress %}
+        <div class="module-card {% if ump.is_completed %}module-completed{% endif %}">
             <div class="module-card-top">
-                <div class="module-icon">{{ module.skill.icon }}</div>
-                {% if module.is_completed %}
+                <div class="module-icon">{{ ump.module.icon }}</div>
+                {% if ump.is_completed %}
                 <span class="module-status module-status--completed">Completado</span>
-                {% elif module.is_started %}
+                {% elif ump.is_started %}
                 <span class="module-status module-status--progress">En progreso</span>
                 {% else %}
                 <span class="module-status module-status--new">Nuevo</span>
                 {% endif %}
             </div>
-            <h3 class="module-name">{{ module.skill.name }}</h3>
-            <div class="module-progress-text">{{ module.completed_questions }}/{{ module.total_questions }} preguntas</div>
-            <div class="progress-bar">
-                <div class="progress-fill {% if module.is_completed %}progress-fill--teal{% endif %}" style="width: {{ module.progress_percent }}%"></div>
-            </div>
+            <h3 class="module-name">{{ ump.module.name }}</h3>
+            {% if ump.module.description %}
+            <p class="module-description">{{ ump.module.description|truncatewords:20 }}</p>
+            {% endif %}
             <div class="module-actions">
-                {% if module.is_completed %}
-                    <a href="{% url 'soft_skills:module_review' module.id %}" class="btn btn-teal btn-sm">Retroalimentacion</a>
-                    <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-outline btn-sm">Resumen</a>
-                {% elif module.is_started %}
-                    <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary btn-sm">Continuar</a>
+                {% if ump.is_completed %}
+                    <a href="{% url 'soft_skills:module_review' ump.module.id %}" class="btn btn-teal btn-sm">Retroalimentacion</a>
+                    <a href="{% url 'soft_skills:module_summary' ump.module.id %}" class="btn btn-outline btn-sm">Resumen</a>
+                {% elif ump.is_started %}
+                    <a href="{% url 'soft_skills:module_view' ump.module.id %}" class="btn btn-primary btn-sm">Continuar</a>
                 {% else %}
-                    <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary btn-sm">Iniciar</a>
+                    <a href="{% url 'soft_skills:module_view' ump.module.id %}" class="btn btn-primary btn-sm">Iniciar</a>
                 {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <p>No tienes modulos asignados todavia.</p>
+    {% endif %}
 
     <!-- Progress Section -->
     <div class="progress-section">
@@ -88,8 +91,8 @@
                 <span class="stat-label">Modulos completados</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number">{{ completed_questions }}/{{ total_questions }}</span>
-                <span class="stat-label">Preguntas contestadas</span>
+                <span class="stat-number">{{ completed_lessons }}/{{ total_lessons }}</span>
+                <span class="stat-label">Lecciones completadas</span>
             </div>
         </div>
         <div class="progress-bar progress-bar-lg">
