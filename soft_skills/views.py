@@ -78,12 +78,21 @@ def module_view(request, module_id):
             user=request.user, lesson=lesson
         ).count()
 
+        progress_pct = int((answered_questions / total_questions) * 100) if total_questions > 0 else 0
+        is_completed = lesson_progress.is_completed if lesson_progress else False
+        # SVG ring: circumference = 2 * pi * 52 ≈ 326.73
+        circumference = 326.73
+        fill_pct = 100 if is_completed else progress_pct
+        ring_offset = circumference - (circumference * fill_pct / 100)
+
         lesson_data.append({
             'lesson': lesson,
             'is_unlocked': is_unlocked,
-            'is_completed': lesson_progress.is_completed if lesson_progress else False,
+            'is_completed': is_completed,
             'total_questions': total_questions,
             'answered_questions': answered_questions,
+            'progress_percent': progress_pct,
+            'ring_offset': ring_offset,
         })
 
     context = {

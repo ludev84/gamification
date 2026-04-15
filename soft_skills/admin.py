@@ -12,7 +12,7 @@ from .models import (
 class LessonInline(admin.TabularInline):
     model = Lesson
     extra = 1
-    fields = ('order', 'title', 'is_published')
+    fields = ('order', 'icon', 'title', 'is_published')
     show_change_link = True
 
 
@@ -61,7 +61,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('module', 'order', 'title', 'is_published', 'question_count')
+    list_display = ('module', 'order', 'icon', 'title', 'is_published', 'question_count')
     list_display_links = ('title',)
     list_filter = ('module', 'is_published')
     list_editable = ('order', 'is_published')

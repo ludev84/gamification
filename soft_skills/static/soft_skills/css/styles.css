@@ -1574,11 +1574,291 @@ details[open] .review-chevron {
 
 
 /* ============================================================
+   DUOLINGO-STYLE LESSON PATH
+   ============================================================ */
+.duo-path {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0 3rem;
+    gap: 0;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.duo-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-bottom: 0.25rem;
+}
+
+/* Zigzag offset */
+.duo-row--right { transform: translateX(60px); }
+.duo-row--left  { transform: translateX(-60px); }
+
+/* Connector line between nodes */
+.duo-connector {
+    width: 4px;
+    height: 32px;
+    border-radius: 2px;
+    background: var(--border);
+}
+
+.duo-connector--done   { background: var(--teal); }
+.duo-connector--active { background: var(--terra); }
+.duo-connector--locked { background: var(--border-dark); }
+
+/* Node wrapper (ring + circle) */
+.duo-node {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.duo-node:hover {
+    transform: scale(1.08);
+}
+
+.duo-node--selected {
+    transform: scale(1.1);
+}
+
+/* SVG progress ring */
+.duo-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.duo-ring__track {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 7;
+}
+
+.duo-ring__fill {
+    fill: none;
+    stroke: var(--terra);
+    stroke-width: 7;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s ease;
+}
+
+/* Ring colors per state */
+.duo-node--done .duo-ring__track {
+    stroke: var(--teal-light);
+}
+
+.duo-node--done .duo-ring__fill {
+    stroke: var(--teal);
+}
+
+.duo-node--active .duo-ring__track {
+    stroke: var(--terra-light);
+}
+
+.duo-node--active .duo-ring__fill {
+    stroke: var(--terra);
+}
+
+.duo-node--locked .duo-ring__track {
+    stroke: var(--cream-dark);
+}
+
+.duo-node--locked .duo-ring__fill {
+    stroke: var(--border-dark);
+    stroke-dashoffset: 326.73 !important;
+}
+
+/* Inner circle */
+.duo-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+}
+
+.duo-node--done .duo-circle {
+    background: linear-gradient(145deg, var(--teal-ghost), var(--teal-light));
+    border: 3px solid var(--teal);
+}
+
+.duo-node--active .duo-circle {
+    background: linear-gradient(145deg, var(--terra-ghost), var(--terra-light));
+    border: 3px solid var(--terra);
+}
+
+.duo-node--locked .duo-circle {
+    background: var(--cream-dark);
+    border: 3px solid var(--border-dark);
+    filter: grayscale(1);
+    opacity: 0.6;
+}
+
+.duo-icon {
+    line-height: 1;
+}
+
+.duo-lock {
+    font-size: 1.3rem;
+    line-height: 1;
+    opacity: 0.5;
+}
+
+/* Crown badge for completed */
+.duo-crown {
+    position: absolute;
+    bottom: -6px;
+    right: -4px;
+    font-size: 1.1rem;
+    line-height: 1;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+}
+
+/* Lesson title under circle */
+.duo-label {
+    margin-top: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-align: center;
+    max-width: 130px;
+    line-height: 1.3;
+}
+
+/* Expandable info bubble */
+.duo-bubble {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 2.2rem;
+    width: 260px;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateX(-50%) translateY(8px);
+}
+
+.duo-bubble--open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.duo-bubble__arrow {
+    width: 16px;
+    height: 16px;
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-right: none;
+    border-bottom: none;
+    transform: rotate(45deg);
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    margin-left: -8px;
+    z-index: 1;
+}
+
+.duo-bubble__content {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.15rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    z-index: 2;
+}
+
+.duo-bubble__header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.85rem;
+}
+
+.duo-bubble__icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.duo-bubble__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+.duo-bubble__progress {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 0.1rem;
+}
+
+.duo-bubble__btn {
+    font-size: 0.88rem !important;
+    padding: 0.6rem 1rem !important;
+    border-radius: var(--r) !important;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 700 !important;
+}
+
+/* Module complete banner */
+.module-complete-banner {
+    text-align: center;
+    background: linear-gradient(135deg, var(--teal-ghost), var(--white));
+    border: 2px solid var(--teal);
+    border-radius: var(--r-lg);
+    padding: 1.5rem;
+    margin-top: 1rem;
+    animation: scaleIn 0.4s ease both;
+}
+
+.module-complete-banner h2 {
+    color: var(--teal-dark);
+    margin-bottom: 0.75rem;
+}
+
+.module-complete-actions {
+    display: flex;
+    gap: 0.65rem;
+    justify-content: center;
+}
+
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 480px) {
     h1 { font-size: 1.4rem; }
     h2 { font-size: 1.15rem; }
+
+    .duo-row--right,
+    .duo-row--left {
+        transform: translateX(0);
+    }
 
     .container {
         padding: 0 0.85rem;

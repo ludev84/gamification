@@ -25,6 +25,7 @@ class Lesson(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='lessons')
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    icon = models.CharField(max_length=10, default='📖', help_text='Emoji icon for the lesson circle')
     order = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=False)
 

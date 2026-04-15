@@ -12,35 +12,73 @@
         {% endif %}
     </div>
 
-    <!-- Lesson Path -->
-    <div class="lesson-path">
+    <!-- Duolingo-style Lesson Path -->
+    <div class="duo-path">
         {% for item in lesson_data %}
-        <div class="lesson-node {% if item.is_completed %}lesson-completed{% elif item.is_unlocked %}lesson-unlocked{% else %}lesson-locked{% endif %}">
-            <div class="lesson-connector">
-                {% if not forloop.first %}
-                <div class="connector-line"></div>
-                {% endif %}
+        <div class="duo-row {% cycle '' 'duo-row--right' '' 'duo-row--left' %}">
+            {% if not forloop.first %}
+            <div class="duo-connector {% if item.is_completed %}duo-connector--done{% elif item.is_unlocked %}duo-connector--active{% else %}duo-connector--locked{% endif %}"></div>
+            {% endif %}
+
+            <div class="duo-node {% if item.is_completed %}duo-node--done{% elif item.is_unlocked %}duo-node--active{% else %}duo-node--locked{% endif %}"
+                 data-index="{{ forloop.counter0 }}"
+                 onclick="toggleBubble(this)">
+
+                <!-- SVG circular progress ring -->
+                <svg class="duo-ring" viewBox="0 0 120 120">
+                    <circle class="duo-ring__track" cx="60" cy="60" r="52" />
+                    <circle class="duo-ring__fill" cx="60" cy="60" r="52"
+                            stroke-dasharray="326.73"
+                            style="stroke-dashoffset: {{ item.ring_offset }};" />
+                </svg>
+
+                <div class="duo-circle">
+                    {% if item.is_completed %}
+                        <span class="duo-icon">{{ item.lesson.icon }}</span>
+                        <span class="duo-crown">&#128081;</span>
+                    {% elif item.is_unlocked %}
+                        <span class="duo-icon">{{ item.lesson.icon }}</span>
+                    {% else %}
+                        <span class="duo-lock">&#128274;</span>
+                    {% endif %}
+                </div>
             </div>
-            <div class="lesson-circle">
-                {% if item.is_completed %}
-                    <span class="lesson-check">&#10004;</span>
-                {% elif item.is_unlocked %}
-                    <span class="lesson-number">{{ forloop.counter }}</span>
-                {% else %}
-                    <span class="lesson-lock">&#128274;</span>
-                {% endif %}
-            </div>
-            <div class="lesson-info">
-                <h3 class="lesson-title">{{ item.lesson.title }}</h3>
-                <span class="lesson-progress-text">{{ item.answered_questions }}/{{ item.total_questions }} preguntas</span>
-                {% if item.is_unlocked and not item.is_completed %}
-                <a href="{% url 'soft_skills:lesson_view' item.lesson.id %}" class="btn btn-primary btn-sm">
-                    {% if item.answered_questions > 0 %}Continuar{% else %}Iniciar{% endif %}
-                </a>
-                {% elif item.is_completed %}
-                <span class="lesson-badge-complete">Completada</span>
-                <a href="{% url 'soft_skills:lesson_review' item.lesson.id %}" class="btn btn-teal btn-sm">Retroalimentacion</a>
-                {% endif %}
+
+            <div class="duo-label">{{ item.lesson.title }}</div>
+
+            <!-- Expandable bubble -->
+            <div class="duo-bubble" id="bubble-{{ forloop.counter0 }}">
+                <div class="duo-bubble__arrow"></div>
+                <div class="duo-bubble__content">
+                    <div class="duo-bubble__header">
+                        <span class="duo-bubble__icon">{{ item.lesson.icon }}</span>
+                        <div>
+                            <div class="duo-bubble__title">{{ item.lesson.title }}</div>
+                            <div class="duo-bubble__progress">
+                                {% if item.is_completed %}
+                                    Completada
+                                {% elif item.is_unlocked %}
+                                    {{ item.answered_questions }}/{{ item.total_questions }} preguntas
+                                {% else %}
+                                    Bloqueada
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if item.is_unlocked and not item.is_completed %}
+                    <a href="{% url 'soft_skills:lesson_view' item.lesson.id %}" class="btn btn-primary btn-full duo-bubble__btn">
+                        {% if item.answered_questions > 0 %}CONTINUAR{% else %}INICIAR{% endif %}
+                    </a>
+                    {% elif item.is_completed %}
+                    <a href="{% url 'soft_skills:lesson_review' item.lesson.id %}" class="btn btn-teal btn-full duo-bubble__btn">
+                        RETROALIMENTACION
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary btn-full duo-bubble__btn" disabled>
+                        BLOQUEADA
+                    </button>
+                    {% endif %}
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -55,4 +93,29 @@
     </div>
     {% endif %}
 </div>
+
+<script>
+function toggleBubble(node) {
+    const idx = node.dataset.index;
+    const bubble = document.getElementById('bubble-' + idx);
+    const isOpen = bubble.classList.contains('duo-bubble--open');
+
+    // Close all bubbles
+    document.querySelectorAll('.duo-bubble--open').forEach(b => b.classList.remove('duo-bubble--open'));
+    document.querySelectorAll('.duo-node--selected').forEach(n => n.classList.remove('duo-node--selected'));
+
+    if (!isOpen) {
+        bubble.classList.add('duo-bubble--open');
+        node.classList.add('duo-node--selected');
+    }
+}
+
+// Close bubble when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.duo-node') && !e.target.closest('.duo-bubble')) {
+        document.querySelectorAll('.duo-bubble--open').forEach(b => b.classList.remove('duo-bubble--open'));
+        document.querySelectorAll('.duo-node--selected').forEach(n => n.classList.remove('duo-node--selected'));
+    }
+});
+</script>
 {% endblock %}
