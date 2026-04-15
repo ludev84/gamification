@@ -43,6 +43,7 @@ La plataforma proporcionará:
 - Las lecciones se organizan en forma de path o árbol de habilidades, similar a la plataforma de Duolingo.
 - Completar una lección desbloquea el acceso a la siguiente.
 - Al finalizar todas las lecciones, se muestra un trofeo o una insignia de finalización.
+- Para evitar la acumulación artificial de puntos, las lecciones solo pueden ser completadas y otorgar XP una única vez. Posteriormente, el usuario solo podrá acceder a la retroalimentación de las preguntas y al resumen general del módulo.
 
 ### 3.3 Estructura de Preguntas de Opción Múltiple
 
@@ -86,7 +87,7 @@ Las recompensas otorgadas por las interacciones del estudiante son fijas. El sis
 | Módulo iniciado | +30 XP |
 | Lección finalizada | +15 XP |
 | Módulo finalizado | +50 XP |
-| Alto puntaje en módulo (>80%) | +25 XP |
+| Alto puntaje en módulo (≥80% de respuestas correctas en el 1er intento) | +25 XP |
 
 #### 3.5.3 Sistema de Retención (Rachas Diarias)
 
@@ -95,20 +96,22 @@ El tiempo de uso y la constancia se miden mediante un sistema de retención.
 - El sistema registrará los inicios de sesión diarios consecutivos.
 - La interfaz mostrará un contador visual de "Días en racha" (ej. icono de fuego/llama).
 - Se otorgarán medallas o insignias visuales al alcanzar hitos de racha (ej. 7 días, 14 días, 30 días).
-- Si el usuario no inicia sesión y completa al menos una acción en un lapso de 24 horas, el contador vuelve a cero.
+- Si el usuario no inicia sesión y completa al menos una **lección** en un lapso de 24 horas, el contador vuelve a cero.
 
 #### 3.5.4 Cálculo de XP_max (Lógica de Backend)
 
 Para asignar el nivel dinámico correcto a cada estudiante, el sistema calculará en tiempo real el XP_max sumando el valor de todo el contenido de los módulos asignados al usuario.
 La fórmula a implementar mediante una propiedad calculada en el modelo de usuario es la siguiente:
 
-XP_max = (M × 80) + (L × 15) + (P × 10)
+$XP\_max = (M \times 80) + (L \times 15) + (P \times 10)$
 
 Donde:
 
 - M: Número total de módulos publicados (Aporta 80 XP base: 30 por iniciar + 50 por finalizar).
 - L: Número total de lecciones publicadas.
 - P: Número total de preguntas (MCQs) publicadas (asumiendo el escenario de respuestas correctas).
+
+*Nota sobre progresión:* Los puntos adicionales obtenidos por recompensas especiales, como el alto puntaje en un módulo, se consideran un excedente. Esto permite que los alumnos con desempeño de excelencia lleguen a la meta (Nivel 5) en menor tiempo y puedan seguir acumulando puntos sobrepasando el 100% del XP_max, sin subir más de nivel.
 
 #### 3.5.5 Medallas
 
@@ -121,7 +124,6 @@ Se podrán agregar medallas o recompensas de acuerdo con distintas condiciones, 
 - Completar cierta cantidad de días de Racha.
 - Contestar X cantidad de preguntas.
 - Contestar X cantidad de preguntas correctamente.
-- etc.
 
 ### 3.6 Dashboard del Usuario
 
@@ -162,9 +164,9 @@ Módulo:
 
 ### 5.1 Stack Tecnológico
 
-- **Backend:** Django 4.x+.
-- **Base de Datos:** SQLite.
-- **Frontend:** Django Templates + CSS (sin JavaScript frameworks).
+- **Backend:** Django 4.x+
+- **Base de Datos:** SQLite
+- **Frontend:** Django Templates + CSS. Se permite el uso de Vanilla JavaScript para interacciones y reproducciones de audio (sin frameworks de JS como React o Vue).
 
 ### 5.2 Entorno de Desarrollo
 
