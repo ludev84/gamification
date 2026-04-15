@@ -4,7 +4,7 @@ Plataforma Web de Alumnos y Tutores – Instituto Tecnológico de Mérida/TecNM
 
 ## 1. Introducción
 
-### Propósito del Documento
+### 1.1 Propósito del Documento
 
 Este documento describe los requisitos técnicos para una plataforma gamificada de desarrollo de habilidades blandas. La plataforma ofrece módulos de habilidades blandas con preguntas de opción múltiple (MCQs) generadas por LLM.
 
@@ -12,14 +12,14 @@ Este documento describe los requisitos técnicos para una plataforma gamificada 
 
 La plataforma proporcionará:
 
-- Módulos de desarrollo de habilidades blandas por medio de lecciones con MCQs
-- Sistema de gamificación (XP, niveles, rachas, medallas, animaciones y sonidos)
+- Módulos de desarrollo de habilidades blandas por medio de lecciones con MCQs.
+- Sistema de gamificación (XP, niveles, rachas, medallas, animaciones y sonidos).
 
 ## 2. Descripción General
 
 ### 2.1 Funcionalidad de la plataforma
 
-- Módulos de aprendizaje de habilidades blandas
+- Módulos de aprendizaje de habilidades blandas.
 - Cada módulo contiene MCQs divididas en lecciones. Es necesario completar una lección para iniciar la siguiente.
 - Hay una retroalimentación inmediata al contestar cada pregunta, donde se muestra un mensaje diferente para cada opción de respuesta.
 - El sistema registra respuestas, calcula XP, y actualiza el progreso.
@@ -36,7 +36,7 @@ La plataforma proporcionará:
 ### 3.1 Módulos de habilidades blandas
 
 - Un módulo por cada habilidad blanda que tenga MCQs asignados.
-- Cada módulo contiene N lecciones con M cantidad de MCQs
+- Cada módulo contiene N lecciones con M cantidad de MCQs.
 
 ### 3.2 Lecciones
 
@@ -65,7 +65,7 @@ La plataforma proporcionará:
 
 #### 3.5.1 Sistema Dinámico de Niveles
 
-los niveles se calculan dinámicamente como un porcentaje del XP Máximo Posible (XP_max) en la plataforma. Esto permite que el sistema se adapte automáticamente si se agrega o modifica el contenido de los módulos.
+Los niveles se calculan dinámicamente como un porcentaje del XP Máximo Posible (XP_max) en la plataforma. Esto permite que el sistema se adapte automáticamente si se agrega o modifica el contenido de los módulos.
 
 | Nivel | Nombre | Umbral Requerido (% del XP_max) |
 | --- | --- | --- |
@@ -112,15 +112,15 @@ Donde:
 
 #### 3.5.5 Medallas
 
-Se podrán agregar medallas o recompensas  de acuerdo con disitintas condiciones, como:
+Se podrán agregar medallas o recompensas de acuerdo con distintas condiciones, como:
 
 - Completar el módulo correspondiente con más de cierto porcentaje, que puede ser variable.
 - Completar X cantidad de lecciones o módulos con 100%.
 - Completar X cantidad de módulos.
-- Completar todos los módulos
-- Completar cierta cantidad de días de Racha
-- Contestar X cantidad de preguntas
-- Contestar X cantidad de preguntas correctamente
+- Completar todos los módulos.
+- Completar cierta cantidad de días de Racha.
+- Contestar X cantidad de preguntas.
+- Contestar X cantidad de preguntas correctamente.
 - etc.
 
 ### 3.6 Dashboard del Usuario
@@ -134,7 +134,7 @@ Página principal:
 
 Módulo:
 
-- Listado de lecciones del módulo, que llevarán a contestar los MCQs correspondientes
+- Listado de lecciones del módulo, que llevarán a contestar los MCQs correspondientes.
 
 ### 3.7 Retroalimentación
 
@@ -162,11 +162,11 @@ Módulo:
 
 ### 5.1 Stack Tecnológico
 
-- **Backend:** Django 4.x+
-- **Base de Datos:** SQLite
-- **Frontend:** Django Templates + CSS (sin JavaScript frameworks)
+- **Backend:** Django 4.x+.
+- **Base de Datos:** SQLite.
+- **Frontend:** Django Templates + CSS (sin JavaScript frameworks).
 
-### 5.3 Entorno de Desarrollo
+### 5.2 Entorno de Desarrollo
 
 - Prototipo local: `python manage.py runserver`
 - No se requiere Docker, Nginx, ni Gunicorn para el prototipo.
