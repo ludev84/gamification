@@ -6,22 +6,25 @@ Plataforma Web de Alumnos y Tutores – Instituto Tecnológico de Mérida/TecNM
 
 ### 1.1 Propósito del Documento
 
-Este documento describe los requisitos técnicos para una plataforma gamificada de desarrollo de habilidades blandas. La plataforma ofrece módulos de habilidades blandas con preguntas de opción múltiple (MCQs) generadas por LLM.
+Este documento describe los requisitos técnicos para una plataforma gamificada de desarrollo de habilidades blandas. La plataforma ofrece módulos con lecciones de preguntas de opción múltiple (MCQs), gestionados por un administrador a través del panel de Django Admin.
 
 ### 1.2 Alcance del Proyecto
 
 La plataforma proporcionará:
 
-- Módulos de desarrollo de habilidades blandas por medio de lecciones con MCQs.
-- Sistema de gamificación (XP, niveles, rachas, medallas, animaciones y sonidos).
+- Módulos de desarrollo de habilidades blandas, creados y gestionados por el administrador.
+- Cada módulo contiene lecciones secuenciales con MCQs.
+- Sistema de gamificación (XP, niveles dinámicos, rachas, medallas).
+- Asignación de módulos a usuarios por parte del administrador.
 
 ## 2. Descripción General
 
 ### 2.1 Funcionalidad de la plataforma
 
-- Módulos de aprendizaje de habilidades blandas.
-- Cada módulo contiene MCQs divididas en lecciones. Es necesario completar una lección para iniciar la siguiente.
-- Hay una retroalimentación inmediata al contestar cada pregunta, donde se muestra un mensaje diferente para cada opción de respuesta.
+- El administrador crea módulos, lecciones y MCQs desde el panel de Django Admin.
+- El administrador asigna módulos a usuarios específicos. Solo los módulos asignados aparecen en el dashboard del alumno.
+- Cada módulo contiene lecciones secuenciales (estilo Duolingo). Es necesario completar una lección para desbloquear la siguiente.
+- Hay una retroalimentación inmediata al contestar cada pregunta, con una explicación específica por cada opción de respuesta.
 - El sistema registra respuestas, calcula XP, y actualiza el progreso.
 
 ### 2.2 Supuestos y dependencias
@@ -30,43 +33,86 @@ La plataforma proporcionará:
 - Usar SQLite como base de datos.
 - El frontend se construye con Django Templates.
 - El sistema autenticará usuarios mediante el sistema de auth de Django.
+- No se utiliza integración con LLM ni sistema de lógica difusa. Todo el contenido es gestionado manualmente por el administrador.
 
-## 3. Requisitos Funcionales (RF)
+## 3. Gestión de Contenido (Admin)
 
-### 3.1 Módulos de habilidades blandas
+### 3.1 Jerarquía de contenido
 
-- Un módulo por cada habilidad blanda que tenga MCQs asignados.
-- Cada módulo contiene N lecciones con M cantidad de MCQs.
+El contenido se organiza en tres niveles, todos gestionados desde Django Admin:
 
-### 3.2 Lecciones
+```
+Módulo → Lecciones → Preguntas MCQ
+```
 
-- Las lecciones se organizan en forma de path o árbol de habilidades, similar a la plataforma de Duolingo.
-- Completar una lección desbloquea el acceso a la siguiente.
-- Al finalizar todas las lecciones, se muestra un trofeo o una insignia de finalización.
-- Para evitar la acumulación artificial de puntos, las lecciones solo pueden ser completadas y otorgar XP una única vez. Posteriormente, el usuario solo podrá acceder a la retroalimentación de las preguntas y al resumen general del módulo.
+### 3.2 Módulos
 
-### 3.3 Estructura de Preguntas de Opción Múltiple
+- El administrador crea módulos con: nombre, slug, descripción, icono, orden y estado de publicación (`is_published`).
+- Solo los módulos publicados son visibles para los alumnos.
 
-- Escenario: texto de aprox. 80-120 palabras.
-- Pregunta: texto corto.
-- 4 opciones (A, B, C, D): Una correcta y tres incorrectas.
-- Respuesta correcta: Indicada por letra.
-- 4 Explicaciones (A, B, C, D): Por qué la respuesta correcta es la mejor y por qué cada opción incorrecta falla.
+### 3.3 Lecciones
 
-### 3.4 Responder Preguntas de Opción Múltiple
+- Cada lección pertenece a un módulo.
+- Las lecciones tienen: título, descripción, orden dentro del módulo y estado de publicación.
+- El orden determina la secuencia: el alumno debe completar la lección anterior para desbloquear la siguiente.
+- Las lecciones solo otorgan XP una única vez. Si el alumno revisa una lección completada, solo puede ver la retroalimentación sin obtener XP adicional.
 
-- El usuario navega pregunta por pregunta con:
-  - Barra de progreso.
-  - Selección de respuesta (grid 2x2).
-  - Botón "Enviar respuesta".
-  - Mostrar mensaje de retroalimentación. Resaltar de manera momentánea los XP obtenidos (efecto aparecer/resaltar en la pantalla). Incluir animación de confeti con efecto de sonido para respuestas correctas, y una sutil para incorrectas.
-  - Navegación: "Siguiente pregunta" / "Finalizar" (en la última).
+### 3.4 Preguntas MCQ
 
-### 3.5 Gamificación
+- Cada pregunta pertenece a una lección.
+- Estructura de cada MCQ:
+    - **Escenario:** texto contextualizado (~80-120 palabras).
+    - **Pregunta:** texto corto.
+    - **4 opciones (A, B, C, D):** una correcta y tres incorrectas.
+    - **Respuesta correcta:** indicada por letra.
+    - **4 explicaciones (A, B, C, D):** una explicación individual por cada opción, indicando por qué es correcta o por qué falla.
+- Cada pregunta tiene un orden dentro de la lección y un estado de publicación.
 
-#### 3.5.1 Sistema Dinámico de Niveles
+### 3.5 Asignación de Módulos a Usuarios
 
-Los niveles se calculan dinámicamente como un porcentaje del XP Máximo Posible (XP_max) en la plataforma. Esto permite que el sistema se adapte automáticamente si se agrega o modifica el contenido de los módulos.
+- Los módulos son contenido global, pero solo son visibles para un alumno si el administrador se los ha asignado.
+- La asignación se realiza desde Django Admin de dos formas:
+    1. **Individual:** Crear un registro de "Progreso de módulo" (UserModuleProgress) seleccionando un usuario y un módulo.
+    2. **Masiva:** Desde la lista de módulos, seleccionar los módulos deseados y ejecutar la acción "Asignar módulos seleccionados a todos los usuarios".
+- El mismo registro de asignación sirve para rastrear el progreso del alumno (si ha iniciado, completado, su puntaje, XP ganados).
+
+### 3.6 Medallas
+
+- Las medallas también se gestionan desde Django Admin.
+- Cada medalla tiene: nombre, slug, descripción, icono, tipo de condición, valor de condición y opcionalmente un módulo asociado.
+- Tipos de condición disponibles:
+    - `module_complete`: Completar un módulo específico.
+    - `module_high_score`: Completar un módulo específico con puntaje mayor o igual al valor de condición.
+    - `streak`: Alcanzar una racha de X días consecutivos.
+    - `questions_answered`: Contestar X preguntas en total.
+    - `questions_correct`: Contestar X preguntas correctamente.
+    - `lessons_completed`: Completar X lecciones.
+    - `modules_completed`: Completar X módulos.
+    - `all_modules`: Completar todos los módulos asignados.
+- El sistema evalúa automáticamente las condiciones y otorga medallas cuando se cumplen.
+
+## 4. Requisitos Funcionales (RF)
+
+### 4.1 Responder Preguntas de Opción Múltiple
+
+- El usuario navega pregunta por pregunta dentro de una lección con:
+    - Barra de progreso.
+    - Selección de respuesta (grid 2x2).
+    - Botón "Enviar respuesta".
+    - Mostrar mensaje de retroalimentación con la explicación específica de la opción seleccionada y, si es incorrecta, la explicación de la respuesta correcta. Resaltar los XP obtenidos.
+    - Navegación: "Siguiente pregunta" / "Volver al módulo" (en la última).
+
+### 4.2 Navegación del Módulo (Estilo Duolingo)
+
+- Al entrar a un módulo, se muestra la lista de lecciones en formato de ruta secuencial.
+- Las lecciones completadas muestran un check. Las desbloqueadas muestran su número. Las bloqueadas muestran un candado.
+- Solo se puede iniciar una lección si todas las anteriores están completadas.
+
+### 4.3 Gamificación
+
+#### 4.3.1 Sistema Dinámico de Niveles
+
+Los niveles se calculan dinámicamente como un porcentaje del XP Máximo Posible (XP_max) de los módulos asignados al usuario. Esto permite que el sistema se adapte automáticamente si se agrega o modifica el contenido.
 
 | Nivel | Nombre | Umbral Requerido (% del XP_max) |
 | --- | --- | --- |
@@ -76,9 +122,7 @@ Los niveles se calculan dinámicamente como un porcentaje del XP Máximo Posible
 | 4 | Líder Empático | 65% |
 | 5 | Estratega Humano | 85% |
 
-#### 3.5.2 Puntos de Experiencia (XP) por Acción
-
-Las recompensas otorgadas por las interacciones del estudiante son fijas. El sistema registrará las siguientes acciones:
+#### 4.3.2 Puntos de Experiencia (XP) por Acción
 
 | Acción | XP |
 | --- | --- |
@@ -87,88 +131,77 @@ Las recompensas otorgadas por las interacciones del estudiante son fijas. El sis
 | Módulo iniciado | +30 XP |
 | Lección finalizada | +15 XP |
 | Módulo finalizado | +50 XP |
-| Alto puntaje en módulo (≥80% de respuestas correctas en el 1er intento) | +25 XP |
+| Alto puntaje en módulo (≥80% de respuestas correctas) | +25 XP |
 
-#### 3.5.3 Sistema de Retención (Rachas Diarias)
+#### 4.3.3 Cálculo de XP_max (Lógica de Backend)
 
-El tiempo de uso y la constancia se miden mediante un sistema de retención.
-
-- El sistema registrará los inicios de sesión diarios consecutivos.
-- La interfaz mostrará un contador visual de "Días en racha" (ej. icono de fuego/llama).
-- Se otorgarán medallas o insignias visuales al alcanzar hitos de racha (ej. 7 días, 14 días, 30 días).
-- Si el usuario no inicia sesión y completa al menos una **lección** en un lapso de 24 horas, el contador vuelve a cero.
-
-#### 3.5.4 Cálculo de XP_max (Lógica de Backend)
-
-Para asignar el nivel dinámico correcto a cada estudiante, el sistema calculará en tiempo real el XP_max sumando el valor de todo el contenido de los módulos asignados al usuario.
-La fórmula a implementar mediante una propiedad calculada en el modelo de usuario es la siguiente:
+El XP_max se calcula a partir de los módulos asignados al usuario, considerando solo el contenido publicado:
 
 $XP\_max = (M \times 80) + (L \times 15) + (P \times 10)$
 
 Donde:
 
-- M: Número total de módulos publicados (Aporta 80 XP base: 30 por iniciar + 50 por finalizar).
-- L: Número total de lecciones publicadas.
-- P: Número total de preguntas (MCQs) publicadas (asumiendo el escenario de respuestas correctas).
+- M: Número de módulos asignados y publicados (aporta 80 XP base: 30 por iniciar + 50 por finalizar).
+- L: Número de lecciones publicadas dentro de esos módulos.
+- P: Número de preguntas MCQ publicadas (asumiendo el escenario de respuestas correctas).
 
-*Nota sobre progresión:* Los puntos adicionales obtenidos por recompensas especiales, como el alto puntaje en un módulo, se consideran un excedente. Esto permite que los alumnos con desempeño de excelencia lleguen a la meta (Nivel 5) en menor tiempo y puedan seguir acumulando puntos sobrepasando el 100% del XP_max, sin subir más de nivel.
+*Nota:* Los puntos por alto puntaje (+25 XP) se consideran excedente, permitiendo que alumnos con buen desempeño superen el 100% del XP_max.
 
-#### 3.5.5 Medallas
+#### 4.3.4 Sistema de Retención (Rachas Diarias)
 
-Se podrán agregar medallas o recompensas de acuerdo con distintas condiciones, como:
+- El sistema registra la completación de lecciones como actividad diaria.
+- La interfaz muestra un contador visual de "Días en racha".
+- Se otorgan +5 XP por día de racha, y +15 XP cada 7 días consecutivos.
+- Si el usuario no completa al menos una lección en un lapso de 24 horas, la racha vuelve a cero.
+- Se otorgan medallas al alcanzar hitos de racha (configurables por el administrador).
 
-- Completar el módulo correspondiente con más de cierto porcentaje, que puede ser variable.
-- Completar X cantidad de lecciones o módulos con 100%.
-- Completar X cantidad de módulos.
-- Completar todos los módulos.
-- Completar cierta cantidad de días de Racha.
-- Contestar X cantidad de preguntas.
-- Contestar X cantidad de preguntas correctamente.
-
-### 3.6 Dashboard del Usuario
+### 4.4 Dashboard del Usuario
 
 Página principal:
 
 - Barra superior de gamificación: racha, nivel/XP, medallas.
 - Mensaje de bienvenida personalizado.
-- Grid de módulos pendientes (cards con: progreso N/total, nombre del módulo, botón Iniciar/Retroalimentación).
-- Sección "Tu progreso": cuestionarios completados y barra de progreso general.
+- Grid de módulos asignados (cards con: icono, nombre del módulo, estado, botón Iniciar/Continuar/Retroalimentación).
+- Sección "Tu progreso": módulos y lecciones completadas, barra de progreso general.
 
 Módulo:
 
-- Listado de lecciones del módulo, que llevarán a contestar los MCQs correspondientes.
+- Listado de lecciones en formato de ruta secuencial con indicadores de bloqueo/desbloqueo/completado.
 
-### 3.7 Retroalimentación
+### 4.5 Retroalimentación
 
-- Modal después de cada respuesta con: explicación, respuesta ideal, XP ganados.
-- Pantalla de resumen al finalizar un módulo con: desglose de XP, felicitación.
-- El usuario puede revisar retroalimentación de módulos completados.
+- Después de cada respuesta: explicación de la opción seleccionada, respuesta correcta si aplica, XP ganados.
+- Pantalla de resumen al finalizar un módulo con: desglose de XP (respuestas correctas/incorrectas, lecciones completadas, módulo iniciado/finalizado, bonus).
+- El usuario puede revisar retroalimentación de módulos completados, agrupada por lección.
 
-## 4. Requisitos No Funcionales (RNF)
+## 5. Requisitos No Funcionales (RNF)
 
-### 4.1 Seguridad
+### 5.1 Seguridad
 
 - HTTPS en producción.
-- Control de acceso: solo usuarios autenticados acceden al módulo.
+- Control de acceso: solo usuarios autenticados acceden a la plataforma.
+- Los alumnos solo pueden ver y acceder a módulos que les han sido asignados.
 
-### 4.2 Usabilidad
+### 5.2 Usabilidad
 
 - Interfaz responsiva (Django Templates + CSS).
 - Navegación simple: Inicio, Dashboard, Cerrar Sesión.
+- Tipografía: Open Sans.
 
-### 4.3 Mantenibilidad
+### 5.3 Mantenibilidad
 
-- Arquitectura modular: el módulo de gamificación es una app Django separada.
+- Arquitectura modular: el módulo de gamificación es una app Django separada (`soft_skills`).
+- Todo el contenido y configuración de medallas se gestiona desde Django Admin sin necesidad de modificar código.
 
-## 5. Requisitos del Sistema
+## 6. Requisitos del Sistema
 
-### 5.1 Stack Tecnológico
+### 6.1 Stack Tecnológico
 
 - **Backend:** Django 4.x+
 - **Base de Datos:** SQLite
-- **Frontend:** Django Templates + CSS. Se permite el uso de Vanilla JavaScript para interacciones y reproducciones de audio (sin frameworks de JS como React o Vue).
+- **Frontend:** Django Templates + CSS. Se permite el uso de Vanilla JavaScript para interacciones (sin frameworks de JS como React o Vue).
 
-### 5.2 Entorno de Desarrollo
+### 6.2 Entorno de Desarrollo
 
 - Prototipo local: `python manage.py runserver`
 - No se requiere Docker, Nginx, ni Gunicorn para el prototipo.
