@@ -327,6 +327,33 @@ def module_summary(request, module_id):
 
 
 @login_required
+def lesson_review(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id, is_published=True)
+    module = lesson.module
+
+    # Check access
+    get_object_or_404(UserModuleProgress, user=request.user, module=module)
+
+    questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).order_by('order')
+    questions_data = []
+    for q in questions:
+        response = UserResponse.objects.filter(
+            user=request.user, lesson=lesson, question=q
+        ).first()
+        questions_data.append({
+            'question': q,
+            'response': response,
+        })
+
+    context = {
+        'module': module,
+        'lesson': lesson,
+        'questions_data': questions_data,
+    }
+    return render(request, 'soft_skills/lesson_review.html', context)
+
+
+@login_required
 def module_review(request, module_id):
     module = get_object_or_404(Module, id=module_id, is_published=True)
     get_object_or_404(UserModuleProgress, user=request.user, module=module)

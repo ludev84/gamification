@@ -39,6 +39,7 @@
                 </a>
                 {% elif item.is_completed %}
                 <span class="lesson-badge-complete">Completada</span>
+                <a href="{% url 'soft_skills:lesson_review' item.lesson.id %}" class="btn btn-teal btn-sm">Retroalimentacion</a>
                 {% endif %}
             </div>
         </div>
@@ -50,7 +51,6 @@
         <h2>Modulo completado!</h2>
         <div class="module-complete-actions">
             <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen</a>
-            <a href="{% url 'soft_skills:module_review' module.id %}" class="btn btn-teal">Retroalimentacion</a>
         </div>
     </div>
     {% endif %}

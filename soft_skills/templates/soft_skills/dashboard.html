@@ -67,7 +67,7 @@
             {% endif %}
             <div class="module-actions">
                 {% if ump.is_completed %}
-                    <a href="{% url 'soft_skills:module_review' ump.module.id %}" class="btn btn-teal btn-sm">Retroalimentacion</a>
+                    <a href="{% url 'soft_skills:module_view' ump.module.id %}" class="btn btn-primary btn-sm">Ver lecciones</a>
                     <a href="{% url 'soft_skills:module_summary' ump.module.id %}" class="btn btn-outline btn-sm">Resumen</a>
                 {% elif ump.is_started %}
                     <a href="{% url 'soft_skills:module_view' ump.module.id %}" class="btn btn-primary btn-sm">Continuar</a>
