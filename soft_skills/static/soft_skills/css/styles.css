@@ -1837,6 +1837,215 @@ details[open] .review-chevron {
 
 
 /* ============================================================
+   FEEDBACK MODAL (shown after answering a question)
+   ============================================================ */
+@keyframes fbOverlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fbModalIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.fb-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+    animation: fbOverlayIn 0.25s ease 0.35s both;
+}
+
+.fb-modal-overlay--closed {
+    display: none;
+}
+
+.fb-modal {
+    background: var(--white);
+    width: 100%;
+    max-width: 560px;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    animation: fbModalIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+.fb-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    color: var(--white);
+}
+
+.fb-modal--correct .fb-modal__header,
+.fb-modal--incorrect .fb-modal__header {
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+}
+
+.fb-modal__heading {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--white);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.fb-modal__close {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.35rem;
+    opacity: 0.85;
+    transition: opacity 0.15s;
+}
+
+.fb-modal__close:hover {
+    opacity: 1;
+}
+
+.fb-modal__body {
+    padding: 1.5rem 1.5rem 0.5rem;
+}
+
+.fb-modal__result {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.fb-modal__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.fb-modal__title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--teal-dark);
+}
+
+.fb-modal__text {
+    font-size: 0.95rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.fb-modal__ideal {
+    background: var(--teal-ghost);
+    border-left: 4px solid var(--teal);
+    border-radius: var(--r);
+    padding: 0.9rem 1.1rem;
+    font-size: 0.92rem;
+    color: var(--text-mid);
+    line-height: 1.55;
+    margin-bottom: 1rem;
+}
+
+.fb-modal__ideal strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.fb-modal__xp-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem 0 1rem;
+}
+
+.fb-modal__xp {
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    color: var(--white);
+    padding: 0.7rem 1.75rem;
+    border-radius: var(--r-full);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25);
+    animation: pulse 0.6s ease 0.7s both;
+}
+
+.fb-modal__extras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.fb-modal__footer {
+    display: flex;
+    gap: 0.65rem;
+    justify-content: flex-end;
+    padding: 1rem 1.5rem 1.25rem;
+    border-top: 1px solid var(--border);
+    background: var(--cream);
+}
+
+@media (max-width: 480px) {
+    .fb-modal__footer {
+        flex-direction: column-reverse;
+    }
+    .fb-modal__footer .btn {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   FLOATING XP TOAST (brief animation on answer submit)
+   ============================================================ */
+@keyframes xpFloat {
+    0%   { opacity: 0; transform: translate(-50%, 20px) scale(0.7); }
+    15%  { opacity: 1; transform: translate(-50%, -8px) scale(1.1); }
+    35%  { opacity: 1; transform: translate(-50%, -20px) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -90px) scale(0.9); }
+}
+
+.xp-float {
+    position: fixed;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 1100;
+    pointer-events: none;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 3rem;
+    color: var(--teal);
+    text-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+    letter-spacing: -0.02em;
+    animation: xpFloat 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.xp-float--sm {
+    font-size: 1.8rem;
+    color: var(--text-mid);
+    text-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 480px) {

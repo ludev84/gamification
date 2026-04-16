@@ -73,66 +73,85 @@
         {% endif %}
     </div>
 
-    {% elif feedback %}
-    <!-- Feedback after answering -->
-    <div class="feedback-overlay">
-        <div class="feedback-card {% if feedback.is_correct %}feedback-correct{% else %}feedback-incorrect{% endif %}">
-            <div class="feedback-header">
+    {% if feedback %}
+    <!-- Floating XP toast (brief animation on answer submit) -->
+    <div class="xp-float {% if not feedback.is_correct %}xp-float--sm{% endif %}" id="xp-float">
+        +{{ feedback.xp_earned }} XP
+    </div>
+
+    <!-- Feedback modal -->
+    <div class="fb-modal-overlay" id="feedback-modal" onclick="if(event.target===this)closeFeedbackModal()">
+        <div class="fb-modal fb-modal--{% if feedback.is_correct %}correct{% else %}incorrect{% endif %}">
+            <div class="fb-modal__header">
+                <h3 class="fb-modal__heading">Retroalimentación</h3>
+                <button type="button" class="fb-modal__close" onclick="closeFeedbackModal()" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="fb-modal__body">
                 {% if feedback.is_correct %}
-                <div class="feedback-result-icon">&#10004;</div>
-                <h3>Correcto!</h3>
+                <div class="fb-modal__result">
+                    <div class="fb-modal__check">&#10004;</div>
+                    <div class="fb-modal__title">¡Correcto!</div>
+                </div>
+                {% if feedback.correct_explanation %}
+                <p class="fb-modal__text">{{ feedback.correct_explanation|linebreaksbr }}</p>
+                {% endif %}
                 {% else %}
-                <div class="feedback-result-icon">&#10008;</div>
-                <h3>Incorrecto</h3>
-                <p class="feedback-answer">La respuesta correcta es: <strong>{{ feedback.correct_answer }}</strong></p>
-                {% endif %}
-            </div>
-
-            <div class="feedback-xp">
-                <span class="xp-badge">+{{ feedback.xp_earned }} XP</span>
-                {% if feedback.streak_xp > 0 %}
-                <span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>
-                {% endif %}
-                {% if feedback.lesson_complete_xp > 0 %}
-                <span class="xp-badge xp-lesson">+{{ feedback.lesson_complete_xp }} XP leccion completada</span>
-                {% endif %}
-                {% if feedback.module_complete_xp > 0 %}
-                <span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP modulo completado</span>
-                {% endif %}
-            </div>
-
-            {% if feedback.new_badges %}
-            <div class="feedback-badges">
-                <p>Nuevas medallas:</p>
-                {% for badge in feedback.new_badges %}
-                <span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-            <div class="feedback-explanation">
-                <h4>Explicacion</h4>
                 {% if feedback.selected_explanation %}
-                <p><strong>Tu respuesta:</strong> {{ feedback.selected_explanation|linebreaksbr }}</p>
+                <p class="fb-modal__text">{{ feedback.selected_explanation|linebreaksbr }}</p>
                 {% endif %}
-                {% if not feedback.is_correct and feedback.correct_explanation %}
-                <p><strong>Respuesta correcta:</strong> {{ feedback.correct_explanation|linebreaksbr }}</p>
+                <div class="fb-modal__ideal">
+                    <strong>Respuesta ideal:</strong> {{ feedback.correct_answer }}. {{ feedback.correct_option_text }}
+                </div>
+                {% endif %}
+
+                <div class="fb-modal__xp-wrap">
+                    <div class="fb-modal__xp">+{{ feedback.xp_earned }} XP</div>
+                </div>
+
+                {% if feedback.streak_xp or feedback.lesson_complete_xp or feedback.module_complete_xp or feedback.new_badges %}
+                <div class="fb-modal__extras">
+                    {% if feedback.streak_xp > 0 %}<span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>{% endif %}
+                    {% if feedback.lesson_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.lesson_complete_xp }} XP lección</span>{% endif %}
+                    {% if feedback.module_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP módulo</span>{% endif %}
+                    {% for badge in feedback.new_badges %}<span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>{% endfor %}
+                </div>
                 {% endif %}
             </div>
-
-            <div class="feedback-actions">
+            <div class="fb-modal__footer">
+                <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Regresar</button>
                 {% if feedback.module_complete %}
-                <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen del modulo</a>
+                <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen &rarr;</a>
                 {% elif feedback.lesson_complete %}
-                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al modulo</a>
+                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
                 {% elif next_order %}
                 <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary">Siguiente pregunta &rarr;</a>
                 {% else %}
-                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al modulo</a>
+                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
                 {% endif %}
             </div>
         </div>
     </div>
+
+    <script>
+    (function() {
+        function closeFeedbackModal() {
+            var modal = document.getElementById('feedback-modal');
+            if (modal) modal.classList.add('fb-modal-overlay--closed');
+        }
+        window.closeFeedbackModal = closeFeedbackModal;
+
+        // Remove XP float from the DOM after its animation finishes so it doesn't block clicks.
+        var xpFloat = document.getElementById('xp-float');
+        if (xpFloat) {
+            xpFloat.addEventListener('animationend', function() { xpFloat.remove(); });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeFeedbackModal();
+        });
+    })();
+    </script>
+    {% endif %}
 
     {% else %}
     <!-- Answer form -->

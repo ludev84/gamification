@@ -286,11 +286,13 @@ def submit_answer(request, lesson_id):
     # Get the explanation for the selected answer
     selected_explanation = question.get_explanation(selected_answer)
     correct_explanation = question.get_explanation(question.correct_answer)
+    correct_option_text = getattr(question, f'option_{question.correct_answer.lower()}', '')
 
     # Store feedback in session
     request.session['answer_feedback'] = {
         'is_correct': is_correct,
         'correct_answer': question.correct_answer,
+        'correct_option_text': correct_option_text,
         'selected_explanation': selected_explanation,
         'correct_explanation': correct_explanation,
         'xp_earned': response_xp,
