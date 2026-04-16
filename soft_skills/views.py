@@ -155,8 +155,30 @@ def question_view(request, lesson_id, question_order):
         user=request.user, lesson=lesson, question=question
     ).first()
 
-    # Check for feedback in session (after submit_answer redirect)
+    # Check for feedback in session (after submit_answer redirect). If absent
+    # but the question has already been answered, reconstruct feedback so the
+    # user can reopen the modal via the "Ver retroalimentación" button.
     feedback = request.session.pop('answer_feedback', None)
+    if feedback:
+        feedback['fresh'] = True
+    elif user_response:
+        correct = question.correct_answer
+        feedback = {
+            'is_correct': user_response.is_correct,
+            'correct_answer': correct,
+            'correct_option_text': getattr(question, f'option_{correct.lower()}', ''),
+            'selected_explanation': question.get_explanation(user_response.selected_answer),
+            'correct_explanation': question.get_explanation(correct),
+            'xp_earned': user_response.xp_earned,
+            'streak_xp': 0,
+            'lesson_complete': False,
+            'lesson_complete_xp': 0,
+            'module_complete': False,
+            'module_complete_xp': 0,
+            'new_badges': [],
+            'selected_answer': user_response.selected_answer,
+            'fresh': False,
+        }
 
     progress_percent = int((question_order / total_questions) * 100) if total_questions > 0 else 0
     next_order = question_order + 1 if question_order < total_questions else None
@@ -174,6 +196,8 @@ def question_view(request, lesson_id, question_order):
         'next_order': next_order,
         'prev_order': prev_order,
     }
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render(request, 'soft_skills/_question_content.html', context)
     return render(request, 'soft_skills/question.html', context)
 
 
@@ -288,8 +312,7 @@ def submit_answer(request, lesson_id):
     correct_explanation = question.get_explanation(question.correct_answer)
     correct_option_text = getattr(question, f'option_{question.correct_answer.lower()}', '')
 
-    # Store feedback in session
-    request.session['answer_feedback'] = {
+    feedback_data = {
         'is_correct': is_correct,
         'correct_answer': question.correct_answer,
         'correct_option_text': correct_option_text,
@@ -303,7 +326,35 @@ def submit_answer(request, lesson_id):
         'module_complete_xp': module_complete_xp,
         'new_badges': [{'name': b.name, 'icon': b.icon} for b in new_badges],
         'selected_answer': selected_answer,
+        'fresh': True,
     }
+
+    # AJAX path: render the partial directly so the client can swap it in without
+    # a page reload. Skip the session+redirect used by the classic progressive-
+    # enhancement fallback below.
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        user_response = UserResponse.objects.get(
+            user=request.user, lesson=lesson, question=question
+        )
+        progress_percent = int((question_order / total_questions) * 100) if total_questions > 0 else 0
+        next_order = question_order + 1 if question_order < total_questions else None
+        prev_order = question_order - 1 if question_order > 1 else None
+        context = {
+            'lesson': lesson,
+            'module': module,
+            'question': question,
+            'question_order': question_order,
+            'total_questions': total_questions,
+            'progress_percent': progress_percent,
+            'user_response': user_response,
+            'feedback': feedback_data,
+            'next_order': next_order,
+            'prev_order': prev_order,
+        }
+        return render(request, 'soft_skills/_question_content.html', context)
+
+    # Classic fallback: store feedback in session and redirect back to question_view.
+    request.session['answer_feedback'] = feedback_data
 
     return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=question_order)
 

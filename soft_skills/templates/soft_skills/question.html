@@ -4,202 +4,85 @@
 
 {% block content %}
 <div class="container">
-    <!-- Header -->
-    <div class="question-header">
-        <a href="{% url 'soft_skills:module_view' module.id %}" class="back-link">&larr; Volver a {{ module.name }}</a>
-        <h2>{{ module.icon }} {{ lesson.title }}</h2>
-        <div class="question-progress-text">Pregunta {{ question_order }} de {{ total_questions }}</div>
-        <div class="progress-bar">
-            <div class="progress-fill progress-fill--gold" style="width: {{ progress_percent }}%"></div>
-        </div>
+    <div id="question-slot">
+        {% include "soft_skills/_question_content.html" %}
     </div>
-
-    <!-- Scenario -->
-    <div class="scenario-card">
-        <h3>Escenario</h3>
-        <p>{{ question.scenario }}</p>
-    </div>
-
-    <!-- Question -->
-    <div class="question-text">
-        <p><strong>{{ question.question_text }}</strong></p>
-    </div>
-
-    {% if user_response %}
-    <!-- Already answered - show results -->
-    <div class="options-grid options-answered">
-        {% with correct=question.correct_answer selected=user_response.selected_answer %}
-        <div class="option-card {% if 'A' == correct %}option-correct{% elif 'A' == selected %}option-wrong{% endif %}">
-            <span class="option-letter">A</span>
-            <span class="option-text">{{ question.option_a }}</span>
-        </div>
-        <div class="option-card {% if 'B' == correct %}option-correct{% elif 'B' == selected %}option-wrong{% endif %}">
-            <span class="option-letter">B</span>
-            <span class="option-text">{{ question.option_b }}</span>
-        </div>
-        <div class="option-card {% if 'C' == correct %}option-correct{% elif 'C' == selected %}option-wrong{% endif %}">
-            <span class="option-letter">C</span>
-            <span class="option-text">{{ question.option_c }}</span>
-        </div>
-        <div class="option-card {% if 'D' == correct %}option-correct{% elif 'D' == selected %}option-wrong{% endif %}">
-            <span class="option-letter">D</span>
-            <span class="option-text">{{ question.option_d }}</span>
-        </div>
-        {% endwith %}
-    </div>
-
-    <div class="explanation-card">
-        <h3>Explicacion</h3>
-        {% with selected=user_response.selected_answer correct=question.correct_answer %}
-        {% if selected != correct %}
-        <p><strong>Tu respuesta ({{ selected }}):</strong></p>
-        <p>{% if selected == 'A' %}{{ question.explanation_a }}{% elif selected == 'B' %}{{ question.explanation_b }}{% elif selected == 'C' %}{{ question.explanation_c }}{% else %}{{ question.explanation_d }}{% endif %}</p>
-        {% endif %}
-        <p><strong>Respuesta correcta ({{ correct }}):</strong></p>
-        <p>{% if correct == 'A' %}{{ question.explanation_a }}{% elif correct == 'B' %}{{ question.explanation_b }}{% elif correct == 'C' %}{{ question.explanation_c }}{% else %}{{ question.explanation_d }}{% endif %}</p>
-        {% endwith %}
-    </div>
-
-    <div class="question-nav">
-        {% if prev_order %}
-        <a href="{% url 'soft_skills:question_view' lesson.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
-        {% else %}
-        <span></span>
-        {% endif %}
-        {% if next_order %}
-        <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary">Siguiente &rarr;</a>
-        {% else %}
-        <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al modulo</a>
-        {% endif %}
-    </div>
-
-    {% if feedback %}
-    <!-- Floating XP toast (brief animation on answer submit) -->
-    <div class="xp-float {% if not feedback.is_correct %}xp-float--sm{% endif %}" id="xp-float">
-        +{{ feedback.xp_earned }} XP
-    </div>
-
-    <!-- Feedback modal -->
-    <div class="fb-modal-overlay" id="feedback-modal" onclick="if(event.target===this)closeFeedbackModal()">
-        <div class="fb-modal fb-modal--{% if feedback.is_correct %}correct{% else %}incorrect{% endif %}">
-            <div class="fb-modal__header">
-                <h3 class="fb-modal__heading">Retroalimentación</h3>
-                <button type="button" class="fb-modal__close" onclick="closeFeedbackModal()" aria-label="Cerrar">&times;</button>
-            </div>
-            <div class="fb-modal__body">
-                {% if feedback.is_correct %}
-                <div class="fb-modal__result">
-                    <div class="fb-modal__check">&#10004;</div>
-                    <div class="fb-modal__title">¡Correcto!</div>
-                </div>
-                {% if feedback.correct_explanation %}
-                <p class="fb-modal__text">{{ feedback.correct_explanation|linebreaksbr }}</p>
-                {% endif %}
-                {% else %}
-                {% if feedback.selected_explanation %}
-                <p class="fb-modal__text">{{ feedback.selected_explanation|linebreaksbr }}</p>
-                {% endif %}
-                <div class="fb-modal__ideal">
-                    <strong>Respuesta ideal:</strong> {{ feedback.correct_answer }}. {{ feedback.correct_option_text }}
-                </div>
-                {% endif %}
-
-                <div class="fb-modal__xp-wrap">
-                    <div class="fb-modal__xp">+{{ feedback.xp_earned }} XP</div>
-                </div>
-
-                {% if feedback.streak_xp or feedback.lesson_complete_xp or feedback.module_complete_xp or feedback.new_badges %}
-                <div class="fb-modal__extras">
-                    {% if feedback.streak_xp > 0 %}<span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>{% endif %}
-                    {% if feedback.lesson_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.lesson_complete_xp }} XP lección</span>{% endif %}
-                    {% if feedback.module_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP módulo</span>{% endif %}
-                    {% for badge in feedback.new_badges %}<span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>{% endfor %}
-                </div>
-                {% endif %}
-            </div>
-            <div class="fb-modal__footer">
-                <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Regresar</button>
-                {% if feedback.module_complete %}
-                <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen &rarr;</a>
-                {% elif feedback.lesson_complete %}
-                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
-                {% elif next_order %}
-                <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary">Siguiente pregunta &rarr;</a>
-                {% else %}
-                <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <script>
-    (function() {
-        function closeFeedbackModal() {
-            var modal = document.getElementById('feedback-modal');
-            if (modal) modal.classList.add('fb-modal-overlay--closed');
-        }
-        window.closeFeedbackModal = closeFeedbackModal;
-
-        // Remove XP float from the DOM after its animation finishes so it doesn't block clicks.
-        var xpFloat = document.getElementById('xp-float');
-        if (xpFloat) {
-            xpFloat.addEventListener('animationend', function() { xpFloat.remove(); });
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeFeedbackModal();
-        });
-    })();
-    </script>
-    {% endif %}
-
-    {% else %}
-    <!-- Answer form -->
-    <form method="post" action="{% url 'soft_skills:submit_answer' lesson.id %}" id="answer-form">
-        {% csrf_token %}
-        <input type="hidden" name="question_id" value="{{ question.id }}">
-        <input type="hidden" name="question_order" value="{{ question_order }}">
-        <input type="hidden" name="selected_answer" id="selected-answer" value="">
-
-        <div class="options-grid">
-            <div class="option-card option-selectable" data-answer="A" onclick="selectOption(this, 'A')">
-                <span class="option-letter">A</span>
-                <span class="option-text">{{ question.option_a }}</span>
-            </div>
-            <div class="option-card option-selectable" data-answer="B" onclick="selectOption(this, 'B')">
-                <span class="option-letter">B</span>
-                <span class="option-text">{{ question.option_b }}</span>
-            </div>
-            <div class="option-card option-selectable" data-answer="C" onclick="selectOption(this, 'C')">
-                <span class="option-letter">C</span>
-                <span class="option-text">{{ question.option_c }}</span>
-            </div>
-            <div class="option-card option-selectable" data-answer="D" onclick="selectOption(this, 'D')">
-                <span class="option-letter">D</span>
-                <span class="option-text">{{ question.option_d }}</span>
-            </div>
-        </div>
-
-        <div class="question-nav">
-            {% if prev_order %}
-            <a href="{% url 'soft_skills:question_view' lesson.id prev_order %}" class="btn btn-secondary">&larr; Anterior</a>
-            {% else %}
-            <span></span>
-            {% endif %}
-            <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Enviar respuesta</button>
-        </div>
-    </form>
-
-    <script>
-    function selectOption(el, answer) {
-        document.querySelectorAll('.option-selectable').forEach(function(card) {
-            card.classList.remove('option-selected');
-        });
-        el.classList.add('option-selected');
-        document.getElementById('selected-answer').value = answer;
-        document.getElementById('submit-btn').disabled = false;
-    }
-    </script>
-    {% endif %}
 </div>
+
+<script>
+// Global helpers — referenced by inline onclick attributes inside the partial.
+// Defined once in the wrapper so they survive innerHTML swaps.
+function selectOption(el, answer) {
+    document.querySelectorAll('.option-selectable').forEach(function(c) {
+        c.classList.remove('option-selected');
+    });
+    el.classList.add('option-selected');
+    var input = document.getElementById('selected-answer');
+    var btn = document.getElementById('submit-btn');
+    if (input) input.value = answer;
+    if (btn) btn.disabled = false;
+}
+
+function closeFeedbackModal() {
+    var modal = document.getElementById('feedback-modal');
+    if (modal) modal.classList.add('fb-modal-overlay--closed');
+}
+
+function openFeedbackModal() {
+    var modal = document.getElementById('feedback-modal');
+    if (modal) modal.classList.remove('fb-modal-overlay--closed');
+}
+
+// SPA controller: intercepts form submit + data-spa link clicks, swaps the
+// #question-slot innerHTML with server-rendered partial, and updates history.
+(function() {
+    var slot = document.getElementById('question-slot');
+    if (!slot) return;
+
+    function swap(url, init) {
+        slot.classList.add('is-transitioning');
+        var opts = Object.assign({ headers: {} }, init || {});
+        opts.headers['X-Requested-With'] = 'XMLHttpRequest';
+        return fetch(url, opts).then(function(res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.text();
+        }).then(function(html) {
+            slot.innerHTML = html;
+        }).finally(function() {
+            slot.classList.remove('is-transitioning');
+        });
+    }
+
+    slot.addEventListener('submit', function(e) {
+        var form = e.target.closest('#answer-form');
+        if (!form) return;
+        e.preventDefault();
+        var btn = form.querySelector('#submit-btn');
+        if (btn) btn.disabled = true; // prevent double-submit
+        swap(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+        }).catch(function() {
+            if (btn) btn.disabled = false;
+        });
+    });
+
+    slot.addEventListener('click', function(e) {
+        var link = e.target.closest('a[data-spa]');
+        if (!link) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        var url = link.getAttribute('href');
+        swap(url).then(function() {
+            history.pushState({}, '', url);
+        }).catch(function() {
+            window.location.href = url;
+        });
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeFeedbackModal();
+    });
+})();
+</script>
 {% endblock %}

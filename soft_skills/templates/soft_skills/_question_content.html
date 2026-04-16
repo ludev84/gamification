@@ -1,0 +1,164 @@
+<!-- Header -->
+<div class="question-header">
+    <a href="{% url 'soft_skills:module_view' module.id %}" class="back-link">&larr; Volver a {{ module.name }}</a>
+    <h2>{{ module.icon }} {{ lesson.title }}</h2>
+    <div class="question-progress-text">Pregunta {{ question_order }} de {{ total_questions }}</div>
+    <div class="progress-bar">
+        <div class="progress-fill progress-fill--gold" style="width: {{ progress_percent }}%"></div>
+    </div>
+</div>
+
+<!-- Scenario -->
+<div class="scenario-card">
+    <h3>Escenario</h3>
+    <p>{{ question.scenario }}</p>
+</div>
+
+<!-- Question -->
+<div class="question-text">
+    <p><strong>{{ question.question_text }}</strong></p>
+</div>
+
+{% if user_response %}
+<!-- Already answered - show results -->
+<div class="options-grid options-answered">
+    {% with correct=question.correct_answer selected=user_response.selected_answer %}
+    <div class="option-card {% if 'A' == correct %}option-correct{% elif 'A' == selected %}option-wrong{% endif %}">
+        <span class="option-letter">A</span>
+        <span class="option-text">{{ question.option_a }}</span>
+    </div>
+    <div class="option-card {% if 'B' == correct %}option-correct{% elif 'B' == selected %}option-wrong{% endif %}">
+        <span class="option-letter">B</span>
+        <span class="option-text">{{ question.option_b }}</span>
+    </div>
+    <div class="option-card {% if 'C' == correct %}option-correct{% elif 'C' == selected %}option-wrong{% endif %}">
+        <span class="option-letter">C</span>
+        <span class="option-text">{{ question.option_c }}</span>
+    </div>
+    <div class="option-card {% if 'D' == correct %}option-correct{% elif 'D' == selected %}option-wrong{% endif %}">
+        <span class="option-letter">D</span>
+        <span class="option-text">{{ question.option_d }}</span>
+    </div>
+    {% endwith %}
+</div>
+
+{% if feedback %}
+<div class="answered-actions">
+    <button type="button" class="btn btn-outline btn-sm" onclick="openFeedbackModal()">
+        Ver retroalimentación
+    </button>
+</div>
+{% endif %}
+
+<div class="question-nav">
+    {% if prev_order %}
+    <a href="{% url 'soft_skills:question_view' lesson.id prev_order %}" class="btn btn-secondary" data-spa>&larr; Anterior</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+    {% if next_order %}
+    <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary" data-spa>Siguiente &rarr;</a>
+    {% else %}
+    <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al modulo</a>
+    {% endif %}
+</div>
+
+{% if feedback %}
+{% if feedback.fresh %}
+<!-- Floating XP toast (brief animation on answer submit) -->
+<div class="xp-float {% if not feedback.is_correct %}xp-float--sm{% endif %}">
+    +{{ feedback.xp_earned }} XP
+</div>
+{% endif %}
+
+<!-- Feedback modal — hidden by default when not fresh; reopened via button -->
+<div class="fb-modal-overlay{% if not feedback.fresh %} fb-modal-overlay--closed{% endif %}" id="feedback-modal" onclick="if(event.target===this)closeFeedbackModal()">
+    <div class="fb-modal fb-modal--{% if feedback.is_correct %}correct{% else %}incorrect{% endif %}">
+        <div class="fb-modal__header">
+            <h3 class="fb-modal__heading">Retroalimentación</h3>
+            <button type="button" class="fb-modal__close" onclick="closeFeedbackModal()" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="fb-modal__body">
+            {% if feedback.is_correct %}
+            <div class="fb-modal__result">
+                <div class="fb-modal__check">&#10004;</div>
+                <div class="fb-modal__title">¡Correcto!</div>
+            </div>
+            {% if feedback.correct_explanation %}
+            <p class="fb-modal__text">{{ feedback.correct_explanation|linebreaksbr }}</p>
+            {% endif %}
+            {% else %}
+            {% if feedback.selected_explanation %}
+            <p class="fb-modal__text">{{ feedback.selected_explanation|linebreaksbr }}</p>
+            {% endif %}
+            <div class="fb-modal__ideal">
+                <strong>Respuesta ideal:</strong> {{ feedback.correct_answer }}. {{ feedback.correct_option_text }}
+            </div>
+            {% endif %}
+
+            <div class="fb-modal__xp-wrap">
+                <div class="fb-modal__xp">+{{ feedback.xp_earned }} XP</div>
+            </div>
+
+            {% if feedback.streak_xp or feedback.lesson_complete_xp or feedback.module_complete_xp or feedback.new_badges %}
+            <div class="fb-modal__extras">
+                {% if feedback.streak_xp > 0 %}<span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>{% endif %}
+                {% if feedback.lesson_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.lesson_complete_xp }} XP lección</span>{% endif %}
+                {% if feedback.module_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP módulo</span>{% endif %}
+                {% for badge in feedback.new_badges %}<span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>{% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="fb-modal__footer">
+            <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Regresar</button>
+            {% if feedback.module_complete %}
+            <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen &rarr;</a>
+            {% elif feedback.lesson_complete %}
+            <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
+            {% elif next_order %}
+            <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary" data-spa>Siguiente pregunta &rarr;</a>
+            {% else %}
+            <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Answer form -->
+<form method="post" action="{% url 'soft_skills:submit_answer' lesson.id %}" id="answer-form">
+    {% csrf_token %}
+    <input type="hidden" name="question_id" value="{{ question.id }}">
+    <input type="hidden" name="question_order" value="{{ question_order }}">
+    <input type="hidden" name="selected_answer" id="selected-answer" value="">
+
+    <div class="options-grid">
+        <div class="option-card option-selectable" data-answer="A" onclick="selectOption(this, 'A')">
+            <span class="option-letter">A</span>
+            <span class="option-text">{{ question.option_a }}</span>
+        </div>
+        <div class="option-card option-selectable" data-answer="B" onclick="selectOption(this, 'B')">
+            <span class="option-letter">B</span>
+            <span class="option-text">{{ question.option_b }}</span>
+        </div>
+        <div class="option-card option-selectable" data-answer="C" onclick="selectOption(this, 'C')">
+            <span class="option-letter">C</span>
+            <span class="option-text">{{ question.option_c }}</span>
+        </div>
+        <div class="option-card option-selectable" data-answer="D" onclick="selectOption(this, 'D')">
+            <span class="option-letter">D</span>
+            <span class="option-text">{{ question.option_d }}</span>
+        </div>
+    </div>
+
+    <div class="question-nav">
+        {% if prev_order %}
+        <a href="{% url 'soft_skills:question_view' lesson.id prev_order %}" class="btn btn-secondary" data-spa>&larr; Anterior</a>
+        {% else %}
+        <span></span>
+        {% endif %}
+        <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Enviar respuesta</button>
+    </div>
+</form>
+{% endif %}

@@ -2013,6 +2013,25 @@ details[open] .review-chevron {
 
 
 /* ============================================================
+   SPA QUESTION SLOT (AJAX-swapped content wrapper)
+   ============================================================ */
+#question-slot {
+    transition: opacity 0.15s ease;
+}
+
+#question-slot.is-transitioning {
+    opacity: 0.4;
+}
+
+/* "Ver retroalimentación" button row, shown between options and nav */
+.answered-actions {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 1.25rem;
+}
+
+
+/* ============================================================
    FLOATING XP TOAST (brief animation on answer submit)
    ============================================================ */
 @keyframes xpFloat {
