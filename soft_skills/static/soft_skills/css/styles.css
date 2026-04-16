@@ -1598,18 +1598,6 @@ details[open] .review-chevron {
 .duo-row--right { left: 60px; }
 .duo-row--left  { left: -60px; }
 
-/* Connector line between nodes */
-.duo-connector {
-    width: 4px;
-    height: 32px;
-    border-radius: 2px;
-    background: var(--border);
-}
-
-.duo-connector--done   { background: var(--teal); }
-.duo-connector--active { background: var(--terra); }
-.duo-connector--locked { background: var(--border-dark); }
-
 /* Node wrapper (ring + circle) */
 .duo-node {
     position: relative;

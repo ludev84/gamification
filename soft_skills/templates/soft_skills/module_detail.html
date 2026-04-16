@@ -16,10 +16,6 @@
     <div class="duo-path">
         {% for item in lesson_data %}
         <div class="duo-row {% cycle '' 'duo-row--right' '' 'duo-row--left' %}">
-            {% if not forloop.first %}
-            <div class="duo-connector {% if item.is_completed %}duo-connector--done{% elif item.is_unlocked %}duo-connector--active{% else %}duo-connector--locked{% endif %}"></div>
-            {% endif %}
-
             <div class="duo-node {% if item.is_completed %}duo-node--done{% elif item.is_unlocked %}duo-node--active{% else %}duo-node--locked{% endif %}"
                  data-index="{{ forloop.counter0 }}"
                  onclick="toggleBubble(this)">
