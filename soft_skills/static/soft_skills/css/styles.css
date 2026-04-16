@@ -1594,9 +1594,9 @@ details[open] .review-chevron {
     padding-bottom: 0.25rem;
 }
 
-/* Zigzag offset */
-.duo-row--right { transform: translateX(60px); }
-.duo-row--left  { transform: translateX(-60px); }
+/* Zigzag offset — use `left` (not `transform`) so no new stacking context is created, otherwise the popup's z-index gets trapped inside the row and renders under the next node. */
+.duo-row--right { left: 60px; }
+.duo-row--left  { left: -60px; }
 
 /* Connector line between nodes */
 .duo-connector {
@@ -1857,7 +1857,7 @@ details[open] .review-chevron {
 
     .duo-row--right,
     .duo-row--left {
-        transform: translateX(0);
+        left: 0;
     }
 
     .container {
