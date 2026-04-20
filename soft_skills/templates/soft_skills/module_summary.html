@@ -9,9 +9,9 @@
             <span class="summary-icon">{{ module.icon }}</span>
             <h1>{{ module.name }}</h1>
             {% if user_progress.is_completed %}
-            <p class="summary-congrats">Modulo completado!</p>
+            <p class="summary-congrats">Módulo completado!</p>
             {% else %}
-            <p>Modulo en progreso</p>
+            <p>Módulo en progreso</p>
             {% endif %}
         </div>
 
@@ -39,11 +39,11 @@
                     <td class="xp-value">+{% widthratio lesson_count 1 15 %} XP</td>
                 </tr>
                 <tr>
-                    <td>Modulo iniciado</td>
+                    <td>Módulo iniciado</td>
                     <td class="xp-value">+30 XP</td>
                 </tr>
                 <tr>
-                    <td>Modulo completado</td>
+                    <td>Módulo completado</td>
                     <td class="xp-value">+50 XP</td>
                 </tr>
                 {% if user_progress.score_percent >= 80 %}
@@ -53,14 +53,14 @@
                 </tr>
                 {% endif %}
                 <tr class="xp-total">
-                    <td>Total del modulo</td>
+                    <td>Total del módulo</td>
                     <td class="xp-value">{{ user_progress.xp_earned }} XP</td>
                 </tr>
             </table>
         </div>
         {% else %}
         <div class="summary-progress">
-            <p>Modulo en progreso</p>
+            <p>Módulo en progreso</p>
         </div>
         {% endif %}
 

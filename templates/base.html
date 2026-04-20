@@ -16,7 +16,7 @@
                 <span class="nav-user">{{ user.get_full_name|default:user.username }}</span>
                 <form method="post" action="{% url 'logout' %}" class="nav-logout-form">
                     {% csrf_token %}
-                    <button type="submit" class="nav-logout-btn">Cerrar sesion</button>
+                    <button type="submit" class="nav-logout-btn">Cerrar sesión</button>
                 </form>
             </div>
             {% endif %}
@@ -29,7 +29,7 @@
 
     <footer class="footer">
         <div class="container">
-            <p>Instituto Tecnologico de Merida &mdash; TecNM</p>
+            <p>Instituto Tecnológico de Mérida &mdash; TecNM</p>
         </div>
     </footer>
 </body>

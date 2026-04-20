@@ -8,7 +8,7 @@
     <div class="gam-bar">
         <div class="gam-item gam-item--streak">
             <span class="gam-icon">&#128293;</span>
-            <span class="gam-label">Racha: <strong>{{ profile.current_streak }} dias</strong></span>
+            <span class="gam-label">Racha: <strong>{{ profile.current_streak }} días</strong></span>
         </div>
         <div class="gam-item gam-item--level">
             <span class="gam-icon">&#11088;</span>
@@ -27,7 +27,7 @@
     <!-- Welcome -->
     <div class="welcome-section">
         <h1>Bienvenido(a), {{ user.first_name|default:user.username }}</h1>
-        <p>Continua desarrollando tus habilidades blandas.</p>
+        <p>Continúa desarrollando tus habilidades blandas.</p>
     </div>
 
     <!-- Badges display -->
@@ -46,7 +46,7 @@
     {% endif %}
 
     <!-- Module Grid -->
-    <h2 class="modules-heading">Tus modulos</h2>
+    <h2 class="modules-heading">Tus módulos</h2>
     {% if user_module_progress %}
     <div class="module-grid">
         {% for ump in user_module_progress %}
@@ -79,7 +79,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <p>No tienes modulos asignados todavia.</p>
+    <p>No tienes módulos asignados todavia.</p>
     {% endif %}
 
     <!-- Progress Section -->
@@ -88,7 +88,7 @@
         <div class="progress-stats">
             <div class="stat-item">
                 <span class="stat-number">{{ completed_modules }}/{{ total_modules }}</span>
-                <span class="stat-label">Modulos completados</span>
+                <span class="stat-label">Módulos completados</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">{{ completed_lessons }}/{{ total_lessons }}</span>
