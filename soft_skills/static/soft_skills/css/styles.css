@@ -897,6 +897,26 @@ strong { font-weight: 600; }
     color: var(--terra);
 }
 
+/* Retry note (shown above the form when a question was answered wrong and is being retried) */
+.retry-note {
+    background: var(--gold-ghost);
+    border-left: 4px solid var(--gold);
+    padding: 0.7rem 1rem;
+    border-radius: var(--r);
+    font-size: 0.92rem;
+    color: var(--text-mid);
+    margin-bottom: 1rem;
+    animation: slideRight 0.4s ease 0.1s both;
+}
+
+/* Modal retry hint — shown when feedback is wrong and the correct answer is hidden */
+.fb-modal__retry-hint {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
 /* Scenario card */
 .scenario-card {
     background: var(--white);

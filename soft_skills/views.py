@@ -10,6 +10,40 @@ from .models import (
 from .services.gamification import GamificationService
 
 
+def _next_remaining_order(user, lesson, current_order):
+    """Order of the next question this user still needs to answer correctly.
+
+    A question is "remaining" if there is no UserResponse for it yet, or the
+    existing response has is_completed=False. Search policy:
+
+      1. First not-completed question with order > current_order.
+      2. Wrap around: first not-completed question with order < current_order.
+      3. If only the current question is not-completed, return current_order
+         (the modal's "Siguiente" effectively re-shows it for another retry).
+      4. If everything is completed, return None — lesson is done.
+    """
+    completed_question_ids = UserResponse.objects.filter(
+        user=user, lesson=lesson, is_completed=True,
+    ).values_list('question_id', flat=True)
+
+    remaining = MCQuestion.objects.filter(
+        lesson=lesson, is_published=True,
+    ).exclude(id__in=list(completed_question_ids)).order_by('order')
+
+    after = remaining.filter(order__gt=current_order).first()
+    if after is not None:
+        return after.order
+
+    before = remaining.filter(order__lt=current_order).first()
+    if before is not None:
+        return before.order
+
+    # Either only the current order is left (one-question-left retry case) or nothing is left.
+    if remaining.filter(order=current_order).exists():
+        return current_order
+    return None
+
+
 @login_required
 def dashboard(request):
     profile = request.user.profile
@@ -119,19 +153,13 @@ def lesson_view(request, lesson_id):
     # Get-or-create lesson progress
     UserLessonProgress.objects.get_or_create(user=request.user, lesson=lesson)
 
-    # Find first unanswered question
-    questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).order_by('order')
-    answered_ids = set(
-        UserResponse.objects.filter(user=request.user, lesson=lesson)
-        .values_list('question_id', flat=True)
-    )
-
-    for i, q in enumerate(questions, start=1):
-        if q.id not in answered_ids:
-            return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=i)
-
-    # All answered — redirect back to module
-    return redirect('soft_skills:module_view', module_id=module.id)
+    # Find the first not-completed question (no response yet, or response with is_completed=False).
+    # Pass current_order=0 so the helper's "after current" branch returns the lowest such order.
+    next_order = _next_remaining_order(request.user, lesson, current_order=0)
+    if next_order is None:
+        # Everything is mastered — back to the module.
+        return redirect('soft_skills:module_view', module_id=module.id)
+    return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=next_order)
 
 
 @login_required
@@ -156,15 +184,16 @@ def question_view(request, lesson_id, question_order):
     ).first()
 
     # Check for feedback in session (after submit_answer redirect). If absent
-    # but the question has already been answered, reconstruct feedback so the
-    # user can reopen the modal via the "Ver retroalimentación" button.
+    # but the question has already been answered correctly, reconstruct feedback
+    # so the user can reopen the modal via the "Ver retroalimentación" button.
+    # A wrong-but-not-yet-corrected response renders as a fresh form (no modal).
     feedback = request.session.pop('answer_feedback', None)
     if feedback:
         feedback['fresh'] = True
-    elif user_response:
+    elif user_response and user_response.is_completed:
         correct = question.correct_answer
         feedback = {
-            'is_correct': user_response.is_correct,
+            'is_correct': True,
             'correct_answer': correct,
             'correct_option_text': getattr(question, f'option_{correct.lower()}', ''),
             'selected_explanation': question.get_explanation(user_response.selected_answer),
@@ -180,8 +209,11 @@ def question_view(request, lesson_id, question_order):
             'fresh': False,
         }
 
-    progress_percent = int((question_order / total_questions) * 100) if total_questions > 0 else 0
-    next_order = question_order + 1 if question_order < total_questions else None
+    completed_count = UserResponse.objects.filter(
+        user=request.user, lesson=lesson, is_completed=True,
+    ).count()
+    progress_percent = int((completed_count / total_questions) * 100) if total_questions > 0 else 0
+    next_order = _next_remaining_order(request.user, lesson, question_order)
     prev_order = question_order - 1 if question_order > 1 else None
 
     context = {
@@ -221,30 +253,40 @@ def submit_answer(request, lesson_id):
 
     question = get_object_or_404(MCQuestion, id=question_id, lesson=lesson)
 
-    # Don't allow re-answering
-    if UserResponse.objects.filter(user=request.user, lesson=lesson, question=question).exists():
+    existing_response = UserResponse.objects.filter(
+        user=request.user, lesson=lesson, question=question,
+    ).first()
+
+    # Mastery rule: a question that has already been answered correctly is locked.
+    # A wrong-not-yet-corrected response IS eligible for retry — fall through.
+    if existing_response is not None and existing_response.is_completed:
         return redirect('soft_skills:question_view', lesson_id=lesson.id, question_order=question_order)
 
     is_correct = selected_answer == question.correct_answer
 
-    # Award XP for response
-    response_xp = GamificationService.award_response_xp(request.user, is_correct)
-
-    # Create response
-    UserResponse.objects.create(
-        user=request.user,
-        lesson=lesson,
-        question=question,
-        selected_answer=selected_answer,
-        is_correct=is_correct,
-        xp_earned=response_xp,
-    )
-
-    # Track daily activity (questions)
-    today = timezone.localdate()
-    activity, _ = DailyActivity.objects.get_or_create(user=request.user, date=today)
-    activity.questions_answered += 1
-    activity.save()
+    if existing_response is None:
+        # First attempt — award XP, create the row, count toward daily activity.
+        response_xp = GamificationService.award_response_xp(request.user, is_correct)
+        UserResponse.objects.create(
+            user=request.user,
+            lesson=lesson,
+            question=question,
+            selected_answer=selected_answer,
+            is_correct=is_correct,
+            is_completed=is_correct,
+            xp_earned=response_xp,
+        )
+        today = timezone.localdate()
+        activity, _ = DailyActivity.objects.get_or_create(user=request.user, date=today)
+        activity.questions_answered += 1
+        activity.save()
+    else:
+        # Retry — no XP, don't touch is_correct/selected_answer/xp_earned, don't double-count daily activity.
+        # Only flip is_completed when the user finally gets it right.
+        response_xp = 0
+        if is_correct:
+            existing_response.is_completed = True
+            existing_response.save(update_fields=['is_completed'])
 
     # Check if lesson is now complete
     lesson_complete_xp = 0
@@ -254,9 +296,11 @@ def submit_answer(request, lesson_id):
     module_completed = False
 
     total_questions = MCQuestion.objects.filter(lesson=lesson, is_published=True).count()
-    answered_count = UserResponse.objects.filter(user=request.user, lesson=lesson).count()
+    completed_count = UserResponse.objects.filter(
+        user=request.user, lesson=lesson, is_completed=True,
+    ).count()
 
-    if answered_count >= total_questions:
+    if completed_count >= total_questions:
         lesson_completed = True
         user_lesson_progress, _ = UserLessonProgress.objects.get_or_create(
             user=request.user, lesson=lesson
@@ -307,17 +351,10 @@ def submit_answer(request, lesson_id):
     # Check badges
     new_badges = GamificationService.check_and_award_badges(request.user)
 
-    # Get the explanation for the selected answer
-    selected_explanation = question.get_explanation(selected_answer)
-    correct_explanation = question.get_explanation(question.correct_answer)
-    correct_option_text = getattr(question, f'option_{question.correct_answer.lower()}', '')
-
     feedback_data = {
         'is_correct': is_correct,
-        'correct_answer': question.correct_answer,
-        'correct_option_text': correct_option_text,
-        'selected_explanation': selected_explanation,
-        'correct_explanation': correct_explanation,
+        'selected_answer': selected_answer,
+        'selected_explanation': question.get_explanation(selected_answer),
         'xp_earned': response_xp,
         'streak_xp': streak_xp,
         'lesson_complete': lesson_completed,
@@ -325,9 +362,17 @@ def submit_answer(request, lesson_id):
         'module_complete': module_completed,
         'module_complete_xp': module_complete_xp,
         'new_badges': [{'name': b.name, 'icon': b.icon} for b in new_badges],
-        'selected_answer': selected_answer,
         'fresh': True,
     }
+    # Reveal the correct answer only when the user just got it right.
+    # On wrong submissions (first attempt or retry), omit these fields entirely
+    # so the modal cannot spoil the correct option before the user has earned it.
+    if is_correct:
+        feedback_data['correct_answer'] = question.correct_answer
+        feedback_data['correct_option_text'] = getattr(
+            question, f'option_{question.correct_answer.lower()}', '',
+        )
+        feedback_data['correct_explanation'] = question.get_explanation(question.correct_answer)
 
     # AJAX path: render the partial directly so the client can swap it in without
     # a page reload. Skip the session+redirect used by the classic progressive-
@@ -336,8 +381,8 @@ def submit_answer(request, lesson_id):
         user_response = UserResponse.objects.get(
             user=request.user, lesson=lesson, question=question
         )
-        progress_percent = int((question_order / total_questions) * 100) if total_questions > 0 else 0
-        next_order = question_order + 1 if question_order < total_questions else None
+        progress_percent = int((completed_count / total_questions) * 100) if total_questions > 0 else 0
+        next_order = _next_remaining_order(request.user, lesson, question_order)
         prev_order = question_order - 1 if question_order > 1 else None
         context = {
             'lesson': lesson,

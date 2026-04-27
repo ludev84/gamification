@@ -19,8 +19,8 @@
     <p><strong>{{ question.question_text }}</strong></p>
 </div>
 
-{% if user_response %}
-<!-- Already answered - show results -->
+{% if user_response and user_response.is_completed %}
+<!-- Already answered correctly - show results -->
 <div class="options-grid options-answered">
     {% with correct=question.correct_answer selected=user_response.selected_answer %}
     <div class="option-card {% if 'A' == correct %}option-correct{% elif 'A' == selected %}option-wrong{% endif %}">
@@ -63,70 +63,13 @@
     {% endif %}
 </div>
 
-{% if feedback %}
-{% if feedback.fresh %}
-<!-- Floating XP toast (brief animation on answer submit) -->
-<div class="xp-float {% if not feedback.is_correct %}xp-float--sm{% endif %}">
-    +{{ feedback.xp_earned }} XP
-</div>
-{% endif %}
-
-<!-- Feedback modal — hidden by default when not fresh; reopened via button -->
-<div class="fb-modal-overlay{% if not feedback.fresh %} fb-modal-overlay--closed{% endif %}" id="feedback-modal" onclick="if(event.target===this)closeFeedbackModal()">
-    <div class="fb-modal fb-modal--{% if feedback.is_correct %}correct{% else %}incorrect{% endif %}">
-        <div class="fb-modal__header">
-            <h3 class="fb-modal__heading">Retroalimentación</h3>
-            <button type="button" class="fb-modal__close" onclick="closeFeedbackModal()" aria-label="Cerrar">&times;</button>
-        </div>
-        <div class="fb-modal__body">
-            {% if feedback.is_correct %}
-            <div class="fb-modal__result">
-                <div class="fb-modal__check">&#10004;</div>
-                <div class="fb-modal__title">¡Correcto!</div>
-            </div>
-            {% if feedback.correct_explanation %}
-            <p class="fb-modal__text">{{ feedback.correct_explanation|linebreaksbr }}</p>
-            {% endif %}
-            {% else %}
-            {% if feedback.selected_explanation %}
-            <p class="fb-modal__text">{{ feedback.selected_explanation|linebreaksbr }}</p>
-            {% endif %}
-            <div class="fb-modal__ideal">
-                <strong>Respuesta ideal:</strong> {{ feedback.correct_answer }}. {{ feedback.correct_option_text }}
-            </div>
-            {% endif %}
-
-            <div class="fb-modal__xp-wrap">
-                <div class="fb-modal__xp">+{{ feedback.xp_earned }} XP</div>
-            </div>
-
-            {% if feedback.streak_xp or feedback.lesson_complete_xp or feedback.module_complete_xp or feedback.new_badges %}
-            <div class="fb-modal__extras">
-                {% if feedback.streak_xp > 0 %}<span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>{% endif %}
-                {% if feedback.lesson_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.lesson_complete_xp }} XP lección</span>{% endif %}
-                {% if feedback.module_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP módulo</span>{% endif %}
-                {% for badge in feedback.new_badges %}<span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>{% endfor %}
-            </div>
-            {% endif %}
-        </div>
-        <div class="fb-modal__footer">
-            <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Regresar</button>
-            {% if feedback.module_complete %}
-            <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen &rarr;</a>
-            {% elif feedback.lesson_complete %}
-            <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
-            {% elif next_order %}
-            <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary" data-spa>Siguiente pregunta &rarr;</a>
-            {% else %}
-            <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
-            {% endif %}
-        </div>
-    </div>
-</div>
-{% endif %}
-
 {% else %}
-<!-- Answer form -->
+<!-- Answer form (also covers the retry case: response exists but is_completed=False) -->
+{% if user_response and not user_response.is_completed %}
+<div class="retry-note">
+    Esta pregunta no fue contestada correctamente. Inténtalo de nuevo.
+</div>
+{% endif %}
 <form method="post" action="{% url 'soft_skills:submit_answer' lesson.id %}" id="answer-form">
     {% csrf_token %}
     <input type="hidden" name="question_id" value="{{ question.id }}">
@@ -161,4 +104,66 @@
         <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Enviar respuesta</button>
     </div>
 </form>
+{% endif %}
+
+{% if feedback %}
+{% if feedback.fresh and feedback.xp_earned %}
+<!-- Floating XP toast (brief animation on answer submit; suppressed on retries that earn nothing) -->
+<div class="xp-float {% if not feedback.is_correct %}xp-float--sm{% endif %}">
+    +{{ feedback.xp_earned }} XP
+</div>
+{% endif %}
+
+<!-- Feedback modal — hidden by default when not fresh; reopened via button -->
+<div class="fb-modal-overlay{% if not feedback.fresh %} fb-modal-overlay--closed{% endif %}" id="feedback-modal" onclick="if(event.target===this)closeFeedbackModal()">
+    <div class="fb-modal fb-modal--{% if feedback.is_correct %}correct{% else %}incorrect{% endif %}">
+        <div class="fb-modal__header">
+            <h3 class="fb-modal__heading">Retroalimentación</h3>
+            <button type="button" class="fb-modal__close" onclick="closeFeedbackModal()" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="fb-modal__body">
+            {% if feedback.is_correct %}
+            <div class="fb-modal__result">
+                <div class="fb-modal__check">&#10004;</div>
+                <div class="fb-modal__title">¡Correcto!</div>
+            </div>
+            {% if feedback.correct_explanation %}
+            <p class="fb-modal__text">{{ feedback.correct_explanation|linebreaksbr }}</p>
+            {% endif %}
+            {% else %}
+            {% if feedback.selected_explanation %}
+            <p class="fb-modal__text">{{ feedback.selected_explanation|linebreaksbr }}</p>
+            {% endif %}
+            <p class="fb-modal__retry-hint">Podrás intentarlo de nuevo al final de la lección.</p>
+            {% endif %}
+
+            {% if feedback.xp_earned %}
+            <div class="fb-modal__xp-wrap">
+                <div class="fb-modal__xp">+{{ feedback.xp_earned }} XP</div>
+            </div>
+            {% endif %}
+
+            {% if feedback.streak_xp or feedback.lesson_complete_xp or feedback.module_complete_xp or feedback.new_badges %}
+            <div class="fb-modal__extras">
+                {% if feedback.streak_xp > 0 %}<span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>{% endif %}
+                {% if feedback.lesson_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.lesson_complete_xp }} XP lección</span>{% endif %}
+                {% if feedback.module_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP módulo</span>{% endif %}
+                {% for badge in feedback.new_badges %}<span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>{% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="fb-modal__footer">
+            <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Regresar</button>
+            {% if feedback.module_complete %}
+            <a href="{% url 'soft_skills:module_summary' module.id %}" class="btn btn-primary">Ver resumen &rarr;</a>
+            {% elif feedback.lesson_complete %}
+            <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
+            {% elif next_order %}
+            <a href="{% url 'soft_skills:question_view' lesson.id next_order %}" class="btn btn-primary" data-spa>Siguiente pregunta &rarr;</a>
+            {% else %}
+            <a href="{% url 'soft_skills:module_view' module.id %}" class="btn btn-primary">Volver al módulo &rarr;</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endif %}

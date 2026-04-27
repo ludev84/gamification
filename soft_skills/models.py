@@ -221,7 +221,13 @@ class UserResponse(models.Model):
     selected_answer = models.CharField(max_length=1, choices=[
         ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'),
     ])
-    is_correct = models.BooleanField()
+    is_correct = models.BooleanField(
+        help_text='Whether the user picked the correct option on their FIRST attempt. Never changes after row creation.',
+    )
+    is_completed = models.BooleanField(
+        default=False,
+        help_text='Whether the user has eventually answered correctly (first attempt or any retry). Drives lesson completion and the progress bar.',
+    )
     xp_earned = models.PositiveIntegerField(default=0)
     answered_at = models.DateTimeField(auto_now_add=True)
 
