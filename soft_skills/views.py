@@ -265,7 +265,8 @@ def submit_answer(request, lesson_id):
     is_correct = selected_answer == question.correct_answer
 
     if existing_response is None:
-        # First attempt — award XP, create the row, count toward daily activity.
+        # First attempt — award XP, create the row, count toward daily activity,
+        # and update the cross-lesson answer-streak counter.
         response_xp = GamificationService.award_response_xp(request.user, is_correct)
         UserResponse.objects.create(
             user=request.user,
@@ -280,6 +281,15 @@ def submit_answer(request, lesson_id):
         activity, _ = DailyActivity.objects.get_or_create(user=request.user, date=today)
         activity.questions_answered += 1
         activity.save()
+
+        profile = request.user.profile
+        if is_correct:
+            profile.current_answer_streak += 1
+            if profile.current_answer_streak > profile.longest_answer_streak:
+                profile.longest_answer_streak = profile.current_answer_streak
+        else:
+            profile.current_answer_streak = 0
+        profile.save(update_fields=['current_answer_streak', 'longest_answer_streak'])
     else:
         # Retry — no XP, don't touch is_correct/selected_answer/xp_earned, don't double-count daily activity.
         # Only flip is_completed when the user finally gets it right.

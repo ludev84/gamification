@@ -13,6 +13,13 @@
             <a href="{% url 'soft_skills:dashboard' %}" class="nav-brand">Habilidades Blandas</a>
             {% if user.is_authenticated %}
             <div class="nav-links">
+                {% if gam_profile %}
+                <span class="answer-streak {% if gam_profile.current_answer_streak == 0 %}answer-streak--zero{% endif %}"
+                      title="Racha de respuestas correctas seguidas. Mejor: {{ gam_profile.longest_answer_streak }}.">
+                    <span class="answer-streak__icon">🔥</span>
+                    <span class="answer-streak__count">{{ gam_profile.current_answer_streak }}</span>
+                </span>
+                {% endif %}
                 <span class="nav-user">{{ user.get_full_name|default:user.username }}</span>
                 <form method="post" action="{% url 'logout' %}" class="nav-logout-form">
                     {% csrf_token %}

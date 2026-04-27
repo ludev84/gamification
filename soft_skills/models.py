@@ -89,6 +89,10 @@ class UserProfile(models.Model):
     current_streak = models.PositiveIntegerField(default=0)
     longest_streak = models.PositiveIntegerField(default=0)
     last_activity_date = models.DateField(null=True, blank=True)
+    # Answer streak: consecutive first-attempt-correct answers across all lessons/modules.
+    # Resets to 0 on the first wrong first-attempt; retries do NOT affect it.
+    current_answer_streak = models.PositiveIntegerField(default=0)
+    longest_answer_streak = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'{self.user.username} - {self.level_name}'
