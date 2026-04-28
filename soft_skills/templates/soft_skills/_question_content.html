@@ -1,3 +1,13 @@
+<!-- Carries the latest answer-streak values so the SPA controller can keep the
+     navbar chip in sync after each in-place swap (the navbar is outside #question-slot
+     and isn't replaced by the partial swap on its own). -->
+{% if gam_profile %}
+<span class="streak-sync"
+      data-current="{{ gam_profile.current_answer_streak }}"
+      data-longest="{{ gam_profile.longest_answer_streak }}"
+      hidden></span>
+{% endif %}
+
 <!-- Header -->
 <div class="question-header">
     <a href="{% url 'soft_skills:module_view' module.id %}" class="back-link">&larr; Volver a {{ module.name }}</a>

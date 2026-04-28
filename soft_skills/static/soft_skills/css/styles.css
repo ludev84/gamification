@@ -244,6 +244,16 @@ strong { font-weight: 600; }
     box-shadow: none;
 }
 
+@keyframes answerStreakPulse {
+    0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.45); }
+    35%  { transform: scale(1.18); box-shadow: 0 0 0 8px rgba(217, 119, 6, 0.12); }
+    100% { transform: scale(1);    box-shadow: 0 0 0 12px rgba(217, 119, 6, 0); }
+}
+
+.answer-streak--pulse {
+    animation: answerStreakPulse 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .nav-logout-btn {
     background: none;
     border: 1px solid var(--border);

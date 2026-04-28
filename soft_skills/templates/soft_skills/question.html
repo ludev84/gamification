@@ -39,6 +39,30 @@ function openFeedbackModal() {
     var slot = document.getElementById('question-slot');
     if (!slot) return;
 
+    function syncStreakChip() {
+        // The navbar chip lives outside #question-slot and isn't replaced by the
+        // innerHTML swap. The partial drops a <span class="streak-sync"> with
+        // data-current/data-longest; copy those values to the chip after each swap.
+        var sync = slot.querySelector('.streak-sync');
+        var chip = document.querySelector('.answer-streak');
+        if (!sync || !chip) return;
+        var current = sync.dataset.current || '0';
+        var longest = sync.dataset.longest || '0';
+        var countEl = chip.querySelector('.answer-streak__count');
+        if (!countEl) return;
+        var changed = countEl.textContent !== current;
+        countEl.textContent = current;
+        chip.title = 'Racha de respuestas correctas seguidas. Mejor: ' + longest + '.';
+        chip.classList.toggle('answer-streak--zero', current === '0');
+        if (changed) {
+            chip.classList.remove('answer-streak--pulse');
+            // Force reflow so the animation restarts even if the class was
+            // re-added inside the same frame.
+            void chip.offsetWidth;
+            chip.classList.add('answer-streak--pulse');
+        }
+    }
+
     function swap(url, init) {
         slot.classList.add('is-transitioning');
         var opts = Object.assign({ headers: {} }, init || {});
@@ -48,6 +72,7 @@ function openFeedbackModal() {
             return res.text();
         }).then(function(html) {
             slot.innerHTML = html;
+            syncStreakChip();
         }).finally(function() {
             slot.classList.remove('is-transitioning');
         });
