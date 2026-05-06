@@ -1,0 +1,197 @@
+### **Pregunta 1**
+
+**Escenario:** Tu compañero de clase, Alex, parece visiblemente angustiado después de una reunión de grupo para un proyecto importante. Te dice: “Siento que mis ideas siempre son rechazadas antes de que pueda terminar de explicarlas. Sé que no soy la persona más extrovertida, pero investigué y siento que tengo buenas ideas. Ahora ya ni siquiera quiero hablar. Siento que mi contribución no le importa al grupo y estoy empezando a pensar que quizás mis ideas son simplemente malas. Me siento completamente desmoralizado”.
+
+**Pregunta:** ¿Cuál es la respuesta más empática para Alex?
+
+**A.** "Qué frustrante. Sientes que no te valoran nada, sobre todo con todo el trabajo que le metiste. Normal que ahora no te den ganas de proponer nada".
+**B.** "Necesitas ser más asertivo en la próxima reunión. Simplemente interrúmpelos si es necesario y haz que escuchen lo que tienes que decir".
+**C.** "Bueno, algunos proyectos en grupo son así. Solo tienes que seguir adelante y hacer el trabajo. La calificación es lo que importa al final".
+**D.** "¿Cuáles eran tus ideas? Quizás pueda decirte si eran buenas o no. A veces es difícil juzgar tu propio trabajo".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta valida la frustración de Alex y la conecta con su experiencia. Demuestra que entiendes su punto de vista sin juzgar ni dar consejos que no te ha pedido.
+- **B (Incorrecto):** Esto es dar consejos. Se apresura a una solución sin primero reconocer o explorar los sentimientos de Alex de sentirse desmoralizado y subestimado.
+- **C (Incorrecto):** Esta respuesta es un cliché que ignora la experiencia personal de Alex al generalizarla. Minimiza sus sentimientos al centrarse solo en el resultado (la calificación).
+- **D (Incorrecto):** Esto es una escucha centrada en los hechos. Ignora el núcleo emocional del problema (sentirse no escuchado) y en su lugar pasa a evaluar el contenido de sus ideas.
+
+---
+
+### **Pregunta 2**
+
+**Escenario:** Tu compañera de cuarto, Priya, acaba de terminar una tensa llamada telefónica con sus padres. En silencio, comienza a limpiar la cocina, frotando las encimeras con una fuerza inusual. Notas que tiene la mandíbula apretada. Cuando le preguntas si está bien, dice secamente: "Estoy bien". Sin embargo, unos minutos después suspira profundamente y dice: “Están decepcionados de que saqué una B en química orgánica. Dijeron que están sacrificando mucho por mi matrícula y que esperan algo mejor. Estudié mucho para esa clase y una B es una buena nota, pero siento que no es suficiente. Siento tanta presión”.
+
+**Pregunta:** Reconociendo la desconexión entre sus palabras ("Estoy bien") y sus acciones, ¿cuál es la respuesta más empática?
+
+**A.** "Entiendo que te sientas mal y frustrada. Te esforzaste un montón y sacaste una buena nota, pero es como si no vieran todo ese esfuerzo, y eso debe pesar mucho".
+**B.** "No deberías dejar que te afecten. Una B en química orgánica es increíble. Solo necesitas estar orgullosa de ti misma e ignorar su presión".
+**C.** "Al menos se preocupan por tu educación. Algunos padres ni siquiera prestan atención a las calificaciones de sus hijos, así que en cierto modo tienes suerte".
+**D.** "¿Por qué crees que tienen expectativas tan altas? ¿Es algo cultural? Quizás si entendieras su perspectiva, no te sentirías tan mal".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta va más allá de su "estoy bien" inicial para reconocer los sentimientos de dolor y frustración. Refleja con precisión su experiencia y valida sus emociones.
+- **B (Incorrecto):** Es evaluativa y da consejos. Decirle a Priya cómo "debería" sentirse ignora la presión y la decepción genuinas que está experimentando.
+- **C (Incorrecto):** Esta respuesta minimiza los sentimientos de Priya al comparar su situación con la de otros. Invalida su lucha personal al sugerir que debería sentirse agradecida en su lugar.
+- **D (Incorrecto):** Esta es una interpretación que intelectualiza el problema. Dirige la conversación hacia el análisis en lugar de quedarse y reconocer su estado emocional.
+
+---
+
+### **Pregunta 3**
+
+**Escenario:** Eres asistente de un curso introductorio. Un estudiante, Ben, se queda después de clase con aspecto ansioso. Explica que tiene problemas para entender las clases. "Es como si quien imparte la clase hablara otro idioma", dice. "El resto de la clase parece entenderlo. Hacen preguntas inteligentes y yo solo me quedo ahí sentado, sintiéndome perdido. Leo el libro de texto, pero sigo confundido. Me preocupa que si hago una pregunta 'tonta' en clase, todas las personas piensen que no pertenezco aquí. Me siento abrumado y avergonzado".
+
+**Pregunta:** ¿Cuál es la respuesta más empática que puedes ofrecerle a Ben?
+
+**A.** "Uf, se siente fatal cuando parece que eres el único que no entiende nada. Es normal que te preocupe qué van a pensar si preguntas algo".
+**B.** "Realmente necesitas venir a mis horas de oficina como asistente. Para eso están. Podemos repasar el material que te resulta confuso uno a uno".
+**C.** "No te preocupes, a muchas personas en el estudiantado les pasa lo mismo al principio del semestre. Este es un curso difícil, pero la curva de aprendizaje es empinada".
+**D.** "No hay preguntas tontas. Eres tan inteligente como las demás personas en esa sala y tienes todo el derecho a pedir una aclaración".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta identifica los sentimientos centrales de Ben (sentirse mal, preocupado) y los conecta con su experiencia en clase. Valida su miedo sin emitir un juicio.
+- **B (Incorrecto):** Esta respuesta salta directamente a una solución. Aunque es útil, omite el paso crucial de reconocer primero sus sentimientos de vergüenza y aislamiento.
+- **C (Incorrecto):** Esto es un cliché. Aunque pretende ser tranquilizador, puede sentirse despectivo porque generaliza su ansiedad específica y no aborda su sentimiento de "no pertenencia".
+- **D (Incorrecto):** Este es otro cliché. Aunque el sentimiento es positivo, contradice la realidad experimentada por Ben y puede sonar como una frase vacía en lugar de una comprensión genuina.
+
+---
+
+### **Pregunta 4**
+
+**Escenario:** Tu amiga, Maya, confiesa que está pensando en cambiar su especialidad de premedicina a historia del arte. Parece estar en conflicto y dice: “Sé que mis padres se pondrán furiosos. Han soñado toda mi vida con que me convierta en doctora. Y me gusta la ciencia, pero me siento tan viva cuando estoy en una clase de arte. Siento que es lo que estoy destinada a hacer. Pero la idea de decírselo a mis padres me da una ansiedad terrible. Me siento culpable incluso por pensar en ello, como si los estuviera decepcionando. Estoy completamente dividida”.
+
+**Pregunta:** ¿Cuál de las siguientes es la respuesta más empática para Maya?
+
+**A.** "Estás en una situación súper complicada, entre lo que te apasiona y lo que esperan tus padres. Sentir esa emoción por un lado y a la vez culpa y ansiedad por decepcionarlos tiene que ser muy duro".
+**B.** "Tienes que vivir tu propia vida. Si vas a ser más feliz como historiadora del arte, entonces eso es lo que deberías hacer. Tus padres lo superarán con el tiempo".
+**C.** "¿Estás segura de que puedes conseguir trabajo con un título en historia del arte? El mercado laboral para el personal médico es mucho mejor. Quizás deberías seguir con premedicina y hacer una especialización secundaria en arte".
+**D.** "Entiendo cómo te sientes. Tuve una situación similar cuando decidí no entrar en el negocio familiar. Fue difícil, pero al final me fue bien".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta refleja con precisión el conflicto central de Maya: la tensión entre su pasión y las expectativas familiares, y la culpa que esto le genera. Nombra las emociones sin tomar partido.
+- **B (Incorrecto):** Da un consejo contundente y minimiza la complejidad de su relación con sus padres al decir que "lo superarán".
+- **C (Incorrecto):** Esta es una pregunta distractora y basada en hechos que se centra en los aspectos prácticos de la decisión mientras ignora la agitación emocional que Maya está expresando.
+- **D (Incorrecto):** Esta respuesta desvía el enfoque de Maya hacia ti. Aunque compartir una experiencia similar a veces puede crear conexión, en este caso, distrae de su lucha única.
+
+---
+
+### **Pregunta 5**
+
+**Escenario:** Te encuentras con un compañero de clase, David, que parece agotado y estresado. Le preguntas cómo está. Te dice que pasó toda la noche en vela para terminar un trabajo que debía entregar a las 9 a.m. "Y entonces", dice con un suspiro de frustración, "llegué a clase y anunciaron que le darían a todo el mundo una extensión de 48 horas porque muchas personas la pidieron. Estoy tan enojado. Sacrifiqué toda una noche de sueño para nada. Podría haber usado ese tiempo para estudiar para mi examen de mitad de semestre de esta tarde, pero ahora mi cerebro está hecho puré".
+
+**Pregunta:** ¿Cuál es la forma más empática de responderle a David?
+
+**A.** "Qué rabia. Te mataste toda la noche para cumplir y al final no sirvió de nada. Normal que estés enojado por haber perdido todo ese tiempo y esfuerzo".
+**B.** "No puedes enojarte con el profesorado por ser amable. Deberías alegrarte por las demás personas de la clase que realmente necesitaban esa extensión para hacer un buen trabajo".
+**C.** "Bueno, mira el lado bueno, al menos tu trabajo está terminado y ya no tienes que preocuparte por él. Ahora puedes concentrarte en tu examen".
+**D.** "La próxima vez, deberías enviarle un correo a quien imparte la clase y pedir una extensión también. Parece que es bastante indulgente, así que podrías aprovecharlo".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta valida el enojo de David al reflejar la causa: su gran esfuerzo se siente invalidado y además le perjudica. Demuestra que entiendes su punto de vista.
+- **B (Incorrecto):** Esta es una respuesta evaluativa. Le dice a David que sus sentimientos están equivocados y que "debería" sentirse de otra manera, lo cual es despectivo con su experiencia.
+- **C (Incorrecto):** Ofrece un cliché ("mira el lado bueno") que ignora su sentimiento actual de frustración y agotamiento. Pasa por alto su emoción para encontrar un aspecto positivo.
+- **D (Incorrecto):** Esto es dar consejos que se centran en el comportamiento futuro en lugar de reconocer su estado emocional actual. No aborda la frustración que siente en este momento.
+
+---
+
+### **Pregunta 6**
+
+**Escenario:** Estás trabajando en una presentación con un compañero, Sam. Sam suele ser muy confiable, pero faltó a las dos últimas reuniones y no ha aportado su parte de la investigación. Cuando finalmente hablas con él, parece retraído y se disculpa en voz baja. "Lo siento mucho", dice, sin mirarte a los ojos. "La salud de mi abuela ha empeorado mucho y mi familia ha estado mucho en el hospital. He estado tan preocupado y distraído que no he podido concentrarme en absoluto en el trabajo escolar. Sé que te estoy fallando y me siento terrible por ello".
+
+**Pregunta:** ¿Cuál es la respuesta más empática para Sam?
+
+**A.** "Suena a que estás pasando por un momento familiar súper difícil y estresante. Es lógico que la universidad no sea ahora mismo lo más importante. Tú tranquilo con el proyecto, ya vemos cómo lo solucionamos".
+**B.** "Realmente necesitamos terminar esta presentación porque la fecha límite es la próxima semana. ¿Cuánto trabajo puedes hacer de manera realista para el viernes para que pueda planificar en torno a eso?".
+**C.** "Estaba bastante frustrado de que faltaras a las reuniones, pero ahora lo entiendo. Espero que tu abuela se mejore pronto. Avísame cuando hayas tenido la oportunidad de ponerte al día con la investigación".
+**D.** "Lamento escuchar eso. Mi abuelo estuvo enfermo hace unos años y fue muy difícil equilibrar todo. Terminé teniendo que tomar una calificación de 'incompleto' en una de mis clases".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta prioriza el contexto personal de Sam y valida sus sentimientos. Muestra comprensión por su situación y le da tranquilidad sobre el proyecto, atendiendo a su preocupación por estar fallándote.
+- **B (Incorrecto):** Esta es una respuesta centrada en los hechos que ignora el peso emocional de la situación de Sam y se enfoca únicamente en la logística del proyecto.
+- **C (Incorrecto):** Esta respuesta centra tus propios sentimientos ("Estaba bastante frustrado") antes de reconocer los suyos. Aunque expresa compasión, el enfoque permanece en la tarea.
+- **D (Incorrecto):** Esto desvía el enfoque hacia tu propia historia. Aunque pretende conectar, le quita el protagonismo a Sam y a su lucha inmediata y continua.
+
+---
+
+### **Pregunta 7**
+
+**Escenario:** Tu amiga Chloe parece desanimada después de su primer taller de escritura creativa. "La crítica fue brutal", te dice. "Quien dirige el taller dijo que el personaje principal de mi historia no era creíble y que la trama era predecible. Un par de personas de la clase estuvieron de acuerdo. Pasé semanas en esa historia y se sentía tan personal. Ahora solo me siento expuesta y sin talento. Pensé que era una buena escritora, pero quizás solo me estaba engañando a mí misma. No sé si pueda volver a compartir mi trabajo. Siento como si estuvieran criticando una parte de mí, no solo un trozo de papel".
+
+**Pregunta:** ¿Cuál es la respuesta más empática para Chloe?
+
+**A.** "Eso duele muchísimo. Cuesta un montón atreverse a compartir algo tan personal, y que te den una crítica tan dura se siente como un ataque directo, no solo al texto. Es normal que ahora no quieras volver a exponerte así".
+**B.** "No puedes tomarte la crítica de forma tan personal. El objetivo de un taller es recibir críticas para que puedas convertirte en una mejor escritora. Deberías verlo como algo bueno".
+**C.** "¿Quién dirigía el taller? He oído que algunas personas pueden ser muy duras. Probablemente te tocó una de las más exigentes. No dejes que su opinión te defina".
+**D.** "Bueno, ¿la crítica era precisa? A veces la verdad duele. Quizás el personaje realmente necesita más desarrollo para que la historia funcione".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta identifica con precisión el núcleo del problema: la crítica se sintió como algo personal y doloroso. Valida sus sentimientos de vulnerabilidad y los conecta con el acto de compartir un trabajo creativo.
+- **B (Incorrecto):** Es evaluativa y da consejos. Le dice a Chloe que su reacción emocional es incorrecta y que "debería" sentirse de otra manera sobre la experiencia.
+- **C (Incorrecto):** Esta es una respuesta distractora que traslada la culpa a quien dirige el taller, lo que podría hacerla sentir bien temporalmente pero no reconoce ni valida los sentimientos de duda de Chloe.
+- **D (Incorrecto):** Esta respuesta está centrada en los hechos y es sentenciosa. Cuestiona la validez de su trabajo en lugar de reconocer la validez de sus sentimientos.
+
+---
+
+### **Pregunta 8**
+
+**Escenario:** Estás estudiando en la biblioteca cuando tu amigo Liam se sienta, luciendo agitado. "Simplemente no lo entiendo", dice, pasándose las manos por el pelo. "Voy a todas las clases, tomo notas detalladas, leo cada capítulo, pero aun así reprobé mi examen de mitad de semestre de cálculo. Veo a gente que nunca va a clase obtener una mejor calificación que yo. No es justo. Estoy haciendo todo lo que se supone que debo hacer, y no está funcionando. Me siento tan estúpido y sin esperanza. ¿Qué sentido tiene siquiera intentarlo si mi mejor esfuerzo no es suficiente?".
+
+**Pregunta:** ¿Cuál es la respuesta más empática para Liam?
+
+**A.** "Qué frustrante e injusto. Te esfuerzas un montón y no ves los resultados, sobre todo cuando a otros parece costarles menos. Entiendo que te sientas totalmente derrotado y te cuestiones si vale la pena".
+**B.** "Quizás tus métodos de estudio no son efectivos para esta materia. ¿Alguna vez has intentado formar un grupo de estudio o ir al centro de tutorías del campus para obtener ayuda?".
+**C.** "No eres estúpido. Cálculo es una materia muy difícil para mucha gente. Probablemente solo necesites dedicarle aún más horas antes del examen final".
+**D.** "No puedes compararte con otras personas. Solo te hará sentir mal. Solo concéntrate en tu propio trabajo y en lo que necesitas hacer para aprobar la clase".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta usa palabras que reflejan la narrativa de Liam (frustración, injusticia). Valida su sensación de que la situación es injusta y desesperanzadora, sin juzgarlo.
+- **B (Incorrecto):** Esto pasa inmediatamente a la resolución de problemas. Aunque la sugerencia puede ser útil, omite el paso crucial de reconocer su intensa frustración y desesperación.
+- **C (Incorrecto):** Esta es una respuesta compasiva que ofrece un lugar común ("no eres estúpido") pero luego da un consejo que implica que simplemente no está trabajando lo suficiente, lo que podría invalidar sus esfuerzos declarados.
+- **D (Incorrecto):** Da consejos y le dice cómo debería y no debería sentirse. Ignora la experiencia muy real y común de la comparación social y su impacto emocional.
+
+---
+
+### **Pregunta 9**
+
+**Escenario:** Tu amiga, Jenna, que normalmente es muy extrovertida, ha estado callada y rechazando invitaciones para salir. Finalmente le preguntas qué le pasa. Ella duda, y luego admite: “Siento que he sido una mala amiga últimamente. He estado tan abrumada con mi tesis de último año que me perdí tu cena de cumpleaños y olvidé responderle el mensaje a Kevin. Siento que estoy decepcionando a todo el mundo, y estoy tan abrumada que ni siquiera sé por dónde empezar a arreglarlo. Me siento ansiosa solo de pensarlo, así que es más fácil simplemente esconderme”.
+
+**Pregunta:** ¿Cuál de estas es la respuesta más empática para Jenna?
+
+**A.** "Suena a que estás a tope con la tesis, y por eso te sientes culpable y ansiosa con tus amistades. Es como una bola de nieve, ¿no? Cuanto más te preocupas, más te cuesta escribirles".
+**B.** "Estoy segura de que tus amistades entienden que estás ocupada con tu tesis. No deberías sentirte tan culpable por ello. Solo concéntrate en tu trabajo y podrás compensar a todas las personas más tarde".
+**C.** "No me molestó que te perdieras mi cena, así que no te preocupes por eso. Solo necesitas responderle a Kevin y todo estará bien. No es tan grave como piensas".
+**D.** "Sentirse así es normal en el último año de carrera. Solo tienes que hacer una lista de lo que necesitas hacer. Empieza con una cosa pequeña, como enviar un mensaje. Eso te hará sentir mejor".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta refleja con precisión la experiencia interna de Jenna: la conexión entre la presión académica, la culpa y la ansiedad social. Muestra comprensión del ciclo emocional en el que se encuentra.
+- **B (Incorrecto):** Esta es una respuesta evaluativa. Decirle que "no debería sentirse culpable" invalida sus sentimientos genuinos y ofrece una solución prematura y simplista.
+- **C (Incorrecto):** Esta respuesta minimiza sus sentimientos al centrarse en solucionar el problema rápidamente. Decir "no es tan grave como piensas" ignora la magnitud de su ansiedad.
+- **D (Incorrecto):** Esta respuesta es puro consejo. Ignora su estado emocional y salta directamente a una estrategia de productividad, que no aborda su ansiedad subyacente.
+
+---
+
+### **Pregunta 10**
+
+**Escenario:** Un estudiante de tu sección de laboratorio, Kenji, es un estudiante internacional. Te dice que le está costando adaptarse. "Mi inglés está bien para la clase, pero en situaciones sociales, no entiendo los chistes y las referencias culturales. La gente habla muy rápido. Intento unirme a las conversaciones, pero me siento incómodo y lento", dice. "Anoche, fui a una fiesta y me quedé en un rincón porque no sabía cómo empezar a hablar con la gente. Es solitario, y estoy empezando a pensar que quizás no vale la pena el esfuerzo. Es más fácil simplemente quedarme en mi cuarto".
+
+**Pregunta:** ¿Cuál es la respuesta más empática para Kenji?
+
+**A.** "Tiene que ser súper agotador y frustrante estar siempre lidiando con un entorno social nuevo. Es normal que sentirse fuera de lugar te haga sentir solo y te den ganas de aislarte".
+**B.** "¡Tu inglés es muy bueno! No deberías ser tan cohibido al respecto. La gente probablemente es mucho más comprensiva de lo que crees".
+**C.** "Solo necesitas más práctica. La única manera de mejorar en la conversación social es forzarte a hacerlo. ¿Has pensado en unirte a un club para el estudiantado internacional?".
+**D.** "Sé lo que quieres decir. Yo también me siento incómodo en las fiestas a veces. Puede ser muy difícil entrar en una conversación cuando no conoces a nadie".
+
+**Explicación:**
+
+- **A (Correcto):** Esta respuesta valida la dificultad emocional y el agotamiento de la experiencia de Kenji. Conecta sus acciones (aislarse) con sus sentimientos (soledad, frustración) de una manera que no juzga.
+- **B (Incorrecto):** Esta es una respuesta compasiva pero despectiva. Aunque pretende ser un cumplido, invalida su experiencia vivida y le dice que sus sentimientos se basan en una percepción errónea.
+- **C (Incorrecto):** Da consejos y pone toda la carga sobre él para que se "fuerce" a hacer algo que acaba de describir como doloroso y difícil.
+- **D (Incorrecto):** Aunque intenta establecer una relación, sutilmente desvía el enfoque hacia un sentimiento común de incomodidad, minimizando potencialmente los desafíos culturales y lingüísticos únicos que enfrenta Kenji.
