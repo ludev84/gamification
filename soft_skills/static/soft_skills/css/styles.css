@@ -2297,6 +2297,12 @@ details[open] .review-chevron {
     align-items: stretch;
 }
 
+/* backface-visibility hides paint but not hit-testing — disable pointer events
+   on whichever face is currently rotated away from the viewer. */
+.gam-card__face--back { pointer-events: none; }
+.gam-card--flipped .gam-card__face--front { pointer-events: none; }
+.gam-card--flipped .gam-card__face--back  { pointer-events: auto; }
+
 .gam-card__title {
     font-size: 1.25rem;
     font-weight: 700;
