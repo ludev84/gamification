@@ -2303,6 +2303,18 @@ details[open] .review-chevron {
 .gam-card--flipped .gam-card__face--front { pointer-events: none; }
 .gam-card--flipped .gam-card__face--back  { pointer-events: auto; }
 
+/* Firefox: descendants with their own stacking context (the info button uses
+   position:absolute + z-index) escape the parent face's backface-visibility,
+   so the away-side button still paints (mirrored). Toggle visibility explicitly,
+   delayed to the midpoint of the 0.6s flip so the swap isn't jarring. */
+.gam-card__face .gam-card__info-btn {
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease,
+                visibility 0s linear 0.3s;
+}
+.gam-card__face--back .gam-card__info-btn { visibility: hidden; }
+.gam-card--flipped .gam-card__face--front .gam-card__info-btn { visibility: hidden; }
+.gam-card--flipped .gam-card__face--back  .gam-card__info-btn { visibility: visible; }
+
 .gam-card__title {
     font-size: 1.25rem;
     font-weight: 700;
