@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .models import (
-    DailyActivity, Lesson, MCQuestion, Module, UserBadge, UserLessonProgress,
-    UserModuleProgress, UserResponse,
+    LEVEL_THRESHOLDS, Badge, DailyActivity, Lesson, MCQuestion, Module,
+    UserBadge, UserLessonProgress, UserModuleProgress, UserResponse,
 )
 from .services.gamification import GamificationService
 
@@ -68,6 +68,70 @@ def dashboard(request):
         user=request.user, lesson__module_id__in=assigned_module_ids, is_completed=True
     ).count()
 
+    # --- Streak week strip: 7-day cycle showing where the user currently is ---
+    current_streak = profile.current_streak
+    if current_streak > 0:
+        week_number = (current_streak - 1) // 7 + 1
+        day_in_week = (current_streak - 1) % 7 + 1
+    else:
+        week_number = 1
+        day_in_week = 0
+
+    streak_badges_by_value = {
+        b.condition_value: b
+        for b in Badge.objects.filter(condition_type='streak')
+    }
+    streak_days = []
+    for i in range(1, 8):
+        streak_value = (week_number - 1) * 7 + i
+        badge = streak_badges_by_value.get(streak_value)
+        streak_days.append({
+            'number': i,
+            'streak_value': streak_value,
+            'is_current': i == day_in_week,
+            'is_past': day_in_week > 0 and i < day_in_week,
+            'is_future': i > day_in_week,
+            'badge': badge,
+            'badge_earned': bool(badge and current_streak >= badge.condition_value),
+        })
+    streak_week = {
+        'week_number': week_number,
+        'day_in_week': day_in_week,
+        'days': streak_days,
+    }
+
+    # --- Badges card: every Badge with earned status for this user ---
+    earned_map = {
+        ub.badge_id: ub.earned_at
+        for ub in UserBadge.objects.filter(user=request.user)
+    }
+    all_badges_with_status = [
+        {
+            'badge': b,
+            'earned': b.id in earned_map,
+            'earned_at': earned_map.get(b.id),
+        }
+        for b in Badge.objects.all().order_by('name')
+    ]
+
+    # --- Level breakdown for the flip-back of the Level card ---
+    xp_max = profile.compute_xp_max()
+    level_breakdown = [
+        {
+            'level': lvl,
+            'name': name,
+            'xp_required': int(pct * xp_max),
+            'is_current': lvl == level_info['level'],
+        }
+        for lvl, pct, name in LEVEL_THRESHOLDS
+    ]
+
+    # XP remaining to next level (for the Level card front face)
+    if level_info['next_threshold'] is not None:
+        xp_remaining = max(0, level_info['next_threshold'] - profile.total_xp)
+    else:
+        xp_remaining = 0
+
     context = {
         'profile': profile,
         'user_module_progress': user_module_progress,
@@ -78,6 +142,10 @@ def dashboard(request):
         'overall_progress': overall_progress,
         'total_lessons': total_lessons,
         'completed_lessons': completed_lessons,
+        'streak_week': streak_week,
+        'all_badges_with_status': all_badges_with_status,
+        'level_breakdown': level_breakdown,
+        'xp_remaining': xp_remaining,
     }
     return render(request, 'soft_skills/dashboard.html', context)
 

@@ -6,22 +6,156 @@
 <div class="container">
     <!-- Gamification Bar -->
     <div class="gam-bar">
-        <div class="gam-item gam-item--streak">
+        <button type="button"
+                class="gam-item gam-item--streak gam-item--clickable"
+                data-card="streak"
+                aria-expanded="false"
+                aria-controls="gam-accordion">
             <span class="gam-icon">&#128293;</span>
             <span class="gam-label">Racha: <strong>{{ profile.current_streak }} días</strong></span>
-        </div>
-        <div class="gam-item gam-item--level">
+        </button>
+        <button type="button"
+                class="gam-item gam-item--level gam-item--clickable"
+                data-card="level"
+                aria-expanded="false"
+                aria-controls="gam-accordion">
             <span class="gam-icon">&#11088;</span>
             <span class="gam-label">Nivel {{ level_info.level }}: <strong>{{ level_info.name }}</strong></span>
             <div class="progress-bar-sm">
                 <div class="progress-fill" style="width: {{ level_info.progress_percent }}%"></div>
             </div>
             <span class="gam-xp">{{ profile.total_xp }} XP{% if level_info.next_threshold %} / {{ level_info.next_threshold }} XP{% endif %}</span>
-        </div>
-        <div class="gam-item gam-item--badges">
+        </button>
+        <button type="button"
+                class="gam-item gam-item--badges gam-item--clickable"
+                data-card="badges"
+                aria-expanded="false"
+                aria-controls="gam-accordion">
             <span class="gam-icon">&#127942;</span>
             <span class="gam-label"><strong>{{ badges.count }}</strong> medallas</span>
-        </div>
+        </button>
+    </div>
+
+    <!-- Accordion: expands when a gam-bar item is clicked -->
+    <div class="gam-accordion" id="gam-accordion" hidden>
+        <!-- STREAK PANEL -->
+        <section class="gam-panel" data-panel="streak" hidden aria-label="Detalle de racha">
+            <div class="gam-card gam-card--streak">
+                <div class="gam-card__inner">
+                    <div class="gam-card__face gam-card__face--front">
+                        <button type="button" class="gam-card__info-btn" data-flip aria-label="Más información">
+                            <span aria-hidden="true">i</span>
+                            <span class="gam-card__info-btn-label">Info</span>
+                        </button>
+                        <div class="streak-card__head">
+                            <span class="streak-card__icon" aria-hidden="true">&#128293;</span>
+                            <div class="streak-card__title-block">
+                                <h3 class="gam-card__title">Racha</h3>
+                                <p class="gam-card__subtitle">Semana {{ streak_week.week_number }} — avanza diariamente para desbloquear recompensas y XP.</p>
+                            </div>
+                        </div>
+                        <ol class="streak-week">
+                            {% for day in streak_week.days %}
+                            <li class="streak-day{% if day.is_current %} streak-day--current{% elif day.is_past %} streak-day--past{% else %} streak-day--future{% endif %}">
+                                <span class="streak-day__number">{{ day.number }}</span>
+                                {% if day.badge %}
+                                <span class="streak-day__badge{% if day.badge_earned %} streak-day__badge--earned{% else %} streak-day__badge--locked{% endif %}"
+                                      title="{{ day.badge.name }}: {{ day.badge.description }}">
+                                    {{ day.badge.icon }}
+                                </span>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ol>
+                        <p class="streak-card__current">
+                            Racha actual: <strong>{{ profile.current_streak }} día{{ profile.current_streak|pluralize:"s" }}</strong>
+                            {% if profile.longest_streak %} · Mejor: {{ profile.longest_streak }}{% endif %}
+                        </p>
+                    </div>
+                    <div class="gam-card__face gam-card__face--back">
+                        <h3 class="gam-card__title">¿Qué es la racha?</h3>
+                        <span class="streak-card__icon streak-card__icon--small" aria-hidden="true">&#128293;</span>
+                        <p>Tu <strong>racha</strong> representa el número de días consecutivos que has realizado actividades en los módulos.</p>
+                        <p>¡Puedes llenar tu racha para ganar puntos de experiencia y conseguir medallas!</p>
+                        <button type="button" class="btn btn-outline btn-sm gam-card__back-btn" data-flip>Regresar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEVEL PANEL -->
+        <section class="gam-panel" data-panel="level" hidden aria-label="Detalle de nivel">
+            <div class="gam-card gam-card--level">
+                <div class="gam-card__inner">
+                    <div class="gam-card__face gam-card__face--front">
+                        <button type="button" class="gam-card__info-btn" data-flip aria-label="Más información">
+                            <span aria-hidden="true">i</span>
+                            <span class="gam-card__info-btn-label">Info</span>
+                        </button>
+                        <h3 class="gam-card__title">¡Sube de nivel con tu progreso!</h3>
+                        <div class="level-star" aria-label="Nivel {{ level_info.level }}">
+                            <svg viewBox="0 0 100 100" class="level-star__svg" aria-hidden="true">
+                                <polygon points="50,5 61,38 96,38 67,58 78,92 50,72 22,92 33,58 4,38 39,38"/>
+                            </svg>
+                            <span class="level-star__number">{{ level_info.level }}</span>
+                        </div>
+                        <p class="level-card__xp">{{ profile.total_xp }} XP</p>
+                        <div class="progress-bar progress-bar-lg level-card__bar">
+                            <div class="progress-fill" style="width: {{ level_info.progress_percent }}%"></div>
+                        </div>
+                        <div class="level-card__footer">
+                            <span class="level-card__current-label">NIVEL {{ level_info.level }}</span>
+                            {% if level_info.next_threshold %}
+                            <span class="level-card__remaining"><strong>{{ xp_remaining }} XP</strong> para subir de nivel</span>
+                            {% else %}
+                            <span class="level-card__remaining"><strong>¡Nivel máximo!</strong></span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="gam-card__face gam-card__face--back">
+                        <h3 class="gam-card__title">Información sobre los niveles</h3>
+                        <ul class="level-list">
+                            {% for row in level_breakdown %}
+                            <li class="level-list__item{% if row.is_current %} level-list__item--current{% endif %}">
+                                <span class="level-list__name"><strong>Nivel {{ row.level }}:</strong> {{ row.name }}</span>
+                                <span class="level-list__xp">{{ row.xp_required }} XP</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="btn btn-outline btn-sm gam-card__back-btn" data-flip>Regresar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BADGES PANEL -->
+        <section class="gam-panel" data-panel="badges" hidden aria-label="Detalle de medallas">
+            <div class="gam-card gam-card--badges">
+                <div class="gam-card__inner">
+                    <div class="gam-card__face gam-card__face--front gam-card__face--static">
+                        <h3 class="gam-card__title"><span aria-hidden="true">&#127942;</span> Medallas</h3>
+                        {% if all_badges_with_status %}
+                        <div class="badge-grid">
+                            {% for item in all_badges_with_status %}
+                            <div class="badge-cell{% if not item.earned %} badge-cell--locked{% endif %}"
+                                 data-name="{{ item.badge.name }}"
+                                 data-description="{{ item.badge.description }}">
+                                <span class="badge-cell__icon" aria-hidden="true">{{ item.badge.icon }}</span>
+                                <span class="badge-cell__name">{{ item.badge.name }}</span>
+                                <span class="badge-cell__tooltip" role="tooltip">
+                                    <strong>{{ item.badge.name }}</strong>
+                                    <span>{{ item.badge.description }}</span>
+                                </span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="badge-grid__empty">Aún no hay medallas configuradas.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Welcome -->
@@ -29,21 +163,6 @@
         <h1>Bienvenido(a), {{ user.first_name|default:user.username }}</h1>
         <p>Continúa desarrollando tus habilidades blandas.</p>
     </div>
-
-    <!-- Badges display -->
-    {% if badges %}
-    <div class="badges-section">
-        <h2>Tus medallas</h2>
-        <div class="badges-grid">
-            {% for ub in badges %}
-            <div class="badge-item" title="{{ ub.badge.name }}: {{ ub.badge.description }}">
-                <span class="badge-icon">{{ ub.badge.icon }}</span>
-                <span class="badge-name">{{ ub.badge.name }}</span>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 
     <!-- Module Grid -->
     <h2 class="modules-heading">Tus módulos</h2>
@@ -101,4 +220,64 @@
         <p class="progress-text">{{ overall_progress }}% completado</p>
     </div>
 </div>
+
+<script>
+(function () {
+    var bar = document.querySelector('.gam-bar');
+    var accordion = document.getElementById('gam-accordion');
+    if (!bar || !accordion) return;
+    var panels = accordion.querySelectorAll('.gam-panel');
+    var buttons = bar.querySelectorAll('.gam-item--clickable');
+
+    function openCard(name) {
+        panels.forEach(function (p) {
+            var match = p.dataset.panel === name;
+            p.hidden = !match;
+            if (!match) {
+                var card = p.querySelector('.gam-card');
+                if (card) card.classList.remove('gam-card--flipped');
+            }
+        });
+        accordion.hidden = false;
+        // Force reflow so the open transition runs even when toggling between cards.
+        void accordion.offsetWidth;
+        accordion.classList.add('gam-accordion--open');
+        buttons.forEach(function (b) {
+            b.setAttribute('aria-expanded', b.dataset.card === name ? 'true' : 'false');
+        });
+    }
+
+    function closeAll() {
+        accordion.classList.remove('gam-accordion--open');
+        accordion.hidden = true;
+        panels.forEach(function (p) {
+            p.hidden = true;
+            var card = p.querySelector('.gam-card');
+            if (card) card.classList.remove('gam-card--flipped');
+        });
+        buttons.forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+    }
+
+    bar.addEventListener('click', function (e) {
+        var btn = e.target.closest('.gam-item--clickable');
+        if (!btn) return;
+        if (btn.getAttribute('aria-expanded') === 'true') {
+            closeAll();
+        } else {
+            openCard(btn.dataset.card);
+        }
+    });
+
+    accordion.addEventListener('click', function (e) {
+        var flip = e.target.closest('[data-flip]');
+        if (!flip) return;
+        var card = flip.closest('.gam-card');
+        if (card) card.classList.toggle('gam-card--flipped');
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !accordion.hidden) closeAll();
+    });
+})();
+</script>
 {% endblock %}
