@@ -2233,8 +2233,13 @@ details[open] .review-chevron {
 .gam-accordion[hidden] { display: none; }
 
 .gam-accordion.gam-accordion--open {
-    max-height: 900px;
+    max-height: 1400px;
     margin-bottom: 2rem;
+}
+
+/* Once the open transition finishes, allow tooltips/popovers to spill out of the card */
+.gam-accordion.gam-accordion--expanded {
+    overflow: visible;
 }
 
 .gam-panel { animation: fadeUp 0.35s ease both; }
@@ -2243,23 +2248,23 @@ details[open] .review-chevron {
 /* Flip card */
 .gam-card {
     position: relative;
-    background: var(--white);
-    border: 2px solid var(--border);
+    background: transparent;
+    border: none;
     border-radius: var(--r-lg);
     padding: 0;
-    box-shadow: var(--shadow);
-    min-height: 320px;
     perspective: 1400px;
 }
 
-.gam-card--streak  { border-color: var(--gold-light); }
-.gam-card--level   { border-color: var(--terra-light); }
-.gam-card--badges  { border-color: var(--teal-light); }
-
+/*
+   Grid-stack the two faces in the same cell so the card auto-sizes to the
+   larger face. This replaces the old position:absolute + fixed-min-height
+   approach that caused the level back-face to overflow.
+*/
 .gam-card__inner {
     position: relative;
     width: 100%;
-    min-height: 320px;
+    display: grid;
+    grid-template-areas: "stack";
     transform-style: preserve-3d;
     transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
@@ -2269,10 +2274,8 @@ details[open] .review-chevron {
 }
 
 .gam-card__face {
-    position: absolute;
-    inset: 0;
+    grid-area: stack;
     width: 100%;
-    height: 100%;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     padding: 1.5rem 1.75rem;
@@ -2281,19 +2284,17 @@ details[open] .review-chevron {
     gap: 0.85rem;
     border-radius: var(--r-lg);
     background: var(--white);
+    border: 2px solid var(--border);
+    box-shadow: var(--shadow);
 }
+
+.gam-card--streak  .gam-card__face { border-color: var(--gold-light); }
+.gam-card--level   .gam-card__face { border-color: var(--terra-light); }
+.gam-card--badges  .gam-card__face { border-color: var(--teal-light); }
 
 .gam-card__face--back {
     transform: rotateY(180deg);
-    align-items: flex-start;
-}
-
-/* Static face (badges card has no flip — keep face in normal flow) */
-.gam-card__face--static {
-    position: relative;
-    inset: auto;
-    height: auto;
-    min-height: 320px;
+    align-items: stretch;
 }
 
 .gam-card__title {
@@ -2301,6 +2302,8 @@ details[open] .review-chevron {
     font-weight: 700;
     color: var(--text);
     margin: 0;
+    /* Leave room for the absolutely-positioned info button (top-right) */
+    padding-right: 3.25rem;
 }
 
 .gam-card__subtitle {
@@ -2331,6 +2334,8 @@ details[open] .review-chevron {
     justify-content: center;
     gap: 0;
     z-index: 2;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
 
@@ -2359,7 +2364,6 @@ details[open] .review-chevron {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    padding-right: 3rem; /* leave room for info button */
 }
 
 .streak-card__icon {

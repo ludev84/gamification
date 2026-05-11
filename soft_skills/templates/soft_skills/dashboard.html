@@ -73,6 +73,10 @@
                         </p>
                     </div>
                     <div class="gam-card__face gam-card__face--back">
+                        <button type="button" class="gam-card__info-btn" data-flip aria-label="Volver">
+                            <span aria-hidden="true">i</span>
+                            <span class="gam-card__info-btn-label">Info</span>
+                        </button>
                         <h3 class="gam-card__title">¿Qué es la racha?</h3>
                         <span class="streak-card__icon streak-card__icon--small" aria-hidden="true">&#128293;</span>
                         <p>Tu <strong>racha</strong> representa el número de días consecutivos que has realizado actividades en los módulos.</p>
@@ -113,6 +117,10 @@
                         </div>
                     </div>
                     <div class="gam-card__face gam-card__face--back">
+                        <button type="button" class="gam-card__info-btn" data-flip aria-label="Volver">
+                            <span aria-hidden="true">i</span>
+                            <span class="gam-card__info-btn-label">Info</span>
+                        </button>
                         <h3 class="gam-card__title">Información sobre los niveles</h3>
                         <ul class="level-list">
                             {% for row in level_breakdown %}
@@ -132,7 +140,7 @@
         <section class="gam-panel" data-panel="badges" hidden aria-label="Detalle de medallas">
             <div class="gam-card gam-card--badges">
                 <div class="gam-card__inner">
-                    <div class="gam-card__face gam-card__face--front gam-card__face--static">
+                    <div class="gam-card__face gam-card__face--front">
                         <h3 class="gam-card__title"><span aria-hidden="true">&#127942;</span> Medallas</h3>
                         {% if all_badges_with_status %}
                         <div class="badge-grid">
@@ -228,6 +236,8 @@
     if (!bar || !accordion) return;
     var panels = accordion.querySelectorAll('.gam-panel');
     var buttons = bar.querySelectorAll('.gam-item--clickable');
+    var expandTimer = null;
+    var EXPAND_MS = 480; // matches max-height transition
 
     function openCard(name) {
         panels.forEach(function (p) {
@@ -242,12 +252,20 @@
         // Force reflow so the open transition runs even when toggling between cards.
         void accordion.offsetWidth;
         accordion.classList.add('gam-accordion--open');
+        // Defer overflow:visible until after the open animation so tooltips
+        // can spill outside the card without breaking the height transition.
+        clearTimeout(expandTimer);
+        expandTimer = setTimeout(function () {
+            accordion.classList.add('gam-accordion--expanded');
+        }, EXPAND_MS);
         buttons.forEach(function (b) {
             b.setAttribute('aria-expanded', b.dataset.card === name ? 'true' : 'false');
         });
     }
 
     function closeAll() {
+        clearTimeout(expandTimer);
+        accordion.classList.remove('gam-accordion--expanded');
         accordion.classList.remove('gam-accordion--open');
         accordion.hidden = true;
         panels.forEach(function (p) {
