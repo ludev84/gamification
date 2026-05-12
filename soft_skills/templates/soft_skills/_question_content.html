@@ -117,6 +117,10 @@
 {% endif %}
 
 {% if feedback %}
+{% if feedback.fresh and feedback.is_correct %}
+<!-- Marker consumed by the SPA controller in question.html to fire confetti + sound. -->
+<span class="correct-fx-trigger" hidden></span>
+{% endif %}
 {% if feedback.fresh and feedback.xp_earned %}
 <!-- Floating XP toast (brief animation on answer submit; suppressed on retries that earn nothing) -->
 <div class="xp-float {% if not feedback.is_correct %}xp-float--sm{% endif %}">
