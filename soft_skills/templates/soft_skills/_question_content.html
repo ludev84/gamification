@@ -153,9 +153,8 @@
             </div>
             {% endif %}
 
-            {% if feedback.streak_xp or feedback.lesson_complete_xp or feedback.module_complete_xp or feedback.new_badges %}
+            {% if feedback.lesson_complete_xp or feedback.module_complete_xp or feedback.new_badges %}
             <div class="fb-modal__extras">
-                {% if feedback.streak_xp > 0 %}<span class="xp-badge xp-streak">+{{ feedback.streak_xp }} XP racha</span>{% endif %}
                 {% if feedback.lesson_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.lesson_complete_xp }} XP lección</span>{% endif %}
                 {% if feedback.module_complete_xp > 0 %}<span class="xp-badge xp-module">+{{ feedback.module_complete_xp }} XP módulo</span>{% endif %}
                 {% for badge in feedback.new_badges %}<span class="badge-earned">{{ badge.icon }} {{ badge.name }}</span>{% endfor %}

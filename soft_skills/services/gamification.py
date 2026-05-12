@@ -13,8 +13,6 @@ XP_MODULE_STARTED = 30
 XP_LESSON_FINISHED = 15
 XP_MODULE_FINISHED = 50
 XP_HIGH_SCORE_BONUS = 25
-XP_STREAK_DAILY = 5
-XP_STREAK_WEEKLY = 15
 
 
 class GamificationService:
@@ -62,8 +60,6 @@ class GamificationService:
             activity.lessons_completed += 1
             activity.save()
 
-        streak_xp = 0
-
         if profile.last_activity_date is None or profile.last_activity_date < today:
             yesterday = today - timedelta(days=1)
 
@@ -77,17 +73,9 @@ class GamificationService:
             if profile.current_streak > profile.longest_streak:
                 profile.longest_streak = profile.current_streak
 
-            if profile.current_streak % 7 == 0:
-                streak_xp = XP_STREAK_WEEKLY
-            else:
-                streak_xp = XP_STREAK_DAILY
-
-            if streak_xp > 0:
-                profile.total_xp += streak_xp
-
             profile.save()
 
-        return profile.current_streak, streak_xp
+        return profile.current_streak
 
     @staticmethod
     def check_and_award_badges(user):

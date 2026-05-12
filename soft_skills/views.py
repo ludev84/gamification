@@ -267,7 +267,6 @@ def question_view(request, lesson_id, question_order):
             'selected_explanation': question.get_explanation(user_response.selected_answer),
             'correct_explanation': question.get_explanation(correct),
             'xp_earned': user_response.xp_earned,
-            'streak_xp': 0,
             'lesson_complete': False,
             'lesson_complete_xp': 0,
             'module_complete': False,
@@ -368,7 +367,6 @@ def submit_answer(request, lesson_id):
 
     # Check if lesson is now complete
     lesson_complete_xp = 0
-    streak_xp = 0
     module_complete_xp = 0
     lesson_completed = False
     module_completed = False
@@ -393,7 +391,7 @@ def submit_answer(request, lesson_id):
             )
 
             # Update streak on lesson completion
-            _, streak_xp = GamificationService.update_streak(request.user)
+            GamificationService.update_streak(request.user)
 
             # Check if all lessons in module are complete
             all_lessons = Lesson.objects.filter(module=module, is_published=True)
@@ -422,7 +420,7 @@ def submit_answer(request, lesson_id):
                 user_module_progress.save()
 
     # Update module xp_earned
-    total_xp_earned = response_xp + lesson_complete_xp + streak_xp + module_complete_xp
+    total_xp_earned = response_xp + lesson_complete_xp + module_complete_xp
     user_module_progress.xp_earned += total_xp_earned
     user_module_progress.save()
 
@@ -434,7 +432,6 @@ def submit_answer(request, lesson_id):
         'selected_answer': selected_answer,
         'selected_explanation': question.get_explanation(selected_answer),
         'xp_earned': response_xp,
-        'streak_xp': streak_xp,
         'lesson_complete': lesson_completed,
         'lesson_complete_xp': lesson_complete_xp,
         'module_complete': module_completed,
