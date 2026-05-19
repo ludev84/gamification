@@ -127,7 +127,7 @@ h2 { font-size: 1.35rem; }
 h3 { font-size: 1.1rem; }
 
 a { color: var(--terra); text-decoration: none; transition: color 0.2s; }
-a:hover { color: var(--terra-dark); }
+/* a:hover { color: var(--terra-dark); } */
 
 strong { font-weight: 600; }
 
