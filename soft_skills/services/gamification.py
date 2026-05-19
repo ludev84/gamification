@@ -47,6 +47,21 @@ class GamificationService:
         return xp
 
     @staticmethod
+    def get_current_streak(user):
+        """Return the live streak, zeroing it out if the gap since last activity is >1 day."""
+        profile = user.profile
+        if profile.current_streak == 0:
+            return 0
+
+        today = timezone.localdate()
+        yesterday = today - timedelta(days=1)
+        if profile.last_activity_date is None or profile.last_activity_date < yesterday:
+            profile.current_streak = 0
+            profile.save(update_fields=['current_streak'])
+
+        return profile.current_streak
+
+    @staticmethod
     def update_streak(user):
         """Update streak on lesson completion. Called when a lesson is finished."""
         today = timezone.localdate()

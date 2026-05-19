@@ -69,7 +69,7 @@ def dashboard(request):
     ).count()
 
     # --- Streak week strip: 7-day cycle showing where the user currently is ---
-    current_streak = profile.current_streak
+    current_streak = GamificationService.get_current_streak(request.user)
     if current_streak > 0:
         week_number = (current_streak - 1) // 7 + 1
         day_in_week = (current_streak - 1) % 7 + 1

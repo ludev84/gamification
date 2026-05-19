@@ -13,6 +13,7 @@ def gamification_context(request):
 
     level_info = GamificationService.get_level_info(request.user)
     badge_count = UserBadge.objects.filter(user=request.user).count()
+    GamificationService.get_current_streak(request.user)
 
     return {
         'gam_profile': profile,
