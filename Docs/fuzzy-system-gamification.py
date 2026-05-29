@@ -11,7 +11,7 @@ conscientiousness = ctrl.Antecedent(np.arange(0,101,1), 'conscientiousness')
 extraversion = ctrl.Antecedent(np.arange(0,101,1), 'extraversion')
 agreeableness = ctrl.Antecedent(np.arange(0,101,1), 'agreeableness')
 neuroticism = ctrl.Antecedent(np.arange(0,101,1), 'neuroticism')
-gamification = ctrl.Consequent(np.array([0, 1, 2, 3]), 'gamimfication')
+gamification = ctrl.Consequent(np.arange(0, 4, 0.01), 'gamification')
 
 # Membership functions
 openness['low'] = fuzz.trapmf(openness.universe, [0, 0, 25, 50])
@@ -34,11 +34,11 @@ neuroticism['low'] = fuzz.trapmf(neuroticism.universe, [0, 0, 25, 50])
 neuroticism['medium'] = fuzz.trimf(neuroticism.universe, [25, 50, 75])
 neuroticism['high'] = fuzz.trapmf(neuroticism.universe, [50, 75, 100, 100])
 
-# 2. Define singletons by providing the exact same coordinate for all 3 points
-gamification['none'] = [1.0, 0.0, 0.0, 0.0]  # Snaps to 0
-gamification['low'] = [0.0, 1.0, 0.0, 0.0]  # Snaps to 1
-gamification['medium'] = [0.0, 0.0, 1.0, 0.0]  # Snaps to 2
-gamification['high'] = [0.0, 0.0, 0.0, 1.0]  # Snaps to 3
+# Singletons: triángulos degenerados con los 3 puntos en la misma coordenada.
+gamification['none'] = fuzz.trimf(gamification.universe, [0, 0, 0])    # Snaps to 0
+gamification['low'] = fuzz.trimf(gamification.universe, [1, 1, 1])     # Snaps to 1
+gamification['medium'] = fuzz.trimf(gamification.universe, [2, 2, 2])  # Snaps to 2
+gamification['high'] = fuzz.trimf(gamification.universe, [3, 3, 3])    # Snaps to 3
 
 gamification.defuzzify_method = 'som'
 
@@ -60,4 +60,73 @@ gamification.defuzzify_method = 'som'
 # 9. SI Apertura es bajo Y Responsabilidad es alto Y Extraversión es bajo Y Amabilidad es cualquiera Y Neuroticismo es alto, ENTONCES el nivel de gamificación apropiado es nulo.
 # 10. SI Apertura es medio Y Responsabilidad es medio Y Extraversión es medio Y Amabilidad es alto Y Neuroticismo es medio, ENTONCES el nivel de gamificación apropiado es medio.
 
-psic1_rule1 = ctrl.Rule(openness[''])
+# Antecedentes marcados como "cualquiera" se omiten de la regla (no restringen).
+
+# Psicólogo 1
+psic1_rule1 = ctrl.Rule(
+    openness['high'] & extraversion['medium'] & neuroticism['medium'],
+    gamification['high'])
+psic1_rule2 = ctrl.Rule(
+    openness['low'] & extraversion['high'] & agreeableness['low'] & neuroticism['high'],
+    gamification['low'])
+psic1_rule3 = ctrl.Rule(
+    openness['medium'] & conscientiousness['medium'] & agreeableness['medium'] & neuroticism['medium'],
+    gamification['medium'])
+psic1_rule4 = ctrl.Rule(
+    openness['low'] & extraversion['high'] & neuroticism['high'],
+    gamification['none'])
+psic1_rule5 = ctrl.Rule(
+    conscientiousness['high'] & extraversion['medium'] & neuroticism['low'],
+    gamification['medium'])
+
+# Psicólogo 2
+psic2_rule1 = ctrl.Rule(
+    openness['high'] & conscientiousness['medium'] & extraversion['high'] & neuroticism['low'],
+    gamification['high'])
+psic2_rule2 = ctrl.Rule(
+    conscientiousness['high'] & neuroticism['low'],
+    gamification['medium'])
+psic2_rule3 = ctrl.Rule(
+    extraversion['low'] & neuroticism['high'],
+    gamification['low'])
+psic2_rule4 = ctrl.Rule(
+    openness['low'] & conscientiousness['high'] & extraversion['low'] & neuroticism['high'],
+    gamification['none'])
+psic2_rule5 = ctrl.Rule(
+    openness['medium'] & conscientiousness['medium'] & extraversion['medium'] & agreeableness['high'] & neuroticism['medium'],
+    gamification['medium'])
+
+rules = [
+    psic1_rule1, psic1_rule2, psic1_rule3, psic1_rule4, psic1_rule5,
+    psic2_rule1, psic2_rule2, psic2_rule3, psic2_rule4, psic2_rule5,
+]
+
+# Control system
+gamification_ctrl = ctrl.ControlSystem(rules)
+gamification_sim = ctrl.ControlSystemSimulation(gamification_ctrl)
+
+
+def compute_gamification_level(openness_score, conscientiousness_score,
+                               extraversion_score, agreeableness_score,
+                               neuroticism_score):
+    """Computa el nivel de gamificación (0=nulo, 1=bajo, 2=medio, 3=alto)
+    a partir de los cinco rasgos de personalidad (escala 0-100)."""
+    gamification_sim.input['openness'] = openness_score
+    gamification_sim.input['conscientiousness'] = conscientiousness_score
+    gamification_sim.input['extraversion'] = extraversion_score
+    gamification_sim.input['agreeableness'] = agreeableness_score
+    gamification_sim.input['neuroticism'] = neuroticism_score
+    gamification_sim.compute()
+    return gamification_sim.output['gamification']
+
+
+if __name__ == '__main__':
+    # Ejemplo de uso
+    level = compute_gamification_level(
+        openness_score=80,
+        conscientiousness_score=50,
+        extraversion_score=60,
+        agreeableness_score=50,
+        neuroticism_score=50,
+    )
+    print(f"Nivel de gamificación: {level}")
