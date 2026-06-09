@@ -1961,9 +1961,12 @@ details[open] .review-chevron {
     color: var(--white);
 }
 
-.fb-modal--correct .fb-modal__header,
-.fb-modal--incorrect .fb-modal__header {
+.fb-modal--correct .fb-modal__header {
     background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+}
+
+.fb-modal--incorrect .fb-modal__header {
+    background: linear-gradient(135deg, #64748B, var(--text-mid));
 }
 
 .fb-modal__heading {
@@ -2020,6 +2023,16 @@ details[open] .review-chevron {
     color: var(--teal-dark);
 }
 
+/* Incorrect state — neutral gray accent instead of bright red, mirroring the correct layout */
+.fb-modal--incorrect .fb-modal__check {
+    background: var(--cream-dark);
+    color: var(--text-mid);
+}
+
+.fb-modal--incorrect .fb-modal__title {
+    color: var(--text-mid);
+}
+
 .fb-modal__text {
     font-size: 0.95rem;
     color: var(--text-mid);
@@ -2060,6 +2073,11 @@ details[open] .review-chevron {
     letter-spacing: -0.01em;
     box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25);
     animation: pulse 0.6s ease 0.7s both;
+}
+
+.fb-modal--incorrect .fb-modal__xp {
+    background: linear-gradient(135deg, #64748B, var(--text-mid));
+    box-shadow: 0 6px 20px rgba(71, 85, 105, 0.25);
 }
 
 .fb-modal__extras {

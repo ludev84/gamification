@@ -145,6 +145,10 @@
             <p class="fb-modal__text">{{ feedback.correct_explanation|linebreaksbr }}</p>
             {% endif %}
             {% else %}
+            <div class="fb-modal__result">
+                <div class="fb-modal__check">&#10005;</div>
+                <div class="fb-modal__title">Incorrecto</div>
+            </div>
             {% if feedback.selected_explanation %}
             <p class="fb-modal__text">{{ feedback.selected_explanation|linebreaksbr }}</p>
             {% endif %}
