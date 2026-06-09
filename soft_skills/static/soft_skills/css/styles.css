@@ -1811,25 +1811,35 @@ details[open] .review-chevron {
 
 /* Expandable info bubble */
 .duo-bubble {
+    /* display:none (not just visibility:hidden) so a closed bubble doesn't keep its
+       layout box — otherwise the last node's hanging bubble extends the page's scroll
+       height below the footer, leaving a strip of background under it on the module view. */
+    display: none;
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translateX(-50%);
     margin-top: 2.2rem;
     width: 260px;
     z-index: 50;
     opacity: 0;
-    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.2s, transform 0.2s;
     transform: translateX(-50%) translateY(8px);
+    transition: opacity 0.2s, transform 0.2s, display 0.2s allow-discrete;
 }
 
 .duo-bubble--open {
+    display: block;
     opacity: 1;
-    visibility: visible;
     pointer-events: auto;
     transform: translateX(-50%) translateY(0);
+}
+
+/* Animate in from the closed state on browsers that support @starting-style. */
+@starting-style {
+    .duo-bubble--open {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px);
+    }
 }
 
 .duo-bubble__arrow {
