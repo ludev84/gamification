@@ -160,13 +160,6 @@ def module_view(request, module_id):
     # Check user has access (assigned by admin)
     user_progress = get_object_or_404(UserModuleProgress, user=request.user, module=module)
 
-    # Award module start XP on first visit
-    if not user_progress.is_started:
-        user_progress.is_started = True
-        user_progress.started_at = timezone.now()
-        user_progress.save()
-        GamificationService.award_module_start_xp(request.user)
-
     lessons = Lesson.objects.filter(module=module, is_published=True).order_by('order')
 
     # Build lesson data with unlock status and progress
@@ -313,6 +306,15 @@ def submit_answer(request, lesson_id):
     # Check access
     user_module_progress = get_object_or_404(UserModuleProgress, user=request.user, module=module)
 
+    # Mark the module as started (and award start XP) on the user's first answer,
+    # not when they merely open the module.
+    module_start_xp = 0
+    if not user_module_progress.is_started:
+        user_module_progress.is_started = True
+        user_module_progress.started_at = timezone.now()
+        user_module_progress.save(update_fields=['is_started', 'started_at'])
+        module_start_xp = GamificationService.award_module_start_xp(request.user)
+
     question_id = request.POST.get('question_id')
     selected_answer = request.POST.get('selected_answer', '').upper()
     question_order = int(request.POST.get('question_order', 1))
@@ -422,7 +424,7 @@ def submit_answer(request, lesson_id):
                 user_module_progress.save()
 
     # Update module xp_earned
-    total_xp_earned = response_xp + lesson_complete_xp + module_complete_xp
+    total_xp_earned = module_start_xp + response_xp + lesson_complete_xp + module_complete_xp
     user_module_progress.xp_earned += total_xp_earned
     user_module_progress.save()
 
