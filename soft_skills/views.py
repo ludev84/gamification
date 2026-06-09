@@ -105,6 +105,7 @@ def dashboard(request):
         ub.badge_id: ub.earned_at
         for ub in UserBadge.objects.filter(user=request.user)
     }
+    assigned_module_id_set = set(assigned_module_ids)
     all_badges_with_status = [
         {
             'badge': b,
@@ -112,6 +113,7 @@ def dashboard(request):
             'earned_at': earned_map.get(b.id),
         }
         for b in Badge.objects.all().order_by('name')
+        if b.condition_module_id is None or b.condition_module_id in assigned_module_id_set
     ]
 
     # --- Level breakdown for the flip-back of the Level card ---
