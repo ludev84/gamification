@@ -1,0 +1,162 @@
+[
+  {
+    "id": "pregunta_1",
+    "type": "multiple_choice",
+    "scenario": "Tu compañero de cuarto, Liam, acaba de terminar una videollamada con su familia. Usualmente es alegre, pero ahora está callado y mirando fijamente la pantalla de su computadora. Cuando le preguntas si está bien, se encoge de hombros y dice: \"Estoy bien, solo cansado\". Sin embargo, se pasa la mano por el cabello repetidamente, un hábito que has notado que tiene cuando está estresado. Menciona que sus padres le hicieron muchas preguntas sobre sus calificaciones y sus planes para una pasantía de verano, la cual aún no ha conseguido. Luego, cambia rápidamente de tema para preguntarte qué quieres para cenar.",
+    "question": "Dadas sus señales verbales y no verbales, ¿cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Se nota que la llamada te dejó muy estresado. Sentir toda esa presión por las calificaciones y la pasantía debe ser bastante agobiante\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta reconoce la diferencia entre lo que Liam dice y lo que hace. Identifica sus sentimientos probables (estrés, agobio) y los conecta con lo que los causó (la presión familiar), demostrando que entiendes su punto de vista de una manera natural."
+      },
+      {
+        "id": "B",
+        "text": "\"Bueno, todavía tienes tiempo para encontrar una pasantía. Podemos buscar algunas ofertas en línea esta noche si quieres. Hagamos un plan\".",
+        "isCorrect": false,
+        "feedback": "Ofrece una solución inmediata (un consejo) sin primero reconocer o validar los sentimientos de presión y estrés de Liam."
+      },
+      {
+        "id": "C",
+        "text": "\"No deberías dejar que te afecten tanto. Es algo común en los padres y las madres; se preocupan. Solo necesitas enfocarte en lo que puedes controlar\".",
+        "isCorrect": false,
+        "feedback": "Es evaluativa y desdeñosa, diciéndole a Liam cómo debería sentirse (\"No deberías dejar que te afecten\") en lugar de aceptar su estado emocional actual."
+      },
+      {
+        "id": "D",
+        "text": "\"Tuve una llamada así con mi familia el mes pasado. Me estuvieron molestando sobre mi carrera durante casi una hora. Es súper molesto\".",
+        "isCorrect": false,
+        "feedback": "Cambia el enfoque a tu propia experiencia, lo que podría hacer que Liam sienta que su situación no está siendo escuchada en sus propios términos."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_2",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga, Chloe, estaba emocionada por postularse para un puesto en el gobierno estudiantil. Pasó semanas haciendo campaña y preparando su discurso. Después de que se anuncian los resultados, la encuentras sentada sola, con aspecto desanimado. Te dice: \"No puedo creer que perdí. Realmente pensé que tenía una oportunidad. Me siento tan estúpida por pensar que podría ganar, y ahora tengo que enfrentar a todo el mundo. Es tan vergonzoso. Puse todo mi esfuerzo en esto, y no fue suficiente. No creo que vuelva a intentar algo así\". Intenta contener las lágrimas, pero su voz tiembla.",
+    "question": "¿Cuál es la respuesta más empática para Chloe?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Lo siento mucho, Chloe. Ponerle tanto esfuerzo a la campaña para que no funcionara debe ser muy doloroso y decepcionante. Entiendo que te sientas expuesta y derrotada\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta refleja con precisión sus emociones clave (dolor, decepción) y las conecta con la experiencia de haberlo dado todo en la campaña. Valida la intensidad de sus sentimientos sin juzgarla, creando un espacio para que se sienta comprendida."
+      },
+      {
+        "id": "B",
+        "text": "\"¡No digas que nunca lo volverás a intentar! La persona que ganó tenía más experiencia. Solo necesitas mejorar un poco tu currículum para el próximo año\".",
+        "isCorrect": false,
+        "feedback": "Salta inmediatamente a la resolución de problemas para el futuro y ofrece una interpretación (\"tenía más experiencia\") en lugar de acompañar a Chloe en su dolor presente."
+      },
+      {
+        "id": "C",
+        "text": "\"A la larga no es para tanto. La mayoría de la gente ya se olvidó de la elección. No deberías sentirte avergonzada\".",
+        "isCorrect": false,
+        "feedback": "Minimiza sus sentimientos (\"no es para tanto\") y le dice cómo debería sentirse, lo que puede parecer desdeñoso."
+      },
+      {
+        "id": "D",
+        "text": "\"Al menos tuviste el valor de postularte. Eso es más de lo que la mayoría de la gente puede decir. Deberías estar orgullosa de ti misma por intentarlo\".",
+        "isCorrect": false,
+        "feedback": "Aunque pretende ser alentadora, ignora sus sentimientos actuales de dolor y vergüenza para imponer un \"giro positivo\", lo que puede sentirse invalidante."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_3",
+    "type": "multiple_choice",
+    "scenario": "Estás trabajando en un informe de laboratorio con un compañero de clase, Kenji. Parece distraído y comete errores que no son habituales en él. Le preguntas qué le pasa, y te explica que su abuelo en Japón está muy enfermo. Dice: \"Me siento tan impotente estando tan lejos. Mi familia me dice que no me preocupe y que me concentre en mis estudios, pero ¿cómo puedo hacerlo? Me siento culpable por no estar allí. No puedo concentrarme en este informe, pero también me siento culpable por dejar que mis calificaciones bajen. Siento que haga lo que haga, está mal\".",
+    "question": "¿Qué respuesta demuestra mejor la empatía por la situación de Kenji?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Sé cómo te sientes. Mi abuela estuvo enferma hace unos años y recuerdo lo difícil que era estudiar. Es una situación muy dura, sin duda\".",
+        "isCorrect": false,
+        "feedback": "Hace que la conversación gire en torno a tu propia experiencia. Aunque puede ser relatable, desvía el enfoque de los sentimientos y la situación únicos de Kenji."
+      },
+      {
+        "id": "B",
+        "text": "\"Necesitas compartimentar. Tu familia tiene razón, no hay nada que puedas hacer desde aquí, así que preocuparte no ayudará a tu abuelo ni a tus calificaciones\".",
+        "isCorrect": false,
+        "feedback": "Da un consejo y descarta su respuesta emocional como improductiva (\"preocuparte no ayudará\"), ignorando la profundidad de sus sentimientos."
+      },
+      {
+        "id": "C",
+        "text": "\"Qué situación tan complicada. Te sientes dividido y con ansiedad porque estás atrapado entre la responsabilidad con tu familia y con la universidad\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta captura el conflicto central que Kenji está viviendo: sentirse dividido entre dos responsabilidades importantes. Nombra sus emociones (ansiedad, sentirse dividido) y la causa (familia vs. universidad), mostrando que entiendes la complejidad de su lucha sin juzgar ni aconsejar."
+      },
+      {
+        "id": "D",
+        "text": "\"Pareces muy triste por tu abuelo. Estoy seguro de que él querría que te fuera bien en la escuela, así que deberías honrarlo concentrándote en tu trabajo\".",
+        "isCorrect": false,
+        "feedback": "Hace una suposición sobre lo que su abuelo querría y lo usa para presionarlo a tomar una acción específica, en lugar de simplemente comprender sus sentimientos presentes."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_4",
+    "type": "multiple_choice",
+    "scenario": "Sarah, una estudiante de primer año de un pueblo pequeño, te cuenta que le está costando adaptarse a la universidad en una gran ciudad. \"Es tan diferente aquí\", dice, evitando el contacto visual. \"Parece que todo el mundo ya tiene sus grupos de amistades. Intento hablar con la gente en mis clases, pero siento que no encajo. Extraño a mi familia y a mis amistades de casa. Me siento tan sola y fuera de lugar todo el tiempo. Pensé que la universidad sería una aventura increíble, pero la mayoría de los días solo quiero hacer las maletas y volver a casa\".",
+    "question": "¿Cuál es la respuesta más empática para Sarah?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Lleva tiempo adaptarse. Solo necesitas unirte a algunos clubes y exponerte más. Ya encontrarás a tu gente\".",
+        "isCorrect": false,
+        "feedback": "Salta a dar consejos (\"únete a algunos clubes\") antes de reconocer plenamente el dolor y la soledad que siente actualmente."
+      },
+      {
+        "id": "B",
+        "text": "\"Te sientes desanimada y sola porque la universidad no resultó ser la aventura que esperabas, y esa sensación de no encajar te hace extrañar mucho la comodidad de tu casa\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta demuestra una profunda comprensión de la situación de Sarah al identificar sus sentimientos centrales (desánimo, soledad) y las razones subyacentes: la diferencia entre sus expectativas y la realidad. Valida sus sentimientos de soledad y su deseo de volver a casa sin ser crítica."
+      },
+      {
+        "id": "C",
+        "text": "\"Creo que estás siendo un poco demasiado negativa. La universidad es lo que tú haces de ella. Si tienes una mala actitud, no harás amistades\".",
+        "isCorrect": false,
+        "feedback": "Es evaluativa y crítica, juzgando su perspectiva (\"demasiado negativa\") y culpándola por su situación."
+      },
+      {
+        "id": "D",
+        "text": "\"Mucha gente de primer año se siente así. Es una experiencia bastante común, así que no te preocupes demasiado. Todo mejora\".",
+        "isCorrect": false,
+        "feedback": "Utiliza un cliché (\"Mucha gente se siente así\") que minimiza su experiencia personal y dolorosa, lo que podría hacerla sentir ignorada."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_5",
+    "type": "multiple_choice",
+    "scenario": "Tu amigo David es un artista talentoso pero está estudiando pre-medicina para cumplir con las expectativas de sus padres. Acaba de recibir una calificación baja en un examen parcial de química. Se deja caer en una silla y dice: \"Pasé semanas estudiando para este examen y aun así apenas lo aprobé. Odio esta materia. Cada hora que paso en la biblioteca se siente como una pérdida de tiempo. Mis padres estarían tan decepcionados si lo supieran. Me siento como un fracaso como estudiante de pre-medicina y un fraude por no querer esto en primer lugar. Ojalá pudiera dejarlo todo e ir a la escuela de arte\".",
+    "question": "¿Cuál es la respuesta más solidaria y comprensiva para David?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"No es demasiado tarde para cambiarte a arte. Deberías hablar con tus padres sobre lo que realmente quieres. Tu felicidad es lo más importante\".",
+        "isCorrect": false,
+        "feedback": "Ofrece un consejo que cambia la vida de inmediato, lo cual puede ser abrumador y pasa por alto la necesidad de simplemente comprender sus sentimientos actuales de fracaso y conflicto."
+      },
+      {
+        "id": "B",
+        "text": "\"La química es difícil para mucha gente. Tal vez solo necesitas un nuevo método de estudio o un tutor. No te rindas con pre-medicina solo por una mala calificación\".",
+        "isCorrect": false,
+        "feedback": "Se enfoca solo en el problema superficial (la calificación) y ofrece soluciones prácticas, ignorando la crisis emocional más profunda que David está revelando."
+      },
+      {
+        "id": "C",
+        "text": "\"Entiendo que te sientas totalmente desanimado. No es solo por la calificación, sino por todo el conflicto que tienes con la carrera, y eso hace que este tropiezo se sienta mucho más pesado\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta captura las múltiples capas de la angustia de David. Conecta su sentimiento de desánimo no solo con el evento (la mala calificación), sino con el conflicto interno más grande sobre su carrera, demostrando que escuchas el mensaje central sobre sentirse como un \"fraude\"."
+      },
+      {
+        "id": "D",
+        "text": "\"No eres un fracaso. Estás siendo demasiado duro contigo mismo. A mucha gente en la universidad le pasa a veces, es parte del proceso de aprendizaje\".",
+        "isCorrect": false,
+        "feedback": "Aunque intenta ser tranquilizadora, descarta su sentimiento de ser un fracaso con un cliché (\"a mucha gente le pasa\"), lo que puede sentirse invalidante."
+      }
+    ]
+  }
+]

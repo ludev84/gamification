@@ -1,0 +1,162 @@
+[
+  {
+    "id": "pregunta_1",
+    "type": "multiple_choice",
+    "scenario": "Te encuentras con una amiga, Sara, que se graduó el semestre pasado. \"Honestamente, no va muy bien\", dice. \"Todos en mi clase están consiguiendo estos trabajos increíbles o comenzando la escuela de posgrado. He enviado docenas de solicitudes y solo he tenido una entrevista, y luego desaparecieron. Pensé que estaría comenzando mi carrera, pero en lugar de eso, estoy de vuelta en mi habitación de la infancia. Me siento como un fracaso total. Estoy empezando a pensar que mi título fue una pérdida de tiempo\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"¿Has intentado hacer networking en LinkedIn? También deberías pedirle a alguien que revise tu currículum. Ese es probablemente el problema\".",
+        "isCorrect": false,
+        "feedback": "Esto es un consejo. Inmediatamente salta a solucionar el problema (LinkedIn, currículum) sin validar sus sentimientos."
+      },
+      {
+        "id": "B",
+        "text": "\"El mercado laboral está muy difícil en este momento. Solo has estado buscando durante unos meses, así que no puedes rendirte\".",
+        "isCorrect": false,
+        "feedback": "Esto es un cliché (\"el mercado laboral está difícil\") que minimiza sus sentimientos personales de fracaso al convertirlo en un problema general."
+      },
+      {
+        "id": "C",
+        "text": "\"Qué desalentador. Esperabas ya estar trabajando en lo tuyo, pero sigues atorada en el mismo punto, aplicando sin éxito. Normal que te haga dudar de todo y sentirte mal.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta refleja con precisión el desánimo de Sara (\"desalentador\", \"dudar de todo\") y lo conecta con la brecha entre sus expectativas (estar trabajando) y su realidad actual (estar atorada)."
+      },
+      {
+        "id": "D",
+        "text": "\"¿A qué tipo de trabajos estás aplicando? Quizás estás apuntando demasiado alto para un puesto de nivel inicial\".",
+        "isCorrect": false,
+        "feedback": "Esta es una pregunta centrada en hechos que implica sutilmente que ella tiene la culpa (\"apuntando demasiado alto\"), lo cual es evaluativo."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_2",
+    "type": "multiple_choice",
+    "scenario": "Eres pareja con Liam para un debate en clase. Parece callado y golpea su bolígrafo rápidamente. Le preguntas si está bien. \"No lo sé\", dice. \"Estoy muy nervioso. No soy bueno hablando en público. Mi mente siempre se queda en blanco y sé que voy a tropezar con las palabras y sonar estúpido. Me preocupa arruinar esto para ambos. Preferiría sacar un cero en la tarea que hacer esto\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"No te preocupes por eso. Hablar en público es fácil. Solo imagina a todos en ropa interior. Estarás bien\".",
+        "isCorrect": false,
+        "feedback": "Este es un cliché despectivo (\"fácil\", \"estarás bien\"). Invalida por completo su miedo genuino al decirle que es \"fácil\"."
+      },
+      {
+        "id": "B",
+        "text": "\"Bueno, realmente necesito una buena nota en esto, así que por favor no te eches para atrás. Simplemente lee las tarjetas si es necesario\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta es egocéntrica. Ignora la ansiedad de Liam y se enfoca en la propia necesidad del hablante de obtener una buena nota."
+      },
+      {
+        "id": "C",
+        "text": "\"Oh no, me siento tan mal de que estés tan nervioso. Puedo tomar la primera parte del discurso si eso te hace sentir mejor\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía que inmediatamente salta a una solución. Puede ser útil, pero no es empático, ya que primero no busca comprender su experiencia."
+      },
+      {
+        "id": "D",
+        "text": "\"Uf, te tiene súper estresado. Te da pánico que te vuelva a pasar lo de quedarte en blanco y estás convencido de que vas a fallar y arruinarlo. Sientes un montón de presión.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta nombra el estrés de Liam (\"súper estresado\") e identifica con precisión la fuente: su miedo a repetir fracasos pasados (\"pánico que te vuelva a pasar\") y la presión de decepcionarte."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_3",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga Chloe está molesta después de salir de la oficina de una profesora. \"Fui a pedir una prórroga para el ensayo\", dice, con la voz tensa. \"Le dije que estaba teniendo dificultades porque mi abuela estaba enferma, y ella solo dijo: 'Todos y todas tienen las mismas fechas límite'. Ni siquiera me miró. Sentí como si me estuviera acusando de mentir, como si pensara que solo soy otra estudiante perezosa inventando excusas. ¡Y no lo soy! Estoy realmente preocupada por mi abuela, y me sentí tan... ignorada\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Qué horrible. Fuiste a hablar con ella sintiéndote mal y preocupada por tu abuela, y te cortó en seco. Debiste sentirte fatal, como si te tratara de mentirosa en lugar de entenderte.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta captura el núcleo de la experiencia de Chloe: el dolor de ser ignorada (\"te cortó en seco\") y sentirse acusada (\"tratarte de mentirosa\") cuando ya estaba vulnerable."
+      },
+      {
+        "id": "B",
+        "text": "\"Vaya, qué persona tan horrible. No tiene nada de compasión. No puedo creer que te tratara así\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía. Se pone de acuerdo con Chloe juzgando a la profesora, en lugar de centrarse en comprender el sentimiento de Chloe de ser \"ignorada\"."
+      },
+      {
+        "id": "C",
+        "text": "\"Bueno, para ser justos, el profesorado escucha muchas excusas. ¿Llevaste una nota médica de tu abuela?\"",
+        "isCorrect": false,
+        "feedback": "Esto es evaluativo. Toma el \"lado\" de la profesora (menciona que \"el profesorado escucha muchas excusas\") e implica que Chloe estaba equivocada por no tener \"pruebas\"."
+      },
+      {
+        "id": "D",
+        "text": "\"Eso es terrible. Deberías ir directamente al Decanato de Estudiantes. Tienen que ayudarte por una emergencia familiar\".",
+        "isCorrect": false,
+        "feedback": "Esto es un consejo. Se apresura a una solución (ir al Decanato) sin reconocer el impacto emocional de la interacción."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_4",
+    "type": "multiple_choice",
+    "scenario": "Notas que tu compañero de laboratorio, Sam, ha estado callado durante la última semana. Has estado con mil cosas y no han hablado mucho. Finalmente le preguntas qué le pasa. \"No es nada\", dice, encogiéndose de hombros. \"Es solo que... vi que tú y el resto del grupo de nuestro antiguo proyecto salieron a una noche de trivia. Supongo que yo solo... no lo sé. Está bien. Solo me sorprendió que no me invitaran. Pensé que todos éramos amigos\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"¿Quién lo organizó? Yo solo me uní. Ni siquiera sabía que te gustaba el trivia\".",
+        "isCorrect": false,
+        "feedback": "Esto está centrado en hechos y es defensivo. Desvía la responsabilidad y omite el punto emocional de su declaración."
+      },
+      {
+        "id": "B",
+        "text": "\"Oh, fue algo de último minuto. No te dejamos fuera intencionalmente. No deberías tomarlo tan personal\".",
+        "isCorrect": false,
+        "feedback": "Esto es defensivo y despectivo (\"no lo tomes tan personal\"). Invalida su derecho a sentirse herido."
+      },
+      {
+        "id": "C",
+        "text": "\"¡Oh no, me siento tan mal! Debería haberte invitado. Fue muy desconsiderado de mi parte. Lo siento mucho, Sam\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta se enfoca en tu propia culpa (\"me siento tan mal\", \"desconsiderado de mi parte\") en lugar de comprender primero la experiencia de Sam."
+      },
+      {
+        "id": "D",
+        "text": "\"Ah, ya entiendo. Te dolió vernos a todos juntos porque sentiste que te dejamos fuera a propósito, especialmente cuando pensabas que éramos todos amigos.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta identifica correctamente el dolor de Sam (\"te dolió\") y lo conecta con su perspectiva: sentirse excluido de un grupo del que se consideraba parte."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_5",
+    "type": "multiple_choice",
+    "scenario": "Tu amigo, Amir, está en una clase de ética obligatoria. \"Realmente estoy batallando con esta clase\", te dice. \"Estábamos debatiendo un caso hoy, y compartí mi perspectiva, que está arraigada en mi fe. Algunas personas me callaron de inmediato, y una persona incluso dijo que mi punto de vista era 'anticuado e intolerante'. Simplemente me cerré. Siento que mis valores fundamentales no son bienvenidos en un espacio académico. Ya no me siento seguro para hablar allí\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Eso es horrible. Esas y esos estudiantes son tan intolerantes. Es elitismo académico no respetar los argumentos basados en la fe\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía. Está de acuerdo con Amir y ataca a \"esas y esos estudiantes\", lo cual es una forma de colusión."
+      },
+      {
+        "id": "B",
+        "text": "\"Qué mal plan. Compartiste algo que es personal e importante para ti y sentiste que te atacaron. Ahora sientes que tu opinión no es válida o que no encaja en la clase.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida el dolor de la experiencia (\"Qué mal plan\") y lo conecta con su sentimiento de ser atacado por compartir sus valores (\"tu opinión no es válida o no encaja\")."
+      },
+      {
+        "id": "C",
+        "text": "\"Bueno, la universidad se trata de escuchar ideas desafiantes. Solo tienes que desarrollar una piel más gruesa sobre estas cosas\".",
+        "isCorrect": false,
+        "feedback": "Este es un cliché despectivo (\"piel más gruesa\"). Invalida sus sentimientos al sugerir que simplemente es demasiado sensible."
+      },
+      {
+        "id": "D",
+        "text": "\"Esa es una situación difícil, pero en una clase de ética, tienes que estar preparado para defender tus puntos de vista lógicamente, no solo con la fe\".",
+        "isCorrect": false,
+        "feedback": "Esto es evaluativo y da un consejo. Critica el enfoque de Amir en lugar de comprender su sentimiento de haber sido atacado."
+      }
+    ]
+  }
+]

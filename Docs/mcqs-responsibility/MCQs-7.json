@@ -1,0 +1,194 @@
+[
+  {
+    "id": "pregunta_1",
+    "type": "multiple_choice",
+    "scenario": "Tu compañero de suite, Kevin, está en el equipo de fútbol. Después de un partido importante, tira su bolso al suelo. Ha sido el portero titular toda la temporada, pero el entrenador lo dejó en la banca para la final. El equipo perdió. Kevin dice: \"No puedo creerlo. Me senté en la banca y vi cómo perdíamos. Sé que podría haber parado ese último gol. Siento que el entrenador no tiene fe en mí. El trabajo de toda mi temporada ahora parece no tener sentido. Me siento tan enojado e inútil\".",
+    "question": "¿Cuál es la respuesta más empática para Kevin?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Qué coraje que te hayan dejado en la banca justo en el partido más importante. Se siente una mezcla de enojo con el entrenador y la impotencia de ver todo desde fuera, sabiendo que podías haber ayudado\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta usa un lenguaje conversacional (\"qué coraje\") para identificar y validar la mezcla de enojo e impotencia que siente Kevin, mostrando que entiendes su perspectiva."
+      },
+      {
+        "id": "B",
+        "text": "\"¿Por qué crees que el entrenador hizo eso? ¿Tuviste una mala semana de práctica o algo? Debe haber habido una razón\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta lo pone a la defensiva al cuestionar la situación en lugar de aceptar y comprender su perspectiva."
+      },
+      {
+        "id": "C",
+        "text": "\"Tu entrenador es un idiota. Regaló el partido por completo. Eres el mejor portero que tienen, y esa fue una decisión terrible\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía y acuerdo. Valida su enojo pero no busca comprender sus sentimientos más profundos de inutilidad y falta de sentido."
+      },
+      {
+        "id": "D",
+        "text": "\"No dejes que esto te desanime. Solo tienes que trabajar aún más duro en la pretemporada para demostrarle que cometió un error\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta ignora el dolor actual e inmediatamente se enfoca en una solución futura, lo cual es una forma de dar consejos."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_2",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga, Jazmín, había estado planeando con entusiasmo un viaje de fin de semana para visitar a sus amistades de la preparatoria en otra universidad. La mañana en que se supone que debe irse, recibe un mensaje diciendo que tienen que cancelar. Se deja caer en el sofá y dice: \"Cancelaron. Un 'conflicto de agenda'. Compré un boleto de autobús no reembolsable y rechacé un lugar en un viaje con nuestras amistades de aquí. Me siento tan tonta y poco importante para ellos. Quizás simplemente no querían que fuera y esta es una excusa\".",
+    "question": "¿Cuál es la respuesta más empática para Jazmín?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Uf, qué decepción. Se siente horrible que te cancelen así a último momento. Entiendo que te sientas tonta y poco valorada, no solo por el plan fallido, sino porque te hace dudar si de verdad les importas\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta comienza con una expresión genuina de empatía (\"Uf, qué decepción\") y conecta la situación con el sentimiento más profundo de sentirse poco valorada, mostrando que entiendes el verdadero origen de su dolor."
+      },
+      {
+        "id": "B",
+        "text": "\"Bueno, ya que estás libre, ¡quizás podamos planear algo divertido para hacer este fin de semana aquí! Todavía podría ser un gran fin de semana\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta intenta \"arreglar\" el problema reemplazando el plan, lo que omite su necesidad de sentirse escuchada y comprendida en su decepción."
+      },
+      {
+        "id": "C",
+        "text": "\"¡No puedo creer que hayan hecho eso! Es muy irrespetuoso y desconsiderado. Son amistades terribles por cancelarte a último minuto de esa manera\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta es pura simpatía; se alinea con su enojo contra sus amistades pero no reconoce completamente sus sentimientos más vulnerables de sentirse tonta y dudar de sí misma."
+      },
+      {
+        "id": "D",
+        "text": "\"¿Estás segura de que fue una excusa? Quizás realmente surgió algo serio. Parece un poco precipitado asumir que lo hicieron a propósito\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta desafía su percepción del evento en lugar de tratar de entender cómo se siente desde su punto de vista."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_3",
+    "type": "multiple_choice",
+    "scenario": "Tu compañero de clase, Alex, parece visiblemente angustiado después de una reunión de grupo para un proyecto importante. Te dice: \"Siento que mis ideas siempre son rechazadas antes de que pueda terminar de explicarlas. Sé que no soy la persona más extrovertida, pero investigué y siento que tengo buenas ideas. Ahora ya ni siquiera quiero hablar. Siento que mi contribución no le importa al grupo y estoy empezando a pensar que quizás mis ideas son simplemente malas. Me siento completamente desmoralizado\".",
+    "question": "¿Cuál es la respuesta más empática para Alex?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Qué frustrante. Sientes que no te valoran nada, sobre todo con todo el trabajo que le metiste. Normal que ahora no te den ganas de proponer nada\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida la frustración de Alex y la conecta con su experiencia. Demuestra que entiendes su punto de vista sin juzgar ni dar consejos que no te ha pedido."
+      },
+      {
+        "id": "B",
+        "text": "\"Necesitas ser más asertivo en la próxima reunión. Simplemente interrúmpelos si es necesario y haz que escuchen lo que tienes que decir\".",
+        "isCorrect": false,
+        "feedback": "Esto es dar consejos. Se apresura a una solución sin primero reconocer o explorar los sentimientos de Alex de sentirse desmoralizado y subestimado."
+      },
+      {
+        "id": "C",
+        "text": "\"Bueno, algunos proyectos en grupo son así. Solo tienes que seguir adelante y hacer el trabajo. La calificación es lo que importa al final\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta es un cliché que ignora la experiencia personal de Alex al generalizarla. Minimiza sus sentimientos al centrarse solo en el resultado (la calificación)."
+      },
+      {
+        "id": "D",
+        "text": "\"¿Cuáles eran tus ideas? Quizás pueda decirte si eran buenas o no. A veces es difícil juzgar tu propio trabajo\".",
+        "isCorrect": false,
+        "feedback": "Esto es una escucha centrada en los hechos. Ignora el núcleo emocional del problema (sentirse no escuchado) y en su lugar pasa a evaluar el contenido de sus ideas."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_4",
+    "type": "multiple_choice",
+    "scenario": "Tu compañera de cuarto, Priya, acaba de terminar una tensa llamada telefónica con sus padres. En silencio, comienza a limpiar la cocina, frotando las encimeras con una fuerza inusual. Notas que tiene la mandíbula apretada. Cuando le preguntas si está bien, dice secamente: \"Estoy bien\". Sin embargo, unos minutos después suspira profundamente y dice: \"Están decepcionados de que saqué una B en química orgánica. Dijeron que están sacrificando mucho por mi matrícula y que esperan algo mejor. Estudié mucho para esa clase y una B es una buena nota, pero siento que no es suficiente. Siento tanta presión\".",
+    "question": "Reconociendo la desconexión entre sus palabras (\"Estoy bien\") y sus acciones, ¿cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Entiendo que te sientas mal y frustrada. Te esforzaste un montón y sacaste una buena nota, pero es como si no vieran todo ese esfuerzo, y eso debe pesar mucho\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta va más allá de su \"estoy bien\" inicial para reconocer los sentimientos de dolor y frustración. Refleja con precisión su experiencia y valida sus emociones."
+      },
+      {
+        "id": "B",
+        "text": "\"No deberías dejar que te afecten. Una B en química orgánica es increíble. Solo necesitas estar orgullosa de ti misma e ignorar su presión\".",
+        "isCorrect": false,
+        "feedback": "Es evaluativa y da consejos. Decirle a Priya cómo \"debería\" sentirse ignora la presión y la decepción genuinas que está experimentando."
+      },
+      {
+        "id": "C",
+        "text": "\"Al menos se preocupan por tu educación. Algunos padres ni siquiera prestan atención a las calificaciones de sus hijos, así que en cierto modo tienes suerte\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta minimiza los sentimientos de Priya al comparar su situación con la de otros. Invalida su lucha personal al sugerir que debería sentirse agradecida en su lugar."
+      },
+      {
+        "id": "D",
+        "text": "\"¿Por qué crees que tienen expectativas tan altas? ¿Es algo cultural? Quizás si entendieras su perspectiva, no te sentirías tan mal\".",
+        "isCorrect": false,
+        "feedback": "Esta es una interpretación que intelectualiza el problema. Dirige la conversación hacia el análisis en lugar de quedarse y reconocer su estado emocional."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_5",
+    "type": "multiple_choice",
+    "scenario": "Eres asistente de un curso introductorio. Un estudiante, Ben, se queda después de clase con aspecto ansioso. Explica que tiene problemas para entender las clases. \"Es como si quien imparte la clase hablara otro idioma\", dice. \"El resto de la clase parece entenderlo. Hacen preguntas inteligentes y yo solo me quedo ahí sentado, sintiéndome perdido. Leo el libro de texto, pero sigo confundido. Me preocupa que si hago una pregunta 'tonta' en clase, todas las personas piensen que no pertenezco aquí. Me siento abrumado y avergonzado\".",
+    "question": "¿Cuál es la respuesta más empática que puedes ofrecerle a Ben?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Uf, se siente fatal cuando parece que eres el único que no entiende nada. Es normal que te preocupe qué van a pensar si preguntas algo\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta identifica los sentimientos centrales de Ben (sentirse mal, preocupado) y los conecta con su experiencia en clase. Valida su miedo sin emitir un juicio."
+      },
+      {
+        "id": "B",
+        "text": "\"Realmente necesitas venir a mis horas de oficina como asistente. Para eso están. Podemos repasar el material que te resulta confuso uno a uno\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta salta directamente a una solución. Aunque es útil, omite el paso crucial de reconocer primero sus sentimientos de vergüenza y aislamiento."
+      },
+      {
+        "id": "C",
+        "text": "\"No te preocupes, a muchas personas en el estudiantado les pasa lo mismo al principio del semestre. Este es un curso difícil, pero la curva de aprendizaje es empinada\".",
+        "isCorrect": false,
+        "feedback": "Esto es un cliché. Aunque pretende ser tranquilizador, puede sentirse despectivo porque generaliza su ansiedad específica y no aborda su sentimiento de \"no pertenencia\"."
+      },
+      {
+        "id": "D",
+        "text": "\"No hay preguntas tontas. Eres tan inteligente como las demás personas en esa sala y tienes todo el derecho a pedir una aclaración\".",
+        "isCorrect": false,
+        "feedback": "Este es otro cliché. Aunque el sentimiento es positivo, contradice la realidad experimentada por Ben y puede sonar como una frase vacía en lugar de una comprensión genuina."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_6",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga, Maya, confiesa que está pensando en cambiar su especialidad de premedicina a historia del arte. Parece estar en conflicto y dice: \"Sé que mis padres se pondrán furiosos. Han soñado toda mi vida con que me convierta en doctora. Y me gusta la ciencia, pero me siento tan viva cuando estoy en una clase de arte. Siento que es lo que estoy destinada a hacer. Pero la idea de decírselo a mis padres me da una ansiedad terrible. Me siento culpable incluso por pensar en ello, como si los estuviera decepcionando. Estoy completamente dividida\".",
+    "question": "¿Cuál de las siguientes es la respuesta más empática para Maya?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Estás en una situación súper complicada, entre lo que te apasiona y lo que esperan tus padres. Sentir esa emoción por un lado y a la vez culpa y ansiedad por decepcionarlos tiene que ser muy duro\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta refleja con precisión el conflicto central de Maya: la tensión entre su pasión y las expectativas familiares, y la culpa que esto le genera. Nombra las emociones sin tomar partido."
+      },
+      {
+        "id": "B",
+        "text": "\"Tienes que vivir tu propia vida. Si vas a ser más feliz como historiadora del arte, entonces eso es lo que deberías hacer. Tus padres lo superarán con el tiempo\".",
+        "isCorrect": false,
+        "feedback": "Da un consejo contundente y minimiza la complejidad de su relación con sus padres al decir que \"lo superarán\"."
+      },
+      {
+        "id": "C",
+        "text": "\"¿Estás segura de que puedes conseguir trabajo con un título en historia del arte? El mercado laboral para el personal médico es mucho mejor. Quizás deberías seguir con premedicina y hacer una especialización secundaria en arte\".",
+        "isCorrect": false,
+        "feedback": "Esta es una pregunta distractora y basada en hechos que se centra en los aspectos prácticos de la decisión mientras ignora la agitación emocional que Maya está expresando."
+      },
+      {
+        "id": "D",
+        "text": "\"Entiendo cómo te sientes. Tuve una situación similar cuando decidí no entrar en el negocio familiar. Fue difícil, pero al final me fue bien\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta desvía el enfoque de Maya hacia ti. Aunque compartir una experiencia similar a veces puede crear conexión, en este caso, distrae de su lucha única."
+      }
+    ]
+  }
+]

@@ -1,0 +1,162 @@
+[
+  {
+    "id": "pregunta_1",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga, Maya, está teniendo dificultades en una clase de física muy exigente. Te dice: \"Pasé todo el fin de semana estudiando para este examen parcial, pero sigo sintiendo que voy a reprobar. El profesor Chen es brillante, pero explica las cosas de una manera tan compleja que me pierdo. El resto de mi grupo de estudio parece entenderlo todo, y yo me siento muy tonta y aislada. Estoy empezando a pensar que tal vez no estoy hecha para una carrera de ciencias. Me siento completamente abrumada y desanimada por toda la situación\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Qué frustrante ponerle tanto empeño y sentir que no avanzas. Y claro, si sientes que eres la única a la que le cuesta, es normal que te haga dudar de todo\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida la frustración y la duda de Maya de una manera cálida y normaliza su reacción ante el sentimiento de aislamiento, mostrando una comprensión genuina."
+      },
+      {
+        "id": "B",
+        "text": "\"Deberías formar un grupo de estudio diferente. O quizás ir a las horas de consulta del profesor Chen y pedirle ayuda extra antes del examen\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta se apresura a dar consejos y a resolver el problema, lo que ignora la experiencia emocional que Maya está tratando de compartir."
+      },
+      {
+        "id": "C",
+        "text": "\"No te preocupes, mucha gente se siente así en las clases difíciles. Eres inteligente, probablemente te irá bien si solo intentas relajarte un poco\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta es un cliché que minimiza su ansiedad genuina y le dice cómo sentirse (\"no te preocupes\", \"relájate\")."
+      },
+      {
+        "id": "D",
+        "text": "\"Sentirte tonta no te va a ayudar a aprobar. No puedes compararte con todo el mundo; solo tienes que concentrarte en tu propio trabajo\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta juzga sus sentimientos como inútiles y le da un sermón, en lugar de buscar comprender su experiencia interna."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_2",
+    "type": "multiple_choice",
+    "scenario": "Tu compañero de cuarto, Ben, parece distante después de una reunión del consejo estudiantil. Te dice: \"Presenté una nueva iniciativa de reciclaje en el campus en la que he trabajado durante semanas. Tenía datos, un presupuesto, todo. Pero mientras presentaba, Sara, del comité de finanzas, no paraba de interrumpir con detalles menores del presupuesto, desviando toda mi presentación. Luego, el consejero de la facultad terminó la discusión por 'falta de tiempo'. No se sintió como un debate, sino como un ataque. Me siento muy desinflado, como si todo ese trabajo no sirviera para nada y solo hubiera hecho el ridículo\".",
+    "question": "¿Cuál es la respuesta más empática para Ben?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Vaya, se siente como si te hubieran ignorado por completo. Da mucho coraje que todo el trabajo y las ganas que le pusiste a tu proyecto se perdieran por tecnicismos, y que al final sintieras que ni te escucharon\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta usa un lenguaje natural (\"da mucho coraje\", \"tecnicismos\") para reflejar la frustración de Ben y la sensación de que su esfuerzo fue invalidado, mostrando que entiendes su perspectiva."
+      },
+      {
+        "id": "B",
+        "text": "\"Necesitas enviar un correo de seguimiento al consejero de la facultad con tu propuesta completa. No dejes que las interrupciones de Sara detengan esto\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta se enfoca en el siguiente paso de acción, lo que ignora el impacto emocional de la experiencia que acaba de describir."
+      },
+      {
+        "id": "C",
+        "text": "\"Vaya, Sara parece una verdadera cretina por hacerte eso. Siento mucho que hayas tenido que pasar por esa experiencia\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía, no empatía. Expresa lástima y toma partido contra Sara, en lugar de centrarse en comprender los complejos sentimientos de Ben."
+      },
+      {
+        "id": "D",
+        "text": "\"Las reuniones pueden ser difíciles. A veces la gente juega a la política, así que no puedes tomarlo como algo personal. Ya les ganarás la próxima vez\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta minimiza los sentimientos personales de Ben con un cliché general sobre la política interna, lo que puede sentirse como un gesto de indiferencia."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_3",
+    "type": "multiple_choice",
+    "scenario": "Li es una estudiante internacional reservada en tu clase de historia. Hoy, el profesor le hizo una pregunta inesperadamente. Ella dudó, hablando en voz baja con un acento notable, y un grupo de estudiantes de atrás se rio disimuladamente. Después de clase, la ves guardando sus cosas rápidamente, evitando el contacto visual. Te acercas y le preguntas si está bien. Ella levanta la vista y dice: \"Estoy tan avergonzada. Sabía la respuesta, pero me pongo muy nerviosa. Cuando se rieron, mi mente se quedó en blanco. Odio sentirme así delante de todo el mundo\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Uf, qué momento tan horrible. Es totalmente normal que te pongas nerviosa y te quedes en blanco si te preguntan de repente y encima escuchas risas\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida la experiencia de Li como negativa (\"qué momento tan horrible\") y normaliza su reacción fisiológica y emocional de una manera sencilla y directa, creando un espacio seguro."
+      },
+      {
+        "id": "B",
+        "text": "\"¡No te avergüences! Tu comentario me pareció muy interesante. Quienes se rieron son simplemente inmaduros. No debería importarte lo que piensen\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta le dice a Li cómo debería sentirse (\"No te avergüences\") e ignora el impacto emocional real que el momento tuvo en ella."
+      },
+      {
+        "id": "C",
+        "text": "\"A mí también me da nervios hablar en clase. Le pasa a todo el mundo. Solo tienes que practicar más y con el tiempo te acostumbrarás\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta cambia el enfoque a tu propia experiencia (\"A mí también me da nervios\") y ofrece consejos no solicitados, en lugar de quedarse con los sentimientos de Li."
+      },
+      {
+        "id": "D",
+        "text": "\"Su risa probablemente no era por ti. Podrían haberse estado riendo de otra cosa. A menudo es solo un malentendido\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta intenta invalidar el sentimiento de Li ofreciendo una explicación alternativa, lo que desestima su percepción del evento."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_4",
+    "type": "multiple_choice",
+    "scenario": "Tu amigo, David, acaba de recibir la calificación de un importante ensayo de ciencias políticas. Lanza un gemido de frustración. \"Un 7.5. Me desvelé dos noches por esto, fui al centro de redacción e incluso le pedí al profesor Evans que revisara mi borrador. Dijo que 'iba tomando buena forma'. Realmente pensé que lo había clavado. Necesitaba un 10 en esta clase para subir mi promedio para la revisión de mi beca el próximo mes. Ahora me siento sin esperanza, como si fuera un pésimo escritor y todo ese esfuerzo fuera una completa pérdida de tiempo\".",
+    "question": "¿Cuál es la respuesta más empática para David?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Qué bajón sacar esa nota después de todo el esfuerzo que le metiste y de que te dieran buenas señales. Se nota que no es solo la calificación, sino la angustia de pensar en cómo te afectará para la beca\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta utiliza un lenguaje coloquial (\"qué bajón\") y conecta directamente su decepción con la preocupación más profunda sobre la beca, mostrando que entiendes la situación completa."
+      },
+      {
+        "id": "B",
+        "text": "\"¿Qué comentarios te puso en el ensayo? ¿El profesor explicó por qué te dio esa calificación? Quizás haya posibilidad de pedir algún trabajo extra\".",
+        "isCorrect": false,
+        "feedback": "Esto es escucha centrada en los hechos. Se enfoca en recopilar información sobre el problema, no en comprender la experiencia emocional de David."
+      },
+      {
+        "id": "C",
+        "text": "\"Oye, ¡un 7.5 no es el fin del mundo! Al menos aprobaste el trabajo. Mira el lado bueno, ahora sabes qué no hacer la próxima vez\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta invalida sus sentimientos con \"positividad tóxica\", forzando una perspectiva optimista sobre una experiencia que él encuentra profundamente molesta."
+      },
+      {
+        "id": "D",
+        "text": "\"Oh, qué terrible. Lo siento mucho por ti. La universidad es tan injusta a veces, poniéndonos toda esta presión encima\".",
+        "isCorrect": false,
+        "feedback": "Esta es una expresión de simpatía. Transmite lástima (\"Lo siento mucho por ti\") en lugar de una comprensión compartida de su situación específica."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_5",
+    "type": "multiple_choice",
+    "scenario": "Chloe es tu compañera en un laboratorio exigente de química. Generalmente es muy organizada. Últimamente, sin embargo, ha estado callada y parece distraída. Hoy, omitió un paso crucial en un experimento, lo que los obligó a empezar de nuevo. \"Lo siento mucho\", dice, con aspecto estresado. \"Mi papá perdió su trabajo el mes pasado y las cosas en casa están muy tensas. Intento concentrarme aquí, pero mi mente está en otro lado. Siento que lo estoy arruinando todo, por ti y por mí. Es demasiado en este momento\".",
+    "question": "¿Cuál es la forma más empática de responder?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Se nota que estás pasando por mucho. Es súper difícil tratar de concentrarse en una materia tan pesada cuando tienes todo ese estrés de tu casa en la cabeza. Es lógico que te sientas distraída\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta reconoce la situación personal de Chloe con calidez (\"estás pasando por mucho\") y conecta su estrés con su dificultad para concentrarse, validando su experiencia sin juzgarla."
+      },
+      {
+        "id": "B",
+        "text": "\"No te preocupes por el experimento, es solo un laboratorio. Podemos repetirlo fácilmente. Intentemos concentrarnos en terminar esto ahora\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta resta importancia al problema personal más profundo que acaba de compartir y se centra solo en la tarea, lo que puede sentirse invalidante."
+      },
+      {
+        "id": "C",
+        "text": "\"Deberías hablar con el decanato de asuntos estudiantiles. Tienen recursos para estudiantes que atraviesan dificultades familiares. Podría ser muy útil\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta ofrece una solución antes de reconocer su estado emocional, moviéndose demasiado rápido para \"arreglar\" el problema."
+      },
+      {
+        "id": "D",
+        "text": "\"Ni siquiera puedo imaginar cómo debe ser eso. Yo me estreso muchísimo solo con las tareas de la universidad. Probablemente estaría hecha un desastre si fuera tú\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta se centra en tu propia reacción hipotética en lugar de permanecer presente con la experiencia y los sentimientos reales de Chloe."
+      }
+    ]
+  }
+]

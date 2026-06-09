@@ -1,0 +1,162 @@
+[
+  {
+    "id": "pregunta_1",
+    "type": "multiple_choice",
+    "scenario": "Tu compañera de clase, Fatima, lidera un grupo de presentación. Envió un plan detallado con fechas de entrega, pero un miembro, Tom, no ha cumplido ninguna. En una conversación privada, Fatima te dice, con la voz tensa por la frustración: \"No lo entiendo. He intentado ser amable, enviar recordatorios, ofrecer ayuda. Él solo dice 'sí, ya lo haré', pero nunca lo hace. Ahora estamos atrasados, y yo quedo como una mala líder. Estoy muy enojada con él por ser irresponsable, pero también me preocupa que enfrentarlo directamente solo cree drama y empeore las cosas. Me siento atrapada\".",
+    "question": "¿Cuál es la respuesta más empática para Fatima?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Simplemente tienes que ser directa y decirle que está poniendo en peligro la calificación del grupo. A veces tienes que ser la mala para ser una buena líder\".",
+        "isCorrect": false,
+        "feedback": "Da un consejo no solicitado y empuja a Fatima hacia una acción específica, ignorando su ansiedad expresada sobre la confrontación."
+      },
+      {
+        "id": "B",
+        "text": "\"Tom siempre es así, es un conocido procrastinador. No te lo tomes como algo personal. Simplemente asigna su parte a otra persona\".",
+        "isCorrect": false,
+        "feedback": "Utiliza un estereotipo sobre Tom (\"él siempre es así\") y ofrece una solución simplista, que descarta la complejidad del desafío de liderazgo de Fatima."
+      },
+      {
+        "id": "C",
+        "text": "\"Entiendo lo frustrante y estresante que es. Te sientes molesta porque tus esfuerzos por organizar al grupo son ignorados, y te angustia tener que elegir entre confrontar a Tom o mantener la paz\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta identifica con precisión las emociones mixtas de Fatima (enojo, frustración, angustia) y las vincula con la situación: sus esfuerzos de liderazgo son ignorados y tiene el dilema de cómo manejarlo. Valida tanto su enojo como su preocupación, mostrando una comprensión completa de su perspectiva."
+      },
+      {
+        "id": "D",
+        "text": "\"¿Estás segura de que fuiste lo suficientemente clara en tus instrucciones? Tal vez no entendió lo que querías que hiciera. La comunicación es clave\".",
+        "isCorrect": false,
+        "feedback": "Sutilmente le echa la culpa a Fatima al cuestionar sus habilidades de comunicación, lo cual es una forma de escucha evaluativa en lugar de una comprensión empática."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_2",
+    "type": "multiple_choice",
+    "scenario": "Estás hablando con un amigo, Marco, que tiene una beca académica que le exige mantener un promedio alto. Parece agotado. Te dice: \"Estuve despierto hasta las 4 a.m. estudiando para mi examen de física, y tengo un ensayo de historia para mañana que ni siquiera he empezado. Siento que me estoy ahogando constantemente. No puedo permitirme sacar una B en ninguna clase, o podría perder mi beca. Amo lo que estoy aprendiendo, pero estoy tan agotado y ansioso que ni siquiera puedo disfrutarlo. Siento que estoy corriendo una maratón sin línea de meta a la vista\".",
+    "question": "¿Cuál de las siguientes respuestas muestra más empatía por Marco?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Vaya, eso suena intenso. Creo que estás asumiendo demasiado. Deberías considerar tomar una clase menos el próximo semestre para que sea más manejable\".",
+        "isCorrect": false,
+        "feedback": "Ofrece un consejo de inmediato, pasando por alto su estado actual de agotamiento emocional para centrarse en una solución futura."
+      },
+      {
+        "id": "B",
+        "text": "\"Suena increíblemente agotador. Te sientes exhausto y abrumado por la presión constante de tener que sacar calificaciones perfectas, y eso le está quitando todo el disfrute a lo que estudias\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta refleja con precisión el mensaje central de Marco al identificar sus sentimientos (agotamiento, sentirse abrumado) y la razón precisa de ellos: la presión implacable de la beca. También captura el matiz de que la presión está arruinando su disfrute del aprendizaje, demostrando que has escuchado todo su mensaje."
+      },
+      {
+        "id": "C",
+        "text": "\"Sé que es difícil, pero piensa en lo orgulloso que estarás cuando te gradúes con honores. Mantén la vista en el premio y todo valdrá la pena\".",
+        "isCorrect": false,
+        "feedback": "Intenta motivarlo descartando su sufrimiento presente en favor de una recompensa futura, lo que puede dar la impresión de que sus luchas actuales no se están tomando en serio."
+      },
+      {
+        "id": "D",
+        "text": "\"Yo también estuve estudiando hasta tarde. Esta época del semestre es brutal para todo el mundo. Deberíamos juntarnos y quejarnos de ello este fin de semana\".",
+        "isCorrect": false,
+        "feedback": "Generaliza su problema específico y de alto riesgo (\"brutal para todo el mundo\") y cambia el enfoque a un evento social, minimizando la gravedad personal de su situación."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_3",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga Maya es una estudiante internacional. Te confiesa que tiene dificultades en una clase de seminario que depende mucho de la participación. \"Tengo ideas\", dice en voz baja, \"pero para cuando las traduzco en mi cabeza y reúno el valor para hablar, la conversación ya ha avanzado. Me siento tan invisible. El profesor probablemente piensa que no estoy preparada, y las demás personas de la clase me ignoran. Siento que mi acento me hace sonar menos inteligente. Es tan frustrante saber la materia pero no poder demostrarlo\".",
+    "question": "¿Cuál es la respuesta más empática para Maya?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Tu acento no es un problema en absoluto. ¡Tu inglés es genial! Solo necesitas tener más confianza y lanzarte a la conversación antes\".",
+        "isCorrect": false,
+        "feedback": "Aunque pretende ser un cumplido, descarta su miedo principal y ofrece un consejo simplista (\"ten más confianza\"), que no es útil para su problema específico."
+      },
+      {
+        "id": "B",
+        "text": "\"Tal vez podrías hablar con el profesor en su horario de oficina y explicarle tu situación. Quizás te permita contribuir de otras maneras, como con una respuesta por escrito\".",
+        "isCorrect": false,
+        "feedback": "Es una respuesta centrada en la resolución de problemas que pasa por alto la oportunidad de simplemente comprender y validar su experiencia emocional actual."
+      },
+      {
+        "id": "C",
+        "text": "\"Suena muy frustrante y desalentador. Sientes que no puedes participar porque la conversación va muy rápido para ordenar tus ideas, y te preocupa que te juzguen de manera injusta\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta muestra un profundo nivel de comprensión al nombrar los sentimientos de Maya (frustración, desaliento) y al identificar las causas específicas: el ritmo rápido, el miedo a ser juzgada y la sensación de invisibilidad. Reconoce las barreras internas y externas que ella enfrenta."
+      },
+      {
+        "id": "D",
+        "text": "\"Es un desafío común para el estudiantado internacional. Es un reto habitual cuando estudias en un segundo idioma. Te acostumbrarás con el tiempo\".",
+        "isCorrect": false,
+        "feedback": "Utiliza un cliché sobre el estudiantado internacional que, aunque posiblemente cierto, minimiza los sentimientos únicos y personales de frustración e insuficiencia de Maya."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_4",
+    "type": "multiple_choice",
+    "scenario": "Notas que tu compañero de laboratorio, Alex, ha estado callado y retraído durante la última semana. Cuando le preguntas al respecto, admite que su novia de mucho tiempo rompió con él durante el fin de semana. \"Salió de la nada\", dice, mirando al suelo. \"Pensé que todo estaba bien. Ahora ni siquiera contesta mis mensajes. Todo mi futuro estaba planeado en torno a ella. No puedo comer, no puedo dormir, no puedo pensar en otra cosa. Me siento tan perdido y vacío. Y venir al laboratorio y fingir que todo está normal es simplemente... imposible\".",
+    "question": "¿Cuál es la respuesta más empática para Alex?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Ya lo superarás. Las rupturas son difíciles, pero hay otras personas ahí fuera. Deberías intentar salir y hacer algo divertido este fin de semana para distraerte\".",
+        "isCorrect": false,
+        "feedback": "Ofrece clichés desdeñosos (\"Ya lo superarás\") y consejos, lo que invalida por completo el profundo duelo y la pérdida que está sintiendo en este momento."
+      },
+      {
+        "id": "B",
+        "text": "\"Qué terrible. Te sientes totalmente sorprendido y devastado porque la ruptura no solo destrozó tu presente, sino también el futuro que habías imaginado, y por eso sientes que es imposible seguir como si nada\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta captura la profundidad del dolor de Alex usando palabras que coinciden con su intensidad (\"sorprendido\", \"devastado\"). Conecta sus sentimientos con la pérdida tanto de su presente como de su futuro, validando por qué le resulta \"imposible seguir como si nada\"."
+      },
+      {
+        "id": "C",
+        "text": "\"¿Estás seguro de que fue de la nada? Usualmente hay señales. Quizás deberías pensar en qué salió mal para no repetir los mismos errores\".",
+        "isCorrect": false,
+        "feedback": "Es una respuesta interpretativa y evaluativa que cuestiona su percepción del evento e implica que él tiene la culpa, lo cual no es de apoyo."
+      },
+      {
+        "id": "D",
+        "text": "\"Sé un poco por lo que estás pasando. Cuando mi ex y yo rompimos, estuve destrozado durante meses. Es el peor sentimiento del mundo\".",
+        "isCorrect": false,
+        "feedback": "Cambia el enfoque a tu propia experiencia. Aunque intenta relacionarse, corre el riesgo de hacer que su dolor agudo actual gire en torno a tus experiencias pasadas."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_5",
+    "type": "multiple_choice",
+    "scenario": "Durante una estresante semana de exámenes finales, tu amiga Jenna está al borde de las lágrimas. Dice: \"Acabo de reprobar mi examen final de cálculo. Estudié durante semanas, fui a todas las sesiones de repaso y aun así reprobé. Esta era la única clase que necesitaba aprobar para declarar mi especialidad. Ahora todo mi plan académico está arruinado. Ni siquiera sé si soy lo suficientemente inteligente como para estar aquí. Me siento como un fracaso total y absoluto. Me quedan dos exámenes más y ya ni siquiera le veo el sentido a estudiar para ellos\".",
+    "question": "¿Cuál es la respuesta más empática para Jenna?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Un examen no define tu inteligencia. Eres lo suficientemente inteligente para estar aquí, pero el cálculo es una materia muy difícil para algunas personas\".",
+        "isCorrect": false,
+        "feedback": "Discute con su sentimiento (\"Eres lo suficientemente inteligente\"), lo que puede parecer desdeñoso aunque la intención sea tranquilizar. Se enfoca en la lógica en lugar de en su estado emocional actual."
+      },
+      {
+        "id": "B",
+        "text": "\"Deberías enviar un correo electrónico inmediatamente a tu profesor y al consejero académico. Podría haber una forma de repetir el examen o apelar la calificación. No te rindas todavía\".",
+        "isCorrect": false,
+        "feedback": "Salta a dar consejos y a la resolución de problemas, omitiendo el paso crucial de reconocer sus sentimientos de fracaso y desesperación."
+      },
+      {
+        "id": "C",
+        "text": "\"Es comprensible que te sientas totalmente desesperanzada. Sientes que este fracaso invalida todo tu esfuerzo y te hace cuestionar tu futuro entero en la universidad\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta identifica con precisión el sentimiento de desesperanza de Jenna y lo conecta con el núcleo de su desesperación: que este único fracaso se siente catastrófico, invalidando su esfuerzo y poniendo en peligro sus planes futuros. Valida la magnitud de sus sentimientos sin intentar solucionarlos o minimizarlos de inmediato."
+      },
+      {
+        "id": "D",
+        "text": "\"Es un sentimiento terrible. Sabes, algo similar me pasó en mi primer año. Reprobé un examen de química y pensé que mi vida se había acabado, pero lo resolví\".",
+        "isCorrect": false,
+        "feedback": "Cambia la narrativa a tu propia experiencia, lo que puede restar importancia a la inmediatez y singularidad de la crisis de Jenna."
+      }
+    ]
+  }
+]

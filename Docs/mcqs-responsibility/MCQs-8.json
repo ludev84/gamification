@@ -1,0 +1,194 @@
+[
+  {
+    "id": "pregunta_1",
+    "type": "multiple_choice",
+    "scenario": "Te encuentras con un compañero de clase, David, que parece agotado y estresado. Le preguntas cómo está. Te dice que pasó toda la noche en vela para terminar un trabajo que debía entregar a las 9 a.m. \"Y entonces\", dice con un suspiro de frustración, \"llegué a clase y anunciaron que le darían a todo el mundo una extensión de 48 horas porque muchas personas la pidieron. Estoy tan enojado. Sacrifiqué toda una noche de sueño para nada. Podría haber usado ese tiempo para estudiar para mi examen de mitad de semestre de esta tarde, pero ahora mi cerebro está hecho puré\".",
+    "question": "¿Cuál es la forma más empática de responderle a David?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Qué rabia. Te mataste toda la noche para cumplir y al final no sirvió de nada. Normal que estés enojado por haber perdido todo ese tiempo y esfuerzo\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida el enojo de David al reflejar la causa: su gran esfuerzo se siente invalidado y además le perjudica. Demuestra que entiendes su punto de vista."
+      },
+      {
+        "id": "B",
+        "text": "\"No puedes enojarte con el profesorado por ser amable. Deberías alegrarte por las demás personas de la clase que realmente necesitaban esa extensión para hacer un buen trabajo\".",
+        "isCorrect": false,
+        "feedback": "Esta es una respuesta evaluativa. Le dice a David que sus sentimientos están equivocados y que \"debería\" sentirse de otra manera, lo cual es despectivo con su experiencia."
+      },
+      {
+        "id": "C",
+        "text": "\"Bueno, mira el lado bueno, al menos tu trabajo está terminado y ya no tienes que preocuparte por él. Ahora puedes concentrarte en tu examen\".",
+        "isCorrect": false,
+        "feedback": "Ofrece un cliché (\"mira el lado bueno\") que ignora su sentimiento actual de frustración y agotamiento. Pasa por alto su emoción para encontrar un aspecto positivo."
+      },
+      {
+        "id": "D",
+        "text": "\"La próxima vez, deberías enviarle un correo a quien imparte la clase y pedir una extensión también. Parece que es bastante indulgente, así que podrías aprovecharlo\".",
+        "isCorrect": false,
+        "feedback": "Esto es dar consejos que se centran en el comportamiento futuro en lugar de reconocer su estado emocional actual. No aborda la frustración que siente en este momento."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_2",
+    "type": "multiple_choice",
+    "scenario": "Estás trabajando en una presentación con un compañero, Sam. Sam suele ser muy confiable, pero faltó a las dos últimas reuniones y no ha aportado su parte de la investigación. Cuando finalmente hablas con él, parece retraído y se disculpa en voz baja. \"Lo siento mucho\", dice, sin mirarte a los ojos. \"La salud de mi abuela ha empeorado mucho y mi familia ha estado mucho en el hospital. He estado tan preocupado y distraído que no he podido concentrarme en absoluto en el trabajo escolar. Sé que te estoy fallando y me siento terrible por ello\".",
+    "question": "¿Cuál es la respuesta más empática para Sam?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Suena a que estás pasando por un momento familiar súper difícil y estresante. Es lógico que la universidad no sea ahora mismo lo más importante. Tú tranquilo con el proyecto, ya vemos cómo lo solucionamos\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta prioriza el contexto personal de Sam y valida sus sentimientos. Muestra comprensión por su situación y le da tranquilidad sobre el proyecto, atendiendo a su preocupación por estar fallándote."
+      },
+      {
+        "id": "B",
+        "text": "\"Realmente necesitamos terminar esta presentación porque la fecha límite es la próxima semana. ¿Cuánto trabajo puedes hacer de manera realista para el viernes para que pueda planificar en torno a eso?\".",
+        "isCorrect": false,
+        "feedback": "Esta es una respuesta centrada en los hechos que ignora el peso emocional de la situación de Sam y se enfoca únicamente en la logística del proyecto."
+      },
+      {
+        "id": "C",
+        "text": "\"Estaba bastante frustrado de que faltaras a las reuniones, pero ahora lo entiendo. Espero que tu abuela se mejore pronto. Avísame cuando hayas tenido la oportunidad de ponerte al día con la investigación\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta centra tus propios sentimientos (\"Estaba bastante frustrado\") antes de reconocer los suyos. Aunque expresa compasión, el enfoque permanece en la tarea."
+      },
+      {
+        "id": "D",
+        "text": "\"Lamento escuchar eso. Mi abuelo estuvo enfermo hace unos años y fue muy difícil equilibrar todo. Terminé teniendo que tomar una calificación de 'incompleto' en una de mis clases\".",
+        "isCorrect": false,
+        "feedback": "Esto desvía el enfoque hacia tu propia historia. Aunque pretende conectar, le quita el protagonismo a Sam y a su lucha inmediata y continua."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_3",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga Chloe parece desanimada después de su primer taller de escritura creativa. \"La crítica fue brutal\", te dice. \"Quien dirige el taller dijo que el personaje principal de mi historia no era creíble y que la trama era predecible. Un par de personas de la clase estuvieron de acuerdo. Pasé semanas en esa historia y se sentía tan personal. Ahora solo me siento expuesta y sin talento. Pensé que era una buena escritora, pero quizás solo me estaba engañando a mí misma. No sé si pueda volver a compartir mi trabajo. Siento como si estuvieran criticando una parte de mí, no solo un trozo de papel\".",
+    "question": "¿Cuál es la respuesta más empática para Chloe?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Eso duele muchísimo. Cuesta un montón atreverse a compartir algo tan personal, y que te den una crítica tan dura se siente como un ataque directo, no solo al texto. Es normal que ahora no quieras volver a exponerte así\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta identifica con precisión el núcleo del problema: la crítica se sintió como algo personal y doloroso. Valida sus sentimientos de vulnerabilidad y los conecta con el acto de compartir un trabajo creativo."
+      },
+      {
+        "id": "B",
+        "text": "\"No puedes tomarte la crítica de forma tan personal. El objetivo de un taller es recibir críticas para que puedas convertirte en una mejor escritora. Deberías verlo como algo bueno\".",
+        "isCorrect": false,
+        "feedback": "Es evaluativa y da consejos. Le dice a Chloe que su reacción emocional es incorrecta y que \"debería\" sentirse de otra manera sobre la experiencia."
+      },
+      {
+        "id": "C",
+        "text": "\"¿Quién dirigía el taller? He oído que algunas personas pueden ser muy duras. Probablemente te tocó una de las más exigentes. No dejes que su opinión te defina\".",
+        "isCorrect": false,
+        "feedback": "Esta es una respuesta distractora que traslada la culpa a quien dirige el taller, lo que podría hacerla sentir bien temporalmente pero no reconoce ni valida los sentimientos de duda de Chloe."
+      },
+      {
+        "id": "D",
+        "text": "\"Bueno, ¿la crítica era precisa? A veces la verdad duele. Quizás el personaje realmente necesita más desarrollo para que la historia funcione\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta está centrada en los hechos y es sentenciosa. Cuestiona la validez de su trabajo en lugar de reconocer la validez de sus sentimientos."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_4",
+    "type": "multiple_choice",
+    "scenario": "Estás estudiando en la biblioteca cuando tu amigo Liam se sienta, luciendo agitado. \"Simplemente no lo entiendo\", dice, pasándose las manos por el pelo. \"Voy a todas las clases, tomo notas detalladas, leo cada capítulo, pero aun así reprobé mi examen de mitad de semestre de cálculo. Veo a gente que nunca va a clase obtener una mejor calificación que yo. No es justo. Estoy haciendo todo lo que se supone que debo hacer, y no está funcionando. Me siento tan estúpido y sin esperanza. ¿Qué sentido tiene siquiera intentarlo si mi mejor esfuerzo no es suficiente?\".",
+    "question": "¿Cuál es la respuesta más empática para Liam?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Qué frustrante e injusto. Te esfuerzas un montón y no ves los resultados, sobre todo cuando a otros parece costarles menos. Entiendo que te sientas totalmente derrotado y te cuestiones si vale la pena\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta usa palabras que reflejan la narrativa de Liam (frustración, injusticia). Valida su sensación de que la situación es injusta y desesperanzadora, sin juzgarlo."
+      },
+      {
+        "id": "B",
+        "text": "\"Quizás tus métodos de estudio no son efectivos para esta materia. ¿Alguna vez has intentado formar un grupo de estudio o ir al centro de tutorías del campus para obtener ayuda?\".",
+        "isCorrect": false,
+        "feedback": "Esto pasa inmediatamente a la resolución de problemas. Aunque la sugerencia puede ser útil, omite el paso crucial de reconocer su intensa frustración y desesperación."
+      },
+      {
+        "id": "C",
+        "text": "\"No eres estúpido. Cálculo es una materia muy difícil para mucha gente. Probablemente solo necesites dedicarle aún más horas antes del examen final\".",
+        "isCorrect": false,
+        "feedback": "Esta es una respuesta compasiva que ofrece un lugar común (\"no eres estúpido\") pero luego da un consejo que implica que simplemente no está trabajando lo suficiente, lo que podría invalidar sus esfuerzos declarados."
+      },
+      {
+        "id": "D",
+        "text": "\"No puedes compararte con otras personas. Solo te hará sentir mal. Solo concéntrate en tu propio trabajo y en lo que necesitas hacer para aprobar la clase\".",
+        "isCorrect": false,
+        "feedback": "Da consejos y le dice cómo debería y no debería sentirse. Ignora la experiencia muy real y común de la comparación social y su impacto emocional."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_5",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga, Jenna, que normalmente es muy extrovertida, ha estado callada y rechazando invitaciones para salir. Finalmente le preguntas qué le pasa. Ella duda, y luego admite: \"Siento que he sido una mala amiga últimamente. He estado tan abrumada con mi tesis de último año que me perdí tu cena de cumpleaños y olvidé responderle el mensaje a Kevin. Siento que estoy decepcionando a todo el mundo, y estoy tan abrumada que ni siquiera sé por dónde empezar a arreglarlo. Me siento ansiosa solo de pensarlo, así que es más fácil simplemente esconderme\".",
+    "question": "¿Cuál de estas es la respuesta más empática para Jenna?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Suena a que estás a tope con la tesis, y por eso te sientes culpable y ansiosa con tus amistades. Es como una bola de nieve, ¿no? Cuanto más te preocupas, más te cuesta escribirles\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta refleja con precisión la experiencia interna de Jenna: la conexión entre la presión académica, la culpa y la ansiedad social. Muestra comprensión del ciclo emocional en el que se encuentra."
+      },
+      {
+        "id": "B",
+        "text": "\"Estoy segura de que tus amistades entienden que estás ocupada con tu tesis. No deberías sentirte tan culpable por ello. Solo concéntrate en tu trabajo y podrás compensar a todas las personas más tarde\".",
+        "isCorrect": false,
+        "feedback": "Esta es una respuesta evaluativa. Decirle que \"no debería sentirse culpable\" invalida sus sentimientos genuinos y ofrece una solución prematura y simplista."
+      },
+      {
+        "id": "C",
+        "text": "\"No me molestó que te perdieras mi cena, así que no te preocupes por eso. Solo necesitas responderle a Kevin y todo estará bien. No es tan grave como piensas\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta minimiza sus sentimientos al centrarse en solucionar el problema rápidamente. Decir \"no es tan grave como piensas\" ignora la magnitud de su ansiedad."
+      },
+      {
+        "id": "D",
+        "text": "\"Sentirse así es normal en el último año de carrera. Solo tienes que hacer una lista de lo que necesitas hacer. Empieza con una cosa pequeña, como enviar un mensaje. Eso te hará sentir mejor\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta es puro consejo. Ignora su estado emocional y salta directamente a una estrategia de productividad, que no aborda su ansiedad subyacente."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_6",
+    "type": "multiple_choice",
+    "scenario": "Un estudiante de tu sección de laboratorio, Kenji, es un estudiante internacional. Te dice que le está costando adaptarse. \"Mi inglés está bien para la clase, pero en situaciones sociales, no entiendo los chistes y las referencias culturales. La gente habla muy rápido. Intento unirme a las conversaciones, pero me siento incómodo y lento\", dice. \"Anoche, fui a una fiesta y me quedé en un rincón porque no sabía cómo empezar a hablar con la gente. Es solitario, y estoy empezando a pensar que quizás no vale la pena el esfuerzo. Es más fácil simplemente quedarme en mi cuarto\".",
+    "question": "¿Cuál es la respuesta más empática para Kenji?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Tiene que ser súper agotador y frustrante estar siempre lidiando con un entorno social nuevo. Es normal que sentirse fuera de lugar te haga sentir solo y te den ganas de aislarte\".",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida la dificultad emocional y el agotamiento de la experiencia de Kenji. Conecta sus acciones (aislarse) con sus sentimientos (soledad, frustración) de una manera que no juzga."
+      },
+      {
+        "id": "B",
+        "text": "\"¡Tu inglés es muy bueno! No deberías ser tan cohibido al respecto. La gente probablemente es mucho más comprensiva de lo que crees\".",
+        "isCorrect": false,
+        "feedback": "Esta es una respuesta compasiva pero despectiva. Aunque pretende ser un cumplido, invalida su experiencia vivida y le dice que sus sentimientos se basan en una percepción errónea."
+      },
+      {
+        "id": "C",
+        "text": "\"Solo necesitas más práctica. La única manera de mejorar en la conversación social es forzarte a hacerlo. ¿Has pensado en unirte a un club para el estudiantado internacional?\".",
+        "isCorrect": false,
+        "feedback": "Da consejos y pone toda la carga sobre él para que se \"fuerce\" a hacer algo que acaba de describir como doloroso y difícil."
+      },
+      {
+        "id": "D",
+        "text": "\"Sé lo que quieres decir. Yo también me siento incómodo en las fiestas a veces. Puede ser muy difícil entrar en una conversación cuando no conoces a nadie\".",
+        "isCorrect": false,
+        "feedback": "Aunque intenta establecer una relación, sutilmente desvía el enfoque hacia un sentimiento común de incomodidad, minimizando potencialmente los desafíos culturales y lingüísticos únicos que enfrenta Kenji."
+      }
+    ]
+  }
+]

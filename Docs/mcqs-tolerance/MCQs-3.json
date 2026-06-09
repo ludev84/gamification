@@ -1,0 +1,162 @@
+[
+  {
+    "id": "pregunta_1",
+    "type": "multiple_choice",
+    "scenario": "Tu compañera de clase, Priya, está en la biblioteca con la cabeza entre las manos. \"Simplemente no puedo con esto\", susurra. \"Tengo dos exámenes parciales el viernes, un ensayo de 10 páginas para el lunes y mi informe de laboratorio ya está retrasado. Estoy estudiando 24/7, pero siento que no estoy reteniendo nada. Cada vez que abro un libro, mi corazón empieza a latir con fuerza. Siento que me estoy ahogando y no hay forma de que pueda ponerme al día. Estoy tan abrumada\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Suena a que estás totalmente abrumada. Tienes mil cosas encima, y la presión es tanta que te bloquea y ya no sabes ni por dónde empezar. Qué agobio.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida el sentimiento de Priya de estar \"abrumada\" y \"bloqueada\" y lo conecta directamente con la presión que está experimentando por su carga de trabajo."
+      },
+      {
+        "id": "B",
+        "text": "\"¿Qué exámenes parciales son? ¿Has intentado hacer un horario de estudio para organizar tu tiempo? Solo necesitas un plan mejor\".",
+        "isCorrect": false,
+        "feedback": "Esta es una pregunta centrada en hechos que pasa directamente a dar consejos (hacer un horario) e ignora su sentimiento declarado de \"ahogarse\"."
+      },
+      {
+        "id": "C",
+        "text": "\"Oh, pobrecita. Eso suena como una auténtica pesadilla. ¡Me preocupas tanto!\"",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía. Expresa lástima y se centra en la preocupación propia en lugar de entender la perspectiva de Priya. El término \"pobrecita\" también es infantilizante."
+      },
+      {
+        "id": "D",
+        "text": "\"La temporada de exámenes parciales es así para todos. Solo tienes que aguantar. Pronto terminará\".",
+        "isCorrect": false,
+        "feedback": "Esto es un cliché. Minimiza su angustia personal diciendo que \"todos\" se sienten así, lo que puede hacerla sentir ignorada."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_2",
+    "type": "multiple_choice",
+    "scenario": "Alex se te acerca después de una presentación grupal que recibió una mala calificación. \"Simplemente no lo entiendo\", dice Alex, mirando al suelo. \"Pasé la noche en vela terminando esas diapositivas y reescribiendo el guion. Pensé que había hecho todo bien, pero el profesor Chen dijo que mi análisis fue 'superficial'. Siento que decepcioné a todo el grupo y ahora dudo mucho que vaya a aprobar esta clase. Ni siquiera sé bien por qué estoy aquí\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"¿Qué parte del análisis dijo él que era superficial? ¿Contribuyeron lo suficiente las otras personas del grupo?\"",
+        "isCorrect": false,
+        "feedback": "Esto está centrado en hechos. Ignora las emociones de Alex y se enfoca en los detalles técnicos del proyecto."
+      },
+      {
+        "id": "B",
+        "text": "\"Deberías programar una cita con el profesor Chen de inmediato y pedir crédito extra. Probablemente todavía puedas aprobar\".",
+        "isCorrect": false,
+        "feedback": "Esto es un consejo. Salta a una solución sin primero reconocer los sentimientos de fracaso y duda de Alex."
+      },
+      {
+        "id": "C",
+        "text": "\"Vaya, te sientes fatal. Te esforzaste un montón para que saliera bien, y que te digan eso y encima sentir que le fallaste al grupo... qué golpe más duro.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta valida el sentimiento de derrota de Alex (\"fatal\", \"golpe duro\") y lo conecta directamente con el gran esfuerzo que puso y los dolorosos comentarios que recibió."
+      },
+      {
+        "id": "D",
+        "text": "\"Oh, eso es horrible. El profesor Chen es conocido por ser un calificador muy duro, así que no te sientas tan mal por eso\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía. Intenta hacer que Alex se sienta mejor culpando al profesor, en lugar de comprender el sentido personal de fracaso de Alex."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_3",
+    "type": "multiple_choice",
+    "scenario": "Tu amiga, Maya, está contando algo sobre una fiesta del fin de semana. \"Intenté unirme a la conversación, de verdad que lo intenté. Pero cada vez que empezaba a decir algo, alguien más interrumpía. Después de un rato, simplemente... me detuve. Terminé parada en la esquina revisando mi teléfono, sintiéndome como una completa idiota. Me sentí totalmente invisible, como si ni siquiera debiera haber estado allí. Siempre es así. Odio ser tan rara\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Uf, odio cuando la gente hace eso. Esas personas suenan muy groseras por interrumpirte así. Yo también me habría sentido fuera de lugar\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía. Está de acuerdo con Maya y culpa a las otras personas, actuando como cómplice en lugar de comprender los propios sentimientos de insuficiencia de Maya."
+      },
+      {
+        "id": "B",
+        "text": "\"Parece que tienes la creencia fundamental de que eres invisible, y eso es probablemente lo que está causando que te retraigas en situaciones sociales\".",
+        "isCorrect": false,
+        "feedback": "Esto es una interpretación. Aplica una teoría psicológica en lugar de simplemente comprender el punto de vista de Maya."
+      },
+      {
+        "id": "C",
+        "text": "\"Eso es solo la ansiedad normal de las fiestas. Probablemente solo necesites tener más confianza la próxima vez\".",
+        "isCorrect": false,
+        "feedback": "Esto es un cliché (\"ansiedad normal\") y da un consejo. Descarta su experiencia específica y dolorosa como \"normal\"."
+      },
+      {
+        "id": "D",
+        "text": "\"Qué frustrante. O sea, tú querías conectar, pero sentiste que te ignoraban, y eso te hizo sentir súper incómoda y volver a pensar eso de que eres 'rara'.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta identifica con precisión los sentimientos de frustración e incomodidad de Maya y los vincula a la experiencia de ser pasada por alto."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_4",
+    "type": "multiple_choice",
+    "scenario": "Tu roomie, Ben, parece agitado mientras limpia la cocina. Le preguntas qué le pasa. Suspira ruidosamente y dice: \"Es solo que... siento que soy el único que saca la basura o limpia las encimeras. Lo mencioné la semana pasada y dijiste que ayudarías más. Pero luego llego a casa hoy y la basura se está desbordando y tus platos están en el fregadero. Es realmente frustrante y me hace sentir que no me respetas a mí ni a este espacio\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Pensaba hacerlo más tarde. No tienes que molestarte tanto por eso; son solo unos pocos platos\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta es defensiva y evaluativa. Descarta los sentimientos de Ben como una reacción exagerada en lugar de comprenderlos."
+      },
+      {
+        "id": "B",
+        "text": "\"Te sientes frustrado y como si no te respetara porque dije que ayudaría, pero al llegar viste la cocina hecha un desastre. Sientes que ignoré por completo lo que hablamos.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta identifica con precisión los sentimientos de Ben (frustración, falta de respeto) y los vincula correctamente con el comportamiento específico (romper el acuerdo)."
+      },
+      {
+        "id": "C",
+        "text": "\"Lo siento mucho. Me siento fatal por hacerte sentir así. Soy un desastre viviendo con alguien\".",
+        "isCorrect": false,
+        "feedback": "Esta respuesta se centra en tu propia culpa (\"Me siento fatal\", \"Soy un desastre\") en lugar de centrarse en comprender la experiencia de Ben."
+      },
+      {
+        "id": "D",
+        "text": "\"Entonces, estás enojado porque no saqué la basura ni lavé mis platos\".",
+        "isCorrect": false,
+        "feedback": "Esto es repetir como un loro (parroting). Repite los hechos (basura, platos) pero omite el mensaje emocional central sobre sentirse poco respetado."
+      }
+    ]
+  },
+  {
+    "id": "pregunta_5",
+    "type": "multiple_choice",
+    "scenario": "Tu compañero de clase, David, te dice que acaba de cambiarse de la carrera de medicina a historia del arte. \"Mis padres están furiosos\", dice, sin hacer contacto visual. \"Han sacrificado tanto para que me convierta en médico. Siguen diciendo que estoy tirando mi futuro a la basura. Me siento tan culpable por decepcionarlos, pero al mismo tiempo, era miserable en esas clases de química. Realmente amo lo que estoy estudiando ahora. Me siento tan dividido y confundido. No sé si estoy siendo egoísta\".",
+    "question": "¿Cuál es la respuesta más empática?",
+    "options": [
+      {
+        "id": "A",
+        "text": "\"Estás súper dividido. Por un lado, te sientes culpable por tus papás y todo lo que han hecho, pero por otro, por fin encontraste algo que te encanta. Es un conflicto muy fuerte.\"",
+        "isCorrect": true,
+        "feedback": "Esta respuesta muestra comprensión de todo el conflicto (\"súper dividido\"), validando tanto la culpa por su familia como la pasión por su nueva carrera."
+      },
+      {
+        "id": "B",
+        "text": "\"¿Qué tipo de trabajo puedes conseguir con un título en historia del arte? ¿Es por eso que están tan molestos?\"",
+        "isCorrect": false,
+        "feedback": "Esta es una pregunta centrada en hechos que juzga sutilmente su elección (\"¿Qué tipo de trabajo...?\") e ignora su conflicto emocional."
+      },
+      {
+        "id": "C",
+        "text": "\"No deberías sentirte culpable. Es tu vida y tienes que hacer lo que te hace feliz. Tus padres eventualmente lo superarán\".",
+        "isCorrect": false,
+        "feedback": "Esto es evaluativo (\"No deberías sentirte culpable\") y da un consejo. Descarta la legitimidad de su culpa, que es una parte clave de su experiencia."
+      },
+      {
+        "id": "D",
+        "text": "\"Es muy injusto que te presionen tanto. No está bien que te hagan sentir culpable por tus elecciones\".",
+        "isCorrect": false,
+        "feedback": "Esto es simpatía. Toma el \"lado\" de David en contra de sus padres, lo cual es una forma de colusión y no reconoce el complejo contexto familiar."
+      }
+    ]
+  }
+]
