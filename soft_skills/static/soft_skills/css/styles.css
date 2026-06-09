@@ -1063,8 +1063,8 @@ strong { font-weight: 600; }
 }
 
 .option-wrong {
-    border-color: var(--error) !important;
-    background: var(--error-light) !important;
+    border-color: var(--border-dark) !important;
+    background: var(--cream-dark) !important;
 }
 
 .option-letter {
@@ -1096,8 +1096,8 @@ strong { font-weight: 600; }
 }
 
 .option-wrong .option-letter {
-    background: var(--error);
-    border-color: var(--error);
+    background: var(--text-muted);
+    border-color: var(--text-muted);
     color: var(--white);
 }
 
@@ -1639,8 +1639,8 @@ details[open] .review-chevron {
 }
 
 .option-review.option-wrong {
-    border-color: var(--error);
-    background: var(--error-light);
+    border-color: var(--border-dark);
+    background: var(--cream-dark);
 }
 
 .review-actions {
