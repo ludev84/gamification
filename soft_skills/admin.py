@@ -1,8 +1,9 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from .models import (
-    Badge, DailyActivity, Lesson, MCQuestion, Module,
+    Badge, BadgeAssignment, DailyActivity, Lesson, MCQuestion, Module,
     UserBadge, UserLessonProgress, UserModuleProgress, UserProfile, UserResponse,
 )
 
@@ -118,13 +119,37 @@ class UserResponseAdmin(admin.ModelAdmin):
 class BadgeAdmin(admin.ModelAdmin):
     list_display = ('icon', 'name', 'condition_type', 'condition_value', 'condition_module')
     list_filter = ('condition_type',)
+    search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(BadgeAssignment)
+class BadgeAssignmentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'badge', 'assigned_at')
+    list_filter = ('badge',)
+    raw_id_fields = ('user',)
+    autocomplete_fields = ('badge',)
 
 
 @admin.register(UserBadge)
 class UserBadgeAdmin(admin.ModelAdmin):
     list_display = ('user', 'badge', 'earned_at')
     raw_id_fields = ('user',)
+
+
+# Manage each user's assigned badges right on their user page.
+class BadgeAssignmentInline(admin.TabularInline):
+    model = BadgeAssignment
+    extra = 1
+    autocomplete_fields = ('badge',)
+
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    inlines = [BadgeAssignmentInline]
 
 
 @admin.register(DailyActivity)

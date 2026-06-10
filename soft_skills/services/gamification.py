@@ -99,7 +99,8 @@ class GamificationService:
             UserBadge.objects.filter(user=user).values_list('badge__slug', flat=True)
         )
 
-        for badge in Badge.objects.all():
+        # Only badges an admin has assigned to this user are eligible to be earned.
+        for badge in Badge.objects.filter(assignments__user=user):
             if badge.slug in existing_slugs:
                 continue
 

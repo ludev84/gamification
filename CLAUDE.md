@@ -70,6 +70,8 @@ Routes use Spanish path segments: `/modulo/<id>/`, `/leccion/<id>/`, `/pregunta/
 
 Badge conditions are evaluated in `GamificationService.check_and_award_badges`, called from `submit_answer` after every response. Adding a new badge type means: extend `BADGE_CONDITION_CHOICES` in [models.py](soft_skills/models.py) **and** add a branch to `check_and_award_badges`. `module_complete` / `module_high_score` use the optional `condition_module` FK; the others use `condition_value`.
 
+Auto-award is **gated per user** by `BadgeAssignment`: `check_and_award_badges` only evaluates badges assigned to the user, so a user must have a badge assigned (by an admin, via the inline on the user's admin page) before they can see or earn it. Assigning an already-qualified badge earns it immediately, and unassigning removes the earned `UserBadge` — both wired in [signals.py](soft_skills/signals.py). `UserBadge` still records *earned* badges (drives `gam_badge_count`).
+
 ## Authoring MCQ content
 
 Reference question format and example data are in [Docs/mcqs-empathy/](Docs/mcqs-empathy/) (`MCQs-format.json` is the canonical shape). Each question has a scenario, the question text, four options, the correct letter, and a per-option explanation (A/B/C/D). The MCQ JSON files there are not auto-loaded — there is no management command for ingestion yet; content is entered via Django Admin.

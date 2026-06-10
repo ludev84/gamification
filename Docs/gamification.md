@@ -141,11 +141,13 @@ Updated inline in `submit_answer` ([soft_skills/views.py](../soft_skills/views.p
 - `condition_value` (int — interpretation depends on the type)
 - `condition_module` (FK, used only for module-specific types)
 
-`UserBadge` is the join row, unique per `(user, badge)`. The badge count in the gamification bar comes from `gam_badge_count` (context processor).
+`UserBadge` is the join row for *earned* badges, unique per `(user, badge)`. The badge count in the gamification bar comes from `gam_badge_count` (context processor).
+
+`BadgeAssignment` (unique per `(user, badge)`) is a separate join row that makes a badge **available** to a user. A user only sees and can earn badges that an admin has assigned to them — auto-award is gated by it. Assign badges per user via the inline on the user's admin page (or the `BadgeAssignment` admin). Assigning a badge whose condition is already met earns it immediately (post_save signal); unassigning removes it as earned (post_delete signal).
 
 ### 5.2 Condition types
 
-All evaluated in `GamificationService.check_and_award_badges`, called after every answer submission.
+All evaluated in `GamificationService.check_and_award_badges`, called after every answer submission. Only badges assigned to the user (via `BadgeAssignment`) are considered.
 
 | `condition_type` | Earned when … | Uses `condition_value` | Uses `condition_module` |
 |---|---|---|---|

@@ -277,6 +277,21 @@ class Badge(models.Model):
         return f'{self.icon} {self.name}'
 
 
+class BadgeAssignment(models.Model):
+    """Makes a badge available to a user. A user can only see and earn badges assigned to them."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='badge_assignments')
+    badge = models.ForeignKey(Badge, on_delete=models.CASCADE, related_name='assignments')
+    assigned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'badge')
+        verbose_name = 'Medalla asignada'
+        verbose_name_plural = 'Medallas asignadas'
+
+    def __str__(self):
+        return f'{self.user.username} - {self.badge.name}'
+
+
 class UserBadge(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='earned_badges')
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE, related_name='earned_by')
