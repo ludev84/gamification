@@ -2093,6 +2093,11 @@ details[open] .review-chevron {
     box-shadow: 0 6px 20px rgba(71, 85, 105, 0.25);
 }
 
+/* Gamification level 2: show the XP pill but without the pulse animation. */
+.fb-modal__xp--no-anim {
+    animation: none;
+}
+
 .fb-modal__extras {
     display: flex;
     flex-wrap: wrap;

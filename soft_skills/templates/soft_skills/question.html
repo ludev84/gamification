@@ -17,6 +17,12 @@
 var CONFETTI_LEVEL = 5;
 // Sound: 0 = off, 1 = simple, 2 = medium, 3 = full.
 var SOUND_LEVEL = 2;
+// XP feedback gamification (the points pill + floating points toast):
+//   1 = none        → no pill, no toast
+//   2 = static pill → pill shown, no animation
+//   3 = animated    → pill animates (pulse)
+//   4 = full        → animated pill + floating points toast
+var GAMIFICATION_LEVEL = 4;
 // ────────────────────────────────────────────────────────────────────
 
 var CORRECT_SOUND_FILES = {
@@ -60,6 +66,32 @@ function triggerCorrectFx(root) {
     if (!marker) return;
     fireConfetti(CONFETTI_LEVEL);
     playCorrectSound(SOUND_LEVEL);
+}
+
+// Trims the XP pill / floating toast in freshly-rendered content to match
+// GAMIFICATION_LEVEL. Runs synchronously right after each innerHTML swap, so
+// removed elements never get a chance to flash.
+function applyGamificationLevel(root) {
+    root = root || document;
+    var lv = GAMIFICATION_LEVEL;
+    var pillWrap = root.querySelector('.fb-modal__xp-wrap');
+    var pill = root.querySelector('.fb-modal__xp');
+    var toast = root.querySelector('.xp-float');
+
+    // Level 1: no XP visuals at all.
+    if (lv <= 1) {
+        if (pillWrap) pillWrap.remove();
+        if (toast) toast.remove();
+        return;
+    }
+    // Level 2: keep the pill but drop its pulse animation.
+    if (lv === 2 && pill) {
+        pill.classList.add('fb-modal__xp--no-anim');
+    }
+    // Floating toast only at level 4.
+    if (lv < 4 && toast) {
+        toast.remove();
+    }
 }
 
 // Global helpers — referenced by inline onclick attributes inside the partial.
@@ -125,6 +157,7 @@ function openFeedbackModal() {
         }).then(function(html) {
             slot.innerHTML = html;
             syncStreakChip();
+            applyGamificationLevel(slot);
             triggerCorrectFx(slot);
         }).finally(function() {
             slot.classList.remove('is-transitioning');
@@ -164,6 +197,7 @@ function openFeedbackModal() {
 
     // Initial load: the non-AJAX redirect path still injects feedback via session,
     // so fire the effect if the marker is present on first render.
+    applyGamificationLevel(slot);
     triggerCorrectFx(slot);
 })();
 </script>
