@@ -46,6 +46,8 @@ Lesson XP is awarded **once** — `award_lesson_complete_xp` is a no-op if `xp_e
 
 Lessons unlock sequentially within a module via `GamificationService.is_lesson_unlocked` — every prior published lesson must be completed.
 
+An app-wide **`GAMIFICATION_LEVEL` setting (0–3)** in [settings.py](django_project/settings.py) controls how gamified the app is (see [gamification-tiers.md](gamification-tiers.md)). It selects the `LEVEL_THRESHOLDS` preset in [models.py](soft_skills/models.py), applies a ×1.5 XP multiplier at level 3 (`_scaled_xp` in the service), disables badge awarding below level 2 (`check_and_award_badges` returns early), and drives per-element UI flags (`gam_show_*`, `gam_confetti_level`, `gam_sound_level`, `gam_xp_feedback_level`) injected by [context_processors.py](soft_skills/context_processors.py). Level 0 hides all gamification UI but XP/streaks are still tracked in the DB. The setting is read at import time — restart the server after changing it.
+
 ### Question flow & AJAX SPA pattern
 
 [soft_skills/views.py](soft_skills/views.py) and [soft_skills/templates/soft_skills/question.html](soft_skills/templates/soft_skills/question.html) implement an SPA-style flow without a JS framework:

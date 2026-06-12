@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.conf import settings
 from django.utils import timezone
 
 from soft_skills.models import (
@@ -14,35 +15,47 @@ XP_LESSON_FINISHED = 15
 XP_MODULE_FINISHED = 50
 XP_HIGH_SCORE_BONUS = 25
 
+# Gamification level 3 (high) hands out XP faster. See settings.GAMIFICATION_LEVEL.
+XP_MULTIPLIER_BY_LEVEL = {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.5}
+
+
+def _scaled_xp(amount):
+    """Scale a base XP amount by the active gamification level's multiplier."""
+    level = getattr(settings, 'GAMIFICATION_LEVEL', 3)
+    return round(amount * XP_MULTIPLIER_BY_LEVEL.get(level, 1.0))
+
 
 class GamificationService:
 
     @staticmethod
     def award_response_xp(user, is_correct):
-        xp = XP_CORRECT if is_correct else XP_INCORRECT
+        xp = _scaled_xp(XP_CORRECT if is_correct else XP_INCORRECT)
         user.profile.add_xp(xp)
         return xp
 
     @staticmethod
     def award_module_start_xp(user):
-        user.profile.add_xp(XP_MODULE_STARTED)
-        return XP_MODULE_STARTED
+        xp = _scaled_xp(XP_MODULE_STARTED)
+        user.profile.add_xp(xp)
+        return xp
 
     @staticmethod
     def award_lesson_complete_xp(user, user_lesson_progress):
         """Awards lesson completion XP only once."""
         if user_lesson_progress.xp_earned > 0:
             return 0
-        user_lesson_progress.xp_earned = XP_LESSON_FINISHED
+        xp = _scaled_xp(XP_LESSON_FINISHED)
+        user_lesson_progress.xp_earned = xp
         user_lesson_progress.save()
-        user.profile.add_xp(XP_LESSON_FINISHED)
-        return XP_LESSON_FINISHED
+        user.profile.add_xp(xp)
+        return xp
 
     @staticmethod
     def award_module_complete_xp(user, user_module_progress):
-        xp = XP_MODULE_FINISHED
+        base = XP_MODULE_FINISHED
         if user_module_progress.score_percent is not None and user_module_progress.score_percent >= 80:
-            xp += XP_HIGH_SCORE_BONUS
+            base += XP_HIGH_SCORE_BONUS
+        xp = _scaled_xp(base)
         user.profile.add_xp(xp)
         return xp
 
@@ -94,6 +107,10 @@ class GamificationService:
 
     @staticmethod
     def check_and_award_badges(user):
+        # Badges are disabled entirely below gamification level 2 (no UI, no awarding).
+        if getattr(settings, 'GAMIFICATION_LEVEL', 3) < 2:
+            return []
+
         newly_earned = []
         existing_slugs = set(
             UserBadge.objects.filter(user=user).values_list('badge__slug', flat=True)

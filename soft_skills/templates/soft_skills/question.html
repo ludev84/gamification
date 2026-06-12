@@ -12,18 +12,19 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script>
-// ───────── Correct-answer effects: tweak these two numbers ─────────
+// ───────── Effect levels — derived from settings.GAMIFICATION_LEVEL (0-3) ─────────
+// (per-level mapping lives in soft_skills/context_processors.py)
 // Confetti intensity: 0 = off, 5 = medium, 10 = big & dense.
-var CONFETTI_LEVEL = 5;
+var CONFETTI_LEVEL = {{ gam_confetti_level|default_if_none:5 }};
 // Sound: 0 = off, 1 = simple, 2 = medium, 3 = full.
-var SOUND_LEVEL = 2;
-// XP feedback gamification (the points pill + floating points toast):
+var SOUND_LEVEL = {{ gam_sound_level|default_if_none:2 }};
+// XP feedback (the points pill + floating points toast):
 //   1 = none        → no pill, no toast
 //   2 = static pill → pill shown, no animation
 //   3 = animated    → pill animates (pulse)
 //   4 = full        → animated pill + floating points toast
-var GAMIFICATION_LEVEL = 4;
-// ────────────────────────────────────────────────────────────────────
+var GAMIFICATION_LEVEL = {{ gam_xp_feedback_level|default_if_none:3 }};
+// ───────────────────────────────────────────────────────────────────────────────────
 
 var CORRECT_SOUND_FILES = {
     1: "{% static 'soft_skills/audio/simple-correct.mp3' %}",
@@ -77,11 +78,13 @@ function applyGamificationLevel(root) {
     var pillWrap = root.querySelector('.fb-modal__xp-wrap');
     var pill = root.querySelector('.fb-modal__xp');
     var toast = root.querySelector('.xp-float');
+    var extras = root.querySelector('.fb-modal__extras');
 
-    // Level 1: no XP visuals at all.
+    // Level 1: no XP visuals at all (pill, toast, and the lesson/module XP chips).
     if (lv <= 1) {
         if (pillWrap) pillWrap.remove();
         if (toast) toast.remove();
+        if (extras) extras.remove();
         return;
     }
     // Level 2: keep the pill but drop its pulse animation.

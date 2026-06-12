@@ -7,7 +7,10 @@ from .models import (
     LEVEL_THRESHOLDS, Badge, DailyActivity, Lesson, MCQuestion, Module,
     UserBadge, UserLessonProgress, UserModuleProgress, UserResponse,
 )
-from .services.gamification import GamificationService
+from .services.gamification import (
+    XP_CORRECT, XP_HIGH_SCORE_BONUS, XP_INCORRECT, XP_LESSON_FINISHED,
+    XP_MODULE_FINISHED, XP_MODULE_STARTED, GamificationService, _scaled_xp,
+)
 
 
 def _next_remaining_order(user, lesson, current_order):
@@ -497,8 +500,20 @@ def module_summary(request, module_id):
 
     correct_count = responses.filter(is_correct=True).count()
     incorrect_count = responses.filter(is_correct=False).count()
-    correct_xp = correct_count * 10
-    incorrect_xp = incorrect_count * 5
+
+    # Per-unit amounts scaled by the gamification level so the breakdown matches actual awards.
+    xp_correct_unit = _scaled_xp(XP_CORRECT)
+    xp_incorrect_unit = _scaled_xp(XP_INCORRECT)
+    xp_lesson_unit = _scaled_xp(XP_LESSON_FINISHED)
+    xp_module_start = _scaled_xp(XP_MODULE_STARTED)
+    xp_module_finish = _scaled_xp(XP_MODULE_FINISHED)
+    # The bonus is awarded scaled *together* with the finish XP; derive the displayed bonus as
+    # the difference so the rows always sum to the stored total despite rounding.
+    xp_high_score_bonus = _scaled_xp(XP_MODULE_FINISHED + XP_HIGH_SCORE_BONUS) - xp_module_finish
+
+    correct_xp = correct_count * xp_correct_unit
+    incorrect_xp = incorrect_count * xp_incorrect_unit
+    lessons_xp = lessons.count() * xp_lesson_unit
 
     context = {
         'module': module,
@@ -509,6 +524,13 @@ def module_summary(request, module_id):
         'correct_xp': correct_xp,
         'incorrect_xp': incorrect_xp,
         'lesson_count': lessons.count(),
+        'lessons_xp': lessons_xp,
+        'xp_correct_unit': xp_correct_unit,
+        'xp_incorrect_unit': xp_incorrect_unit,
+        'xp_lesson_unit': xp_lesson_unit,
+        'xp_module_start': xp_module_start,
+        'xp_module_finish': xp_module_finish,
+        'xp_high_score_bonus': xp_high_score_bonus,
     }
     return render(request, 'soft_skills/module_summary.html', context)
 

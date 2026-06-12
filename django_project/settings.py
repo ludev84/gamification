@@ -108,6 +108,14 @@ LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'America/Merida'
 
+
+# App-wide gamification level (0-3). 0 = none (XP/streaks still tracked silently in the DB),
+# 1 = low, 2 = medium, 3 = high. Controls level thresholds (models.py), the XP multiplier and
+# badge awarding (services/gamification.py), and which UI elements/effects are shown
+# (context_processors.py). Read at import time — restart the server after changing.
+# See gamification-tiers.md for the threshold presets.
+GAMIFICATION_LEVEL = 0
+
 USE_I18N = True
 
 USE_TZ = True

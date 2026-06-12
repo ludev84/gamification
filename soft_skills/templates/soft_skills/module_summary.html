@@ -23,33 +23,34 @@
             <p>{{ correct_count }}/{{ responses.count }} respuestas correctas</p>
         </div>
 
+        {% if gam_show_levels %}
         <div class="summary-xp">
             <h3>XP obtenidos</h3>
             <table class="xp-table">
                 <tr>
-                    <td>Respuestas correctas ({{ correct_count }} x 10 XP)</td>
+                    <td>Respuestas correctas ({{ correct_count }} x {{ xp_correct_unit }} XP)</td>
                     <td class="xp-value">+{{ correct_xp }} XP</td>
                 </tr>
                 <tr>
-                    <td>Respuestas incorrectas ({{ incorrect_count }} x 5 XP)</td>
+                    <td>Respuestas incorrectas ({{ incorrect_count }} x {{ xp_incorrect_unit }} XP)</td>
                     <td class="xp-value">+{{ incorrect_xp }} XP</td>
                 </tr>
                 <tr>
-                    <td>Lecciones completadas ({{ lesson_count }} x 15 XP)</td>
-                    <td class="xp-value">+{% widthratio lesson_count 1 15 %} XP</td>
+                    <td>Lecciones completadas ({{ lesson_count }} x {{ xp_lesson_unit }} XP)</td>
+                    <td class="xp-value">+{{ lessons_xp }} XP</td>
                 </tr>
                 <tr>
                     <td>Módulo iniciado</td>
-                    <td class="xp-value">+30 XP</td>
+                    <td class="xp-value">+{{ xp_module_start }} XP</td>
                 </tr>
                 <tr>
                     <td>Módulo completado</td>
-                    <td class="xp-value">+50 XP</td>
+                    <td class="xp-value">+{{ xp_module_finish }} XP</td>
                 </tr>
                 {% if user_progress.score_percent >= 80 %}
                 <tr>
                     <td>Bonus alto puntaje (&ge;80%)</td>
-                    <td class="xp-value">+25 XP</td>
+                    <td class="xp-value">+{{ xp_high_score_bonus }} XP</td>
                 </tr>
                 {% endif %}
                 <tr class="xp-total">
@@ -58,6 +59,7 @@
                 </tr>
             </table>
         </div>
+        {% endif %}
         {% else %}
         <div class="summary-progress">
             <p>Módulo en progreso</p>

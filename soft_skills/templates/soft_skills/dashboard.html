@@ -4,8 +4,10 @@
 
 {% block content %}
 <div class="container">
+    {% if gam_show_levels or gam_show_day_streak or gam_show_badges %}
     <!-- Gamification Bar -->
     <div class="gam-bar">
+        {% if gam_show_day_streak %}
         <button type="button"
                 class="gam-item gam-item--streak gam-item--clickable"
                 data-card="streak"
@@ -14,6 +16,8 @@
             <span class="gam-icon">&#128293;</span>
             <span class="gam-label">Racha: <strong>{{ profile.current_streak }} días</strong></span>
         </button>
+        {% endif %}
+        {% if gam_show_levels %}
         <button type="button"
                 class="gam-item gam-item--level gam-item--clickable"
                 data-card="level"
@@ -26,6 +30,8 @@
             </div>
             <span class="gam-xp">{{ profile.total_xp }} XP{% if level_info.next_threshold %} / {{ level_info.next_threshold }} XP{% endif %}</span>
         </button>
+        {% endif %}
+        {% if gam_show_badges %}
         <button type="button"
                 class="gam-item gam-item--badges gam-item--clickable"
                 data-card="badges"
@@ -34,11 +40,13 @@
             <span class="gam-icon">&#127942;</span>
             <span class="gam-label"><strong>{{ badges.count }}</strong> medallas</span>
         </button>
+        {% endif %}
     </div>
 
     <!-- Accordion: expands when a gam-bar item is clicked -->
     <div class="gam-accordion" id="gam-accordion" hidden>
         <!-- STREAK PANEL -->
+        {% if gam_show_day_streak %}
         <section class="gam-panel" data-panel="streak" hidden aria-label="Detalle de racha">
             <div class="gam-card gam-card--streak">
                 <div class="gam-card__inner">
@@ -86,8 +94,10 @@
                 </div>
             </div>
         </section>
+        {% endif %}
 
         <!-- LEVEL PANEL -->
+        {% if gam_show_levels %}
         <section class="gam-panel" data-panel="level" hidden aria-label="Detalle de nivel">
             <div class="gam-card gam-card--level">
                 <div class="gam-card__inner">
@@ -135,8 +145,10 @@
                 </div>
             </div>
         </section>
+        {% endif %}
 
         <!-- BADGES PANEL -->
+        {% if gam_show_badges %}
         <section class="gam-panel" data-panel="badges" hidden aria-label="Detalle de medallas">
             <div class="gam-card gam-card--badges">
                 <div class="gam-card__inner">
@@ -164,7 +176,9 @@
                 </div>
             </div>
         </section>
+        {% endif %}
     </div>
+    {% endif %}
 
     <!-- Welcome -->
     <div class="welcome-section">

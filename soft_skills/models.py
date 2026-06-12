@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -74,13 +75,29 @@ class MCQuestion(models.Model):
 
 # --- User Profile & Gamification ---
 
-LEVEL_THRESHOLDS = [
-    (1, 0.00, 'Explorador Interpersonal'),
-    (2, 0.15, 'Comunicador Asertivo'),
-    (3, 0.40, 'Colaborador Clave'),
-    (4, 0.65, 'Líder Empático'),
-    (5, 0.85, 'Estratega Humano'),
+LEVEL_NAMES = [
+    'Explorador Interpersonal',
+    'Comunicador Asertivo',
+    'Colaborador Clave',
+    'Líder Empático',
+    'Estratega Humano',
 ]
+
+# Per-gamification-level boundaries as a fraction of XP_max. A lower final threshold makes the
+# top level easier to reach (= more gamified). At level 0 the level UI is hidden, so it just
+# reuses the medium spacing for the background computation. Selected once at import time by
+# settings.GAMIFICATION_LEVEL — restart after changing it. See gamification-tiers.md.
+LEVEL_THRESHOLD_PCTS = {
+    0: [0.00, 0.15, 0.40, 0.65, 0.85],  # hidden — background tracking only
+    1: [0.00, 0.25, 0.50, 0.75, 0.95],  # low (Tier 2 — hardest to reach level 5)
+    2: [0.00, 0.15, 0.40, 0.65, 0.85],  # medium (Tier 3 — current behavior)
+    3: [0.00, 0.10, 0.25, 0.45, 0.65],  # high (Tier 4 — easiest)
+}
+
+_pcts = LEVEL_THRESHOLD_PCTS.get(
+    getattr(settings, 'GAMIFICATION_LEVEL', 3), LEVEL_THRESHOLD_PCTS[2]
+)
+LEVEL_THRESHOLDS = [(i + 1, pct, LEVEL_NAMES[i]) for i, pct in enumerate(_pcts)]
 
 
 class UserProfile(models.Model):
