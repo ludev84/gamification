@@ -822,6 +822,11 @@ strong { font-weight: 600; }
     font-weight: 500;
 }
 
+/* Lesson-completion bar on each dashboard module card (shown for all gamification tiers) */
+.module-card-progress {
+    margin-top: 0.9rem;
+}
+
 .module-actions {
     margin-top: 0.85rem;
     display: flex;

@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -71,6 +72,25 @@ def dashboard(request):
         user=request.user, lesson__module_id__in=assigned_module_ids, is_completed=True
     ).count()
 
+    # Per-module lesson counts for the module-card progress bars (shown for all gamification
+    # tiers). Two grouped queries — no per-card lookups.
+    lessons_total_by_module = dict(
+        Lesson.objects.filter(module_id__in=assigned_module_ids, is_published=True)
+        .values_list('module_id').annotate(c=Count('id'))
+    )
+    lessons_done_by_module = dict(
+        UserLessonProgress.objects.filter(
+            user=request.user, lesson__module_id__in=assigned_module_ids, is_completed=True
+        ).values_list('lesson__module_id').annotate(c=Count('id'))
+    )
+    module_cards = list(user_module_progress)
+    for ump in module_cards:
+        total = lessons_total_by_module.get(ump.module_id, 0)
+        done = lessons_done_by_module.get(ump.module_id, 0)
+        ump.lessons_total = total
+        ump.lessons_completed = done
+        ump.lessons_percent = int(done / total * 100) if total else 0
+
     # --- Streak week strip: 7-day cycle showing where the user currently is ---
     current_streak = GamificationService.get_current_streak(request.user)
     if current_streak > 0:
@@ -140,7 +160,7 @@ def dashboard(request):
 
     context = {
         'profile': profile,
-        'user_module_progress': user_module_progress,
+        'user_module_progress': module_cards,
         'level_info': level_info,
         'badges': badges,
         'total_modules': total_modules,
