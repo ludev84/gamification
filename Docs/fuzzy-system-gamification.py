@@ -11,28 +11,19 @@ conscientiousness = ctrl.Antecedent(np.arange(0,101,1), 'conscientiousness')
 extraversion = ctrl.Antecedent(np.arange(0,101,1), 'extraversion')
 agreeableness = ctrl.Antecedent(np.arange(0,101,1), 'agreeableness')
 neuroticism = ctrl.Antecedent(np.arange(0,101,1), 'neuroticism')
+
 gamification = ctrl.Consequent(np.arange(0, 4, 0.01), 'gamification')
 
 # Membership functions
-openness['low'] = fuzz.trapmf(openness.universe, [0, 0, 25, 50])
-openness['medium'] = fuzz.trimf(openness.universe, [25, 50, 75])
-openness['high'] = fuzz.trapmf(openness.universe, [50, 75, 100, 100])
-
-conscientiousness['low'] = fuzz.trapmf(conscientiousness.universe, [0, 0, 25, 50])
-conscientiousness['medium'] = fuzz.trimf(conscientiousness.universe, [25, 50, 75])
-conscientiousness['high'] = fuzz.trapmf(conscientiousness.universe, [50, 75, 100, 100])
-
-extraversion['low'] = fuzz.trapmf(extraversion.universe, [0, 0, 25, 50])
-extraversion['medium'] = fuzz.trimf(extraversion.universe, [25, 50, 75])
-extraversion['high'] = fuzz.trapmf(extraversion.universe, [50, 75, 100, 100])
-
-agreeableness['low'] = fuzz.trapmf(agreeableness.universe, [0, 0, 25, 50])
-agreeableness['medium'] = fuzz.trimf(agreeableness.universe, [25, 50, 75])
-agreeableness['high'] = fuzz.trapmf(agreeableness.universe, [50, 75, 100, 100])
-
-neuroticism['low'] = fuzz.trapmf(neuroticism.universe, [0, 0, 25, 50])
-neuroticism['medium'] = fuzz.trimf(neuroticism.universe, [25, 50, 75])
-neuroticism['high'] = fuzz.trapmf(neuroticism.universe, [50, 75, 100, 100])
+for trait in [openness, conscientiousness, extraversion, agreeableness, neuroticism]:
+    # Low: 1.0 from 0 to 20, falls to 0 at 40
+    trait['low'] = fuzz.trapmf(trait.universe, [0, 0, 20, 40])
+    
+    # Medium: rises 20-40, plateaus 40-60, falls 60-80
+    trait['medium'] = fuzz.trapmf(trait.universe, [20, 40, 60, 80])
+    
+    # High: rises 60-80, plateaus at 1.0 from 80 to 100
+    trait['high'] = fuzz.trapmf(trait.universe, [60, 80, 100, 100])
 
 # Singletons: triángulos degenerados con los 3 puntos en la misma coordenada.
 gamification['none'] = fuzz.trimf(gamification.universe, [0, 0, 0])    # Snaps to 0
