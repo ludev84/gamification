@@ -41,8 +41,9 @@ zona horaria `America/Merida`).
 ### 2.2 Supuestos y dependencias
 
 - **Django** (6.x) sobre **SQLite**.
-- Frontend con **Django Templates + CSS** y **Vanilla JavaScript** (patrón SPA por AJAX, sin
-  frameworks JS).
+- Frontend con **Django Templates + CSS** y **JavaScript Vanilla** (patrón SPA por AJAX, sin
+  frameworks JS). Única dependencia JS de terceros: la librería ligera `canvas-confetti` (vía CDN)
+  para el efecto de confeti.
 - Autenticación con el sistema de auth de Django.
 - **Sin integración con LLM ni lógica difusa.** Todo el contenido se gestiona manualmente desde
   Django Admin. (En `requirements.txt` permanecen `scikit-fuzzy`, `scipy`, `numpy` y `networkx`
@@ -239,7 +240,10 @@ alumno con buen desempeño puede superar el 100% del `XP_max`.
 
 - **Backend:** Django 6.x
 - **Base de datos:** SQLite (`db.sqlite3`, fuera de control de versiones)
-- **Frontend:** Django Templates + CSS + Vanilla JavaScript (sin React/Vue)
+- **Frontend:** Django Templates + CSS + JavaScript Vanilla (sin React/Vue). No es 100% vanilla:
+  se usa la librería ligera [canvas-confetti](https://github.com/catdad/canvas-confetti) (vía CDN en
+  [question.html](../soft_skills/templates/soft_skills/question.html)) para el efecto de confeti al
+  responder correctamente.
 
 ### 7.2 Entorno de desarrollo
 
