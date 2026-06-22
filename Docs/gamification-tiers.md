@@ -30,6 +30,10 @@ Only the **thresholds** (each level's required % of `XP_max`) change per tier:
 | 4 | 65% | 75% | 65% | 45% |
 | 5 | 85% | 95% | 85% | 65% |
 
+**XP multiplier:** Tiers 1–3 award XP at ×1.0; **Tier 4 applies a ×1.5 multiplier** (`_scaled_xp`
+in [soft_skills/services/gamification.py](soft_skills/services/gamification.py)), so XP accumulates
+faster *and* the top level needs a lower threshold — making level 5 easier still at Tier 4.
+
 ## Tier notes
 
 - **Tier 1 — Off:** no gamification is shown (no XP, levels, or streak UI). XP is still tracked in
@@ -37,5 +41,5 @@ Only the **thresholds** (each level's required % of `XP_max`) change per tier:
 - **Tier 2 — Low:** widest spacing → **hardest** to reach level 5 (≈ 95% of `XP_max`). Leveling up
   is rare and understated.
 - **Tier 3 — Medium:** balanced default.
-- **Tier 4 — High:** tightest spacing → **easiest** to reach level 5 (≈ 65% of `XP_max`). Users
-  level up often, well before completing all content.
+- **Tier 4 — High:** tightest spacing → **easiest** to reach level 5 (≈ 65% of `XP_max`), plus a
+  **×1.5 XP multiplier**. Users level up often, well before completing all content.
