@@ -13,8 +13,9 @@ As-built reference for the XP, level, streak, and badge systems running in the p
 | Level definitions | `LEVEL_THRESHOLDS` in [soft_skills/models.py](../soft_skills/models.py) |
 | Badges schema | `Badge` + `UserBadge` + `BADGE_CONDITION_CHOICES` in [soft_skills/models.py](../soft_skills/models.py) |
 | Daily activity counters | `DailyActivity` in [soft_skills/models.py](../soft_skills/models.py) |
-| Hook points (when XP/streak/badges fire) | `module_view`, `submit_answer` in [soft_skills/views.py](../soft_skills/views.py) |
-| Template-wide level/badge context | `gamification_context` in [soft_skills/context_processors.py](../soft_skills/context_processors.py) |
+| Hook points (when XP/streak/badges fire) | `submit_answer` in [soft_skills/views.py](../soft_skills/views.py) (module-start, response, lesson/module completion, streak, badges all fire here) |
+| App-wide gamification level (tiers 0–3) | `GAMIFICATION_LEVEL` in [django_project/settings.py](../django_project/settings.py); see §8 |
+| Template-wide level/badge context & tier flags | `gamification_context` in [soft_skills/context_processors.py](../soft_skills/context_processors.py) |
 
 `UserProfile` is auto-created via the `post_save` signal in [soft_skills/signals.py](../soft_skills/signals.py), so any authenticated user is guaranteed to have one.
 
@@ -22,16 +23,16 @@ As-built reference for the XP, level, streak, and badge systems running in the p
 
 ## 2. XP — how it is earned
 
-All XP constants live at the top of [soft_skills/services/gamification.py](../soft_skills/services/gamification.py). XP is added to `UserProfile.total_xp` via `UserProfile.add_xp()`.
+All XP constants live at the top of [soft_skills/services/gamification.py](../soft_skills/services/gamification.py). XP is added to `UserProfile.total_xp` via `UserProfile.add_xp()`. Every award is first passed through `_scaled_xp()`, which multiplies the base amount by the gamification-level multiplier (×1.5 only at level 3 — see §8); the scaled value is what gets stored *and* displayed. The amounts below are the **base** (×1.0) values.
 
 | Trigger | XP | Constant | Notes |
 |---|---|---|---|
 | Answering a question correctly (first attempt) | **+10** | `XP_CORRECT` | First attempt only — retries don't award XP. |
 | Answering a question incorrectly (first attempt) | **+5** | `XP_INCORRECT` | Consolation XP; awarded once per question. |
-| Starting a new module | **+30** | `XP_MODULE_STARTED` | Awarded on first visit to the module page (`is_started` flips to true). |
+| Starting a new module | **+30** | `XP_MODULE_STARTED` | Awarded in `submit_answer` on the user's **first answer** in the module (`is_started` flips to true then), not on opening the module page. |
 | Completing a lesson | **+15** | `XP_LESSON_FINISHED` | Idempotent — `award_lesson_complete_xp` no-ops if `xp_earned > 0` on `UserLessonProgress`. |
 | Completing a module | **+50** | `XP_MODULE_FINISHED` | Awarded when every published lesson in the module is completed. |
-| Module high-score bonus | **+25** | `XP_HIGH_SCORE_BONUS` | Added on top of `XP_MODULE_FINISHED` when `score_percent >= 80`. |
+| Module high-score bonus | **+25** | `XP_HIGH_SCORE_BONUS` | Added on top of `XP_MODULE_FINISHED` when `score_percent >= 80` (the two are scaled together). |
 
 **Streaks no longer award XP.** Streak counters and `DailyActivity` are still maintained (see §4), but `update_streak` does not touch `total_xp`.
 
@@ -45,7 +46,7 @@ All XP constants live at the top of [soft_skills/services/gamification.py](../so
 
 ### 3.1 Levels & thresholds
 
-Defined in [soft_skills/models.py](../soft_skills/models.py) as `LEVEL_THRESHOLDS = [(level, pct_of_xp_max, name), …]`:
+Defined in [soft_skills/models.py](../soft_skills/models.py) as `LEVEL_THRESHOLDS = [(level, pct_of_xp_max, name), …]`. **The threshold percentages are tier-dependent** — `LEVEL_THRESHOLD_PCTS` is selected by `GAMIFICATION_LEVEL` at import time (see §8 and [gamification-tiers.md](gamification-tiers.md)). The table below is the **medium** preset (gamification level 2):
 
 | Level | Name | Threshold (% of XP_max) |
 |---|---|---|
@@ -147,7 +148,7 @@ Updated inline in `submit_answer` ([soft_skills/views.py](../soft_skills/views.p
 
 ### 5.2 Condition types
 
-All evaluated in `GamificationService.check_and_award_badges`, called after every answer submission. Only badges assigned to the user (via `BadgeAssignment`) are considered.
+All evaluated in `GamificationService.check_and_award_badges`, called after every answer submission. Only badges assigned to the user (via `BadgeAssignment`) are considered. **Badges are disabled entirely below gamification level 2** — `check_and_award_badges` returns early (no awarding, and the modal "new badge" toast and earn-on-assign signal are gated too); see §8.
 
 | `condition_type` | Earned when … | Uses `condition_value` | Uses `condition_module` |
 |---|---|---|---|
@@ -179,7 +180,7 @@ Currently used to drive streak detection; no UI surfaces these counts directly y
 
 ## 7. End-to-end example
 
-A user is assigned one module with 3 lessons and 18 questions total.
+A user is assigned one module with 3 lessons and 18 questions total. *(This example assumes gamification level 2 — medium thresholds and ×1.0 XP; other levels shift the thresholds and, at level 3, scale all XP by 1.5 — see §8.)*
 
 - `XP_max = 1·80 + 3·15 + 18·10 = 305`.
 - Level thresholds for this user: L2 at 46 XP (`0.15·305`), L3 at 122, L4 at 198, L5 at 259.
@@ -188,3 +189,27 @@ A user is assigned one module with 3 lessons and 18 questions total.
 - Day 3, finishes lesson 3 (6 correct), completes the module with 100 % score → **75 + 50 + 25 = 150**. Total: **330 XP**. Streak = 3. Capped at level 5; `xp_progress_percent` returns 100.
 
 Note that **the user crossed `XP_max` (330 > 305)** purely from the high-score bonus, because that bonus is not part of the `XP_max` formula. This is by design today; flag it if you want strict alignment.
+
+---
+
+## 8. Gamification level (app-wide tiers 0–3)
+
+A single setting, **`GAMIFICATION_LEVEL` (0–3)** in [django_project/settings.py](../django_project/settings.py), controls how gamified the app is. It is read at import time — **restart the server after changing it.** Threshold presets are documented in [gamification-tiers.md](gamification-tiers.md).
+
+| Level | Day & answer streak UI | Level/XP UI | Badges (UI + auto-award) | XP pill / toast | Confetti / sound | Level thresholds | XP × |
+|---|---|---|---|---|---|---|---|
+| **0 — off** | hidden | hidden | off | none | 0 / 0 | medium (internal) | ×1.0 |
+| **1 — low** | hidden | shown | off | static pill | 3 / 1 | Tier 2 (hardest) | ×1.0 |
+| **2 — medium** | shown | shown | on | animated pill | 5 / 2 | Tier 3 (default) | ×1.0 |
+| **3 — high** | shown | shown | on | pill + toast | 8 / 3 | Tier 4 (easiest) | ×1.5 |
+
+Where each dimension is implemented:
+
+- **Thresholds** — `LEVEL_THRESHOLD_PCTS` keyed by the setting in [models.py](../soft_skills/models.py); `LEVEL_THRESHOLDS` keeps its `(level, pct, name)` shape so level computation (§3) is otherwise unchanged.
+- **XP multiplier** — `_scaled_xp()` in [gamification.py](../soft_skills/services/gamification.py) scales every award (×1.5 only at level 3); the scaled value is both stored and displayed.
+- **Badges off below level 2** — `check_and_award_badges` returns early (§5).
+- **UI flags** — `gam_show_levels`, `gam_show_day_streak`, `gam_show_answer_streak`, `gam_show_badges`, `gam_confetti_level`, `gam_sound_level`, `gam_xp_feedback_level` injected by [context_processors.py](../soft_skills/context_processors.py); consumed by [base.html](../templates/base.html) (navbar chip), [dashboard.html](../soft_skills/templates/soft_skills/dashboard.html) (gam-bar + panels), [module_summary.html](../soft_skills/templates/soft_skills/module_summary.html) (XP table), and [question.html](../soft_skills/templates/soft_skills/question.html) (confetti/sound/pill/toast).
+
+**Level 0 still tracks XP, streaks, and `DailyActivity` in the DB** — it only hides the UI and disables badges/effects — so raising the level later restores full progress. The dashboard module-card **lesson-progress bar is not gated**; it shows at every level.
+
+> **Not implemented yet:** the table's per-level *badge* differences (e.g. "only streak badges at level 2 vs all badges at level 3") — badges are currently identical at levels 2 and 3 (fully on, manual `BadgeAssignment`). That differentiation is deferred to a future per-user badge-generation script.
