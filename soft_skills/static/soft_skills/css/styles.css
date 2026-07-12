@@ -640,6 +640,11 @@ strong { font-weight: 600; }
 .welcome-section {
     margin-bottom: 2rem;
     animation: fadeUp 0.4s ease 0.05s both;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .welcome-section h1 {
@@ -650,6 +655,36 @@ strong { font-weight: 600; }
 .welcome-section p {
     color: var(--text-muted);
     font-size: 0.95rem;
+}
+
+/* Gamification-level selector in the welcome header */
+.gam-level-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.gam-level-form__label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.gam-level-form__select {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--white);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--r-full);
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+}
+
+.gam-level-form__select:focus {
+    outline: 2px solid var(--border-dark);
+    outline-offset: 1px;
 }
 
 

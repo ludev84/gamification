@@ -12,7 +12,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script>
-// ───────── Effect levels — derived from settings.GAMIFICATION_LEVEL (0-3) ─────────
+// ───────── Effect levels — derived from the user's gamification level (0-3) ─────────
 // (per-level mapping lives in soft_skills/context_processors.py)
 // Confetti intensity: 0 = off, 5 = medium, 10 = big & dense.
 var CONFETTI_LEVEL = {{ gam_confetti_level|default_if_none:5 }};

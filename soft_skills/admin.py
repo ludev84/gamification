@@ -3,8 +3,9 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from .models import (
-    Badge, BadgeAssignment, DailyActivity, Lesson, MCQuestion, Module,
-    UserBadge, UserLessonProgress, UserModuleProgress, UserProfile, UserResponse,
+    GAMIFICATION_LEVEL_CHOICES, Badge, BadgeAssignment, DailyActivity, Lesson,
+    MCQuestion, Module, UserBadge, UserLessonProgress, UserModuleProgress,
+    UserProfile, UserResponse,
 )
 
 
@@ -87,9 +88,63 @@ class MCQuestionAdmin(admin.ModelAdmin):
 
 # --- User & Progress Admin ---
 
+OCEAN_FIELDS = (
+    'ocean_openness', 'ocean_conscientiousness', 'ocean_extraversion',
+    'ocean_agreeableness', 'ocean_neuroticism',
+)
+
+
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'total_xp', 'level_name', 'current_streak', 'longest_streak')
+    list_display = (
+        'user', 'total_xp', 'level_name', 'current_streak', 'longest_streak',
+        'gamification_level_admin', 'gamification_level_user', 'effective_gamification_level',
+    )
+    fieldsets = (
+        ('Usuario', {'fields': ('user',)}),
+        ('Progreso', {'fields': (
+            'total_xp', 'current_streak', 'longest_streak', 'last_activity_date',
+            'current_answer_streak', 'longest_answer_streak',
+        )}),
+        ('Personalidad OCEAN (0-100)', {
+            'description': (
+                'Al guardar puntajes OCEAN completos, el sistema difuso calcula el nivel de '
+                'gamificación recomendado y lo escribe en "Nivel de gamificación '
+                '(admin/recomendado)". Si editas ese nivel a mano en el mismo guardado, tu '
+                'valor tiene prioridad y no se recalcula.'
+            ),
+            'fields': (OCEAN_FIELDS,),
+        }),
+        ('Gamificación', {'fields': ('gamification_level_admin', 'gamification_level_user')}),
+    )
+    raw_id_fields = ('user',)
+
+    @admin.display(description='Nivel efectivo')
+    def effective_gamification_level(self, obj):
+        return obj.get_gamification_level_admin_display() if obj.gamification_level_user is None \
+            else obj.get_gamification_level_user_display()
+
+    def save_model(self, request, obj, form, change):
+        # Recompute the recommendation when OCEAN scores change, unless the admin
+        # also set the level by hand in this same save (their value wins).
+        ocean_changed = any(f in form.changed_data for f in OCEAN_FIELDS)
+        level_changed = 'gamification_level_admin' in form.changed_data
+        if ocean_changed and not level_changed:
+            level = obj.apply_fuzzy_gamification_level()
+            if level is not None:
+                self.message_user(
+                    request,
+                    f'Sistema difuso: nivel de gamificación recomendado = {level} '
+                    f'({dict(GAMIFICATION_LEVEL_CHOICES)[level]}).',
+                )
+            elif all(getattr(obj, f) is not None for f in OCEAN_FIELDS):
+                self.message_user(
+                    request,
+                    'Sistema difuso: ninguna regla se activó con estos puntajes OCEAN; '
+                    'el nivel de gamificación (admin) no se modificó.',
+                    level='WARNING',
+                )
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(UserModuleProgress)

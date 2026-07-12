@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .models import (
-    LEVEL_THRESHOLDS, Badge, DailyActivity, Lesson, MCQuestion, Module,
+    GAMIFICATION_LEVEL_CHOICES, Badge, DailyActivity, Lesson, MCQuestion, Module,
     UserBadge, UserLessonProgress, UserModuleProgress, UserResponse,
 )
 from .services.gamification import (
@@ -149,7 +149,7 @@ def dashboard(request):
             'xp_required': int(pct * xp_max),
             'is_current': lvl == level_info['level'],
         }
-        for lvl, pct, name in LEVEL_THRESHOLDS
+        for lvl, pct, name in profile.level_thresholds
     ]
 
     # XP remaining to next level (for the Level card front face)
@@ -157,6 +157,18 @@ def dashboard(request):
         xp_remaining = max(0, level_info['next_threshold'] - profile.total_xp)
     else:
         xp_remaining = 0
+
+    # Options for the gamification-level selector in the welcome header. The
+    # admin-set level is subtly tagged as "recomendado".
+    gam_level_options = [
+        {
+            'value': value,
+            'label': label,
+            'is_recommended': value == profile.gamification_level_admin,
+            'is_selected': value == profile.gamification_level,
+        }
+        for value, label in GAMIFICATION_LEVEL_CHOICES
+    ]
 
     context = {
         'profile': profile,
@@ -172,8 +184,29 @@ def dashboard(request):
         'all_badges_with_status': all_badges_with_status,
         'level_breakdown': level_breakdown,
         'xp_remaining': xp_remaining,
+        'gam_level_options': gam_level_options,
     }
     return render(request, 'soft_skills/dashboard.html', context)
+
+
+@login_required
+def set_gamification_level(request):
+    """Stores the user's own gamification-level pick from the dashboard selector."""
+    if request.method != 'POST':
+        return redirect('soft_skills:dashboard')
+
+    try:
+        level = int(request.POST.get('gamification_level', ''))
+    except (TypeError, ValueError):
+        return redirect('soft_skills:dashboard')
+
+    if level not in dict(GAMIFICATION_LEVEL_CHOICES):
+        return redirect('soft_skills:dashboard')
+
+    profile = request.user.profile
+    profile.gamification_level_user = level
+    profile.save(update_fields=['gamification_level_user'])
+    return redirect('soft_skills:dashboard')
 
 
 @login_required
@@ -521,15 +554,15 @@ def module_summary(request, module_id):
     correct_count = responses.filter(is_correct=True).count()
     incorrect_count = responses.filter(is_correct=False).count()
 
-    # Per-unit amounts scaled by the gamification level so the breakdown matches actual awards.
-    xp_correct_unit = _scaled_xp(XP_CORRECT)
-    xp_incorrect_unit = _scaled_xp(XP_INCORRECT)
-    xp_lesson_unit = _scaled_xp(XP_LESSON_FINISHED)
-    xp_module_start = _scaled_xp(XP_MODULE_STARTED)
-    xp_module_finish = _scaled_xp(XP_MODULE_FINISHED)
+    # Per-unit amounts scaled by the user's gamification level so the breakdown matches actual awards.
+    xp_correct_unit = _scaled_xp(XP_CORRECT, request.user)
+    xp_incorrect_unit = _scaled_xp(XP_INCORRECT, request.user)
+    xp_lesson_unit = _scaled_xp(XP_LESSON_FINISHED, request.user)
+    xp_module_start = _scaled_xp(XP_MODULE_STARTED, request.user)
+    xp_module_finish = _scaled_xp(XP_MODULE_FINISHED, request.user)
     # The bonus is awarded scaled *together* with the finish XP; derive the displayed bonus as
     # the difference so the rows always sum to the stored total despite rounding.
-    xp_high_score_bonus = _scaled_xp(XP_MODULE_FINISHED + XP_HIGH_SCORE_BONUS) - xp_module_finish
+    xp_high_score_bonus = _scaled_xp(XP_MODULE_FINISHED + XP_HIGH_SCORE_BONUS, request.user) - xp_module_finish
 
     correct_xp = correct_count * xp_correct_unit
     incorrect_xp = incorrect_count * xp_incorrect_unit

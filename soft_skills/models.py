@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 
@@ -85,8 +86,7 @@ LEVEL_NAMES = [
 
 # Per-gamification-level boundaries as a fraction of XP_max. A lower final threshold makes the
 # top level easier to reach (= more gamified). At level 0 the level UI is hidden, so it just
-# reuses the medium spacing for the background computation. Selected once at import time by
-# settings.GAMIFICATION_LEVEL — restart after changing it. See gamification-tiers.md.
+# reuses the medium spacing for the background computation. See gamification-tiers.md.
 LEVEL_THRESHOLD_PCTS = {
     0: [0.00, 0.15, 0.40, 0.65, 0.85],  # hidden — background tracking only
     1: [0.00, 0.25, 0.50, 0.75, 0.95],  # low (Tier 2 — hardest to reach level 5)
@@ -94,10 +94,23 @@ LEVEL_THRESHOLD_PCTS = {
     3: [0.00, 0.10, 0.25, 0.45, 0.65],  # high (Tier 4 — easiest)
 }
 
-_pcts = LEVEL_THRESHOLD_PCTS.get(
-    getattr(settings, 'GAMIFICATION_LEVEL', 3), LEVEL_THRESHOLD_PCTS[2]
-)
-LEVEL_THRESHOLDS = [(i + 1, pct, LEVEL_NAMES[i]) for i, pct in enumerate(_pcts)]
+
+def get_level_thresholds(gamification_level):
+    """[(level_num, pct_of_xp_max, name), ...] for a gamification level (0-3)."""
+    pcts = LEVEL_THRESHOLD_PCTS.get(gamification_level, LEVEL_THRESHOLD_PCTS[2])
+    return [(i + 1, pct, LEVEL_NAMES[i]) for i, pct in enumerate(pcts)]
+
+
+GAMIFICATION_LEVEL_CHOICES = [
+    (0, 'Nulo'),
+    (1, 'Bajo'),
+    (2, 'Medio'),
+    (3, 'Alto'),
+]
+
+
+def default_gamification_level():
+    return getattr(settings, 'GAMIFICATION_LEVEL', 2)
 
 
 class UserProfile(models.Model):
@@ -111,8 +124,67 @@ class UserProfile(models.Model):
     current_answer_streak = models.PositiveIntegerField(default=0)
     longest_answer_streak = models.PositiveIntegerField(default=0)
 
+    # OCEAN personality scores (0-100), entered by an admin. Saving them in the
+    # admin runs the fuzzy system (services/fuzzy_gamification.py) which writes
+    # its recommendation into gamification_level_admin.
+    ocean_openness = models.PositiveSmallIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(100)],
+        verbose_name='Apertura (O)')
+    ocean_conscientiousness = models.PositiveSmallIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(100)],
+        verbose_name='Responsabilidad (C)')
+    ocean_extraversion = models.PositiveSmallIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(100)],
+        verbose_name='Extraversión (E)')
+    ocean_agreeableness = models.PositiveSmallIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(100)],
+        verbose_name='Amabilidad (A)')
+    ocean_neuroticism = models.PositiveSmallIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(100)],
+        verbose_name='Neuroticismo (N)')
+
+    # Recommended level: initialized by the fuzzy system from the OCEAN scores,
+    # then freely overridable by the admin. Shown to the user as "recomendado".
+    gamification_level_admin = models.PositiveSmallIntegerField(
+        choices=GAMIFICATION_LEVEL_CHOICES, default=default_gamification_level,
+        verbose_name='Nivel de gamificación (admin/recomendado)')
+    # The user's own pick from the dashboard selector. NULL = follow the admin level.
+    gamification_level_user = models.PositiveSmallIntegerField(
+        choices=GAMIFICATION_LEVEL_CHOICES, null=True, blank=True,
+        verbose_name='Nivel de gamificación (usuario)')
+
     def __str__(self):
         return f'{self.user.username} - {self.level_name}'
+
+    @property
+    def gamification_level(self):
+        """Effective gamification level: the user's choice, else the admin level."""
+        if self.gamification_level_user is not None:
+            return self.gamification_level_user
+        return self.gamification_level_admin
+
+    @property
+    def level_thresholds(self):
+        return get_level_thresholds(self.gamification_level)
+
+    def apply_fuzzy_gamification_level(self):
+        """Run the fuzzy system over the OCEAN scores and store the result in
+        gamification_level_admin. Returns the computed level, or None when the
+        scores are incomplete or no fuzzy rule fires (the field is left as-is).
+        Does NOT save."""
+        scores = [
+            self.ocean_openness, self.ocean_conscientiousness,
+            self.ocean_extraversion, self.ocean_agreeableness,
+            self.ocean_neuroticism,
+        ]
+        if any(s is None for s in scores):
+            return None
+        # Local import: keeps skfuzzy/numpy out of the critical import path.
+        from .services.fuzzy_gamification import compute_gamification_level
+        level = compute_gamification_level(*scores)
+        if level is not None:
+            self.gamification_level_admin = level
+        return level
 
     def compute_xp_max(self):
         """XP_max = (M * 80) + (L * 15) + (P * 10)
@@ -139,17 +211,17 @@ class UserProfile(models.Model):
             return 1
         ratio = self.total_xp / xp_max
         current_level = 1
-        for level_num, threshold, _ in LEVEL_THRESHOLDS:
+        for level_num, threshold, _ in self.level_thresholds:
             if ratio >= threshold:
                 current_level = level_num
         return current_level
 
     @property
     def level_name(self):
-        for level_num, _, name in LEVEL_THRESHOLDS:
+        for level_num, _, name in self.level_thresholds:
             if level_num == self.level:
                 return name
-        return LEVEL_THRESHOLDS[0][2]
+        return LEVEL_NAMES[0]
 
     @property
     def xp_for_next_level(self):
@@ -158,7 +230,7 @@ class UserProfile(models.Model):
         if xp_max == 0:
             return None
         current = self.level
-        for level_num, threshold_pct, _ in LEVEL_THRESHOLDS:
+        for level_num, threshold_pct, _ in self.level_thresholds:
             if level_num == current + 1:
                 return int(threshold_pct * xp_max)
         return None
@@ -172,7 +244,7 @@ class UserProfile(models.Model):
         # Find current and next threshold percentages
         current_pct = 0.0
         next_pct = None
-        for level_num, threshold_pct, _ in LEVEL_THRESHOLDS:
+        for level_num, threshold_pct, _ in self.level_thresholds:
             if level_num == current:
                 current_pct = threshold_pct
             elif level_num == current + 1:

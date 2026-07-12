@@ -182,8 +182,23 @@
 
     <!-- Welcome -->
     <div class="welcome-section">
-        <h1>Bienvenido(a), {{ user.first_name|default:user.username }}</h1>
-        <p>Continúa desarrollando tus habilidades blandas.</p>
+        <div class="welcome-text">
+            <h1>Bienvenido(a), {{ user.first_name|default:user.username }}</h1>
+            <p>Continúa desarrollando tus habilidades blandas.</p>
+        </div>
+        <form method="post" action="{% url 'soft_skills:set_gamification_level' %}" class="gam-level-form">
+            {% csrf_token %}
+            <label for="gam-level-select" class="gam-level-form__label">Nivel de gamificación</label>
+            <select name="gamification_level" id="gam-level-select" class="gam-level-form__select"
+                    onchange="this.form.submit()">
+                {% for opt in gam_level_options %}
+                <option value="{{ opt.value }}" {% if opt.is_selected %}selected{% endif %}>
+                    {{ opt.label }}{% if opt.is_recommended %} · recomendado{% endif %}
+                </option>
+                {% endfor %}
+            </select>
+            <noscript><button type="submit" class="btn btn-outline btn-sm">Aplicar</button></noscript>
+        </form>
     </div>
 
     <!-- Module Grid -->

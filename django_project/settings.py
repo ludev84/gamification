@@ -109,12 +109,12 @@ LANGUAGE_CODE = 'es-mx'
 TIME_ZONE = 'America/Merida'
 
 
-# App-wide gamification level (0-3). 0 = none (XP/streaks still tracked silently in the DB),
-# 1 = low, 2 = medium, 3 = high. Controls level thresholds (models.py), the XP multiplier and
-# badge awarding (services/gamification.py), and which UI elements/effects are shown
-# (context_processors.py). Read at import time — restart the server after changing.
+# Default gamification level (0-3): 0 = none (XP/streaks still tracked silently in the DB),
+# 1 = low, 2 = medio, 3 = alto. The effective level is now PER USER
+# (UserProfile.gamification_level: user's own pick, else the admin/fuzzy-recommended level).
+# This setting is only the default for new profiles and the fallback for anonymous pages.
 # See gamification-tiers.md for the threshold presets.
-GAMIFICATION_LEVEL = 0
+GAMIFICATION_LEVEL = 2
 
 USE_I18N = True
 

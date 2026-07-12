@@ -7,9 +7,8 @@ from .services.gamification import GamificationService
 GAM_CONFETTI_BY_LEVEL = {0: 0, 1: 3, 2: 5, 3: 8}
 
 
-def gamification_context(request):
-    level = getattr(settings, 'GAMIFICATION_LEVEL', 3)
-    flags = {
+def _flags_for_level(level):
+    return {
         'gam_level': level,
         'gam_show_levels': level >= 1,        # level/XP UI
         'gam_show_day_streak': level >= 2,
@@ -20,13 +19,18 @@ def gamification_context(request):
         'gam_xp_feedback_level': level + 1,   # 1=none, 2=static, 3=animated, 4=anim+toast
     }
 
+
+def gamification_context(request):
+    # Anonymous fallback (login page, etc.); authenticated users get their own level.
     if not request.user.is_authenticated:
-        return flags
+        return _flags_for_level(getattr(settings, 'GAMIFICATION_LEVEL', 2))
 
     try:
         profile = request.user.profile
     except Exception:
-        return flags
+        return _flags_for_level(getattr(settings, 'GAMIFICATION_LEVEL', 2))
+
+    flags = _flags_for_level(profile.gamification_level)
 
     level_info = GamificationService.get_level_info(request.user)
     badge_count = UserBadge.objects.filter(user=request.user).count()

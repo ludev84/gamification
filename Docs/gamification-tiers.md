@@ -1,10 +1,13 @@
 # Gamification Tiers — Level Thresholds
 
-> **Implementation note:** the app-wide setting `GAMIFICATION_LEVEL` (0–3) in
-> [django_project/settings.py](django_project/settings.py) selects the threshold preset:
-> app level 0 → Tier 1 (hidden, medium spacing internally), 1 → Tier 2 Low, 2 → Tier 3 Medium,
-> 3 → Tier 4 High (plus a ×1.5 XP multiplier). Presets live in `LEVEL_THRESHOLD_PCTS`
-> ([soft_skills/models.py](soft_skills/models.py)); restart the server after changing the setting.
+> **Implementation note:** the gamification level (0–3) is **per user** —
+> `UserProfile.gamification_level` (the user's own pick from the dashboard selector, else the
+> admin/fuzzy-recommended level; see [soft_skills/services/fuzzy_gamification.py](../soft_skills/services/fuzzy_gamification.py)).
+> It selects the threshold preset: level 0 → Tier 1 (hidden, medium spacing internally),
+> 1 → Tier 2 Low, 2 → Tier 3 Medium, 3 → Tier 4 High (plus a ×1.5 XP multiplier). Presets live
+> in `LEVEL_THRESHOLD_PCTS` ([soft_skills/models.py](../soft_skills/models.py)). The
+> `GAMIFICATION_LEVEL` setting in [django_project/settings.py](../django_project/settings.py)
+> is only the default for new profiles and the anonymous-page fallback.
 
 Four tiers of gamification, differing in **how easy it is to climb the levels**. A user's level is
 the highest band whose threshold their XP ratio (`total_xp / XP_max`) has reached, so a **lower

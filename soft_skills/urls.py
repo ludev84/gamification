@@ -6,6 +6,7 @@ app_name = 'soft_skills'
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
+    path('nivel-gamificacion/', views.set_gamification_level, name='set_gamification_level'),
     path('modulo/<int:module_id>/', views.module_view, name='module_view'),
     path('leccion/<int:lesson_id>/', views.lesson_view, name='lesson_view'),
     path('leccion/<int:lesson_id>/pregunta/<int:question_order>/', views.question_view, name='question_view'),
