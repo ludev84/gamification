@@ -20,7 +20,7 @@ python manage.py createsuperuser        # admin access — required to author co
 python manage.py shell
 ```
 
-There is no test suite (`soft_skills/tests.py` is empty), no linter config, and no Docker/CI. SQLite DB lives at `db.sqlite3` (gitignored).
+Tests live in [soft_skills/tests/](soft_skills/tests/) (API auth/answers/OCEAN + template smoke tests) — run with `python manage.py test soft_skills`. No linter config, no Docker/CI. SQLite DB lives at `db.sqlite3` (gitignored).
 
 ## Architecture
 
@@ -49,6 +49,14 @@ Lessons unlock sequentially within a module via `GamificationService.is_lesson_u
 The **gamification level (0–3)** is **per user** (see [gamification-tiers.md](gamification-tiers.md)). It selects the level-threshold preset (`get_level_thresholds()` in [models.py](soft_skills/models.py)), applies a ×1.5 XP multiplier at level 3 (`_scaled_xp(amount, user)` in the service), disables badge awarding below level 2 (`check_and_award_badges` returns early), and drives per-element UI flags (`gam_show_*`, `gam_confetti_level`, `gam_sound_level`, `gam_xp_feedback_level`) injected by [context_processors.py](soft_skills/context_processors.py). Level 0 hides all gamification UI but XP/streaks are still tracked in the DB.
 
 The effective level is `UserProfile.gamification_level`: the user's own pick (`gamification_level_user`, set via the selector in the dashboard welcome header → `POST /nivel-gamificacion/`) when not NULL, else the admin/recommended level (`gamification_level_admin`). That admin level is initialized by a fuzzy system over the profile's OCEAN scores — [soft_skills/services/fuzzy_gamification.py](soft_skills/services/fuzzy_gamification.py), a runtime port of [Docs/fuzzy-system-gamification.py](Docs/fuzzy-system-gamification.py), so `scikit-fuzzy`/`numpy` ARE app dependencies now. `UserProfileAdmin.save_model` recomputes it whenever OCEAN scores change, unless the admin edited the level field in the same save (a manual edit always wins). The dashboard selector marks the admin level as "recomendado". The `GAMIFICATION_LEVEL` setting in [settings.py](django_project/settings.py) is only the default for new profiles and the fallback for anonymous pages.
+
+### REST API for psicometric-FRONT
+
+[soft_skills/api/](soft_skills/api/) exports the learner experience as a REST API consumed by the separate React repo `psicometric-FRONT/` (routes under `/#/learning`). It mirrors the psychometric backend's conventions so `soft_skills` can later be mounted into that project unchanged — envelope `{status, statusCode, message, data}` ([api/envelope.py](soft_skills/api/envelope.py)), DRF token carried in an httpOnly `auth_token` cookie ([api/authentication.py](soft_skills/api/authentication.py)). `/users/*` ([api/auth_urls.py](soft_skills/api/auth_urls.py)) is an interim auth shim dropped at merge time; `/learning/*` ([api/urls.py](soft_skills/api/urls.py)) is the permanent, portable API. Full endpoint table and merge steps: [Docs/api-integration-guide.md](Docs/api-integration-guide.md).
+
+The API and the template views share the same business logic — **never duplicate it**: the whole answer-submission flow lives in [soft_skills/services/answers.py](soft_skills/services/answers.py) (`submit_answer_for_user`, `next_remaining_order`, `build_completed_feedback`), dashboard builders in [soft_skills/services/dashboard.py](soft_skills/services/dashboard.py), and per-level UI flags in `get_ui_flags()` in [services/gamification.py](soft_skills/services/gamification.py). Anti-spoiler rule everywhere: the correct answer/explanations are only serialized after the user answers correctly (or in post-completion review endpoints, which require completion server-side). API navigation keys on `question_id`/the `order` field; the legacy template routes use positional `question_order` — don't conflate them.
+
+`POST /learning/ocean-scores/` ingests Big Five results from the psychometric system (name→trait mapping and 0-100 normalization in [soft_skills/services/ocean.py](soft_skills/services/ocean.py)), guarded by the `X-Internal-Api-Key` header (`PLATFORM_INTERNAL_API_KEY` setting) or a staff token. It updates `ocean_*` + the recommended level; it never touches `gamification_level_user`. In dev the platform runs on **:8001** (`python manage.py runserver 8001`) because the psychometric backend owns :8000.
 
 ### Question flow & AJAX SPA pattern
 

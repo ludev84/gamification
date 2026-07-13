@@ -1,4 +1,6 @@
 Django==6.0.3
+djangorestframework==3.17.1
+django-cors-headers==4.9.0
 scikit-fuzzy==0.5.0
 scipy==1.17.1
 numpy==2.4.3

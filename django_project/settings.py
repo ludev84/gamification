@@ -37,12 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
     'soft_skills',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -130,3 +134,41 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Auth
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
+
+# --- REST API (consumed by psicometric-FRONT) ---
+# The API mirrors the psychometric backend's conventions (envelope responses,
+# httpOnly auth_token cookie) so soft_skills can later be mounted into that
+# project without frontend changes. See Docs/api-integration-guide.md.
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'soft_skills.api.authentication.CookieTokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'EXCEPTION_HANDLER': 'soft_skills.api.envelope.envelope_exception_handler',
+    'UNAUTHENTICATED_USER': 'django.contrib.auth.models.AnonymousUser',
+}
+
+# In dev the SPA talks through the Vite proxy (same origin), so CORS is only
+# needed if the SPA ever calls this backend directly.
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+
+# httpOnly cookie that carries the DRF token (same name/contract as the
+# psychometric backend).
+AUTH_TOKEN_COOKIE_NAME = 'auth_token'
+AUTH_TOKEN_COOKIE_SAMESITE = 'Lax'
+AUTH_TOKEN_COOKIE_SECURE = False  # set True behind HTTPS in production
+
+# Shared secret for server-to-server calls (OCEAN score ingestion from the
+# psychometric backend). Empty disables key-based access entirely.
+PLATFORM_INTERNAL_API_KEY = 'dev-internal-key-change-me'

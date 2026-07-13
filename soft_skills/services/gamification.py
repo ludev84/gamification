@@ -17,6 +17,24 @@ XP_HIGH_SCORE_BONUS = 25
 # Gamification level 3 (high) hands out XP faster. See UserProfile.gamification_level.
 XP_MULTIPLIER_BY_LEVEL = {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.5}
 
+# Confetti intensity (0-10 scale used by question.html) per gamification level.
+GAM_CONFETTI_BY_LEVEL = {0: 0, 1: 3, 2: 5, 3: 8}
+
+
+def get_ui_flags(level):
+    """Per-element UI flags for a gamification level (0-3). Consumed by the
+    template context processor and the REST API."""
+    return {
+        'gam_level': level,
+        'gam_show_levels': level >= 1,        # level/XP UI
+        'gam_show_day_streak': level >= 2,
+        'gam_show_answer_streak': level >= 2,
+        'gam_show_badges': level >= 2,
+        'gam_confetti_level': GAM_CONFETTI_BY_LEVEL.get(level, 5),
+        'gam_sound_level': level,             # 0=off, 1=simple, 2=medium, 3=full
+        'gam_xp_feedback_level': level + 1,   # 1=none, 2=static, 3=animated, 4=anim+toast
+    }
+
 
 def _scaled_xp(amount, user):
     """Scale a base XP amount by the user's gamification level multiplier."""
