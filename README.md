@@ -2,7 +2,7 @@
 
 Plataforma web Django para desarrollar habilidades blandas mediante lecciones secuenciales (estilo Duolingo) de preguntas de opción múltiple, con XP, niveles dinámicos, rachas y medallas. Desarrollada para el Instituto Tecnológico de Mérida (TecNM).
 
-La interfaz y los datos de contenido están en español. La especificación vigente del proyecto se encuentra en [Docs/new_specs.md](Docs/new_specs.md).
+La interfaz y los datos de contenido están en español. La especificación vigente del proyecto se encuentra en [Docs/final_specs.md](Docs/final_specs.md).
 
 ## Stack
 

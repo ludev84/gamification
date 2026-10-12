@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Gamified soft-skills learning platform for TecNM (Instituto Tecnológico de Mérida). Duolingo-style sequential lessons of multiple-choice questions, with XP, dynamic levels, daily streaks, and badges. All UI/content is in Mexican Spanish (`LANGUAGE_CODE = 'es-mx'`, timezone `America/Merida`).
 
-The current specification is [Docs/new_specs.md](Docs/new_specs.md) — admin-managed content, no LLM. [Docs/specs.md](Docs/specs.md) is an older spec that described an LLM-generated MCQ + scikit-fuzzy distribution flow; that direction was abandoned and [Docs/fuzzy-system-soft-skills.py](Docs/fuzzy-system-soft-skills.py) is a vestigial reference. However, `scikit-fuzzy`/`numpy` are real app dependencies again: [soft_skills/services/fuzzy_gamification.py](soft_skills/services/fuzzy_gamification.py) recommends each user's gamification level from their OCEAN scores (see "Gamification service").
+The current specification is [Docs/final_specs.md](Docs/final_specs.md) — admin-managed content, no LLM; it is an *as-built* document. Deep gamification detail lives in [Docs/gamification.md](Docs/gamification.md) and [Docs/gamification-tiers.md](Docs/gamification-tiers.md). An earlier direction (LLM-generated MCQs + a scikit-fuzzy distribution over 10 soft skills) was abandoned, but `scikit-fuzzy`/`numpy` are real app dependencies for a different reason: [soft_skills/services/fuzzy_gamification.py](soft_skills/services/fuzzy_gamification.py) recommends each user's gamification level from their OCEAN scores (see "Gamification service").
 
 ## Common Commands
 

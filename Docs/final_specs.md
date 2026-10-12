@@ -2,8 +2,8 @@
 
 Plataforma Web de Alumnos — Instituto Tecnológico de Mérida / TecNM
 
-> Documento *as-built*: refleja el estado actual del sistema implementado y reemplaza a
-> [new_specs.md](new_specs.md). El detalle profundo del sistema de gamificación (XP, niveles,
+> Documento *as-built*: refleja el estado actual del sistema implementado y es la especificación
+> vigente del proyecto. El detalle profundo del sistema de gamificación (XP, niveles,
 > rachas, medallas, niveles de gamificación 0–3) vive en [gamification.md](gamification.md) y
 > [gamification-tiers.md](gamification-tiers.md); aquí solo se resume.
 
