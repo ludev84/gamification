@@ -93,7 +93,22 @@ Todo el contenido se administra desde `/admin/`. Inicia sesión ahí con el supe
    - `order`, `is_published`.
 3. Marca `is_published` en módulo, lección y pregunta — el contenido no publicado **no es visible** para los alumnos ni cuenta para el cálculo de XP máximo.
 
-> Hay preguntas de ejemplo (módulo de Empatía, 5 lecciones) en [Docs/mcqs-empathy/](Docs/mcqs-empathy/). Los archivos `MCQs-1.json` … `MCQs-5.json` siguen el formato de [MCQs-format.json](Docs/mcqs-empathy/MCQs-format.json) y pueden usarse como referencia para copiar/pegar campos al admin. (No existe un comando de carga masiva por el momento.)
+> Hay preguntas de ejemplo (módulo de Empatía, 5 lecciones) en [Docs/mcqs-empathy/](Docs/mcqs-empathy/). Los archivos `MCQs-1.json` … `MCQs-5.json` siguen el formato de [MCQs-format.json](Docs/mcqs-empathy/MCQs-format.json).
+
+### Carga masiva de preguntas (`import_mcq_module`)
+
+En lugar de capturar todo a mano, puedes crear un módulo completo desde un directorio de archivos JSON con ese formato — **un archivo por lección**, las preguntas en el orden del arreglo:
+
+```bash
+python manage.py import_mcq_module --name "Empatía" --dir Docs/mcqs-empathy --publish
+```
+
+- Es **idempotente**: volver a correrlo con el mismo `--name`/`--slug` actualiza el módulo, las lecciones y las preguntas existentes en lugar de duplicarlas.
+- `MCQs-format.json` se omite automáticamente (es solo una muestra del formato).
+- Cada archivo puede ser un arreglo de preguntas, o un objeto `{ "title", "description", "icon", "questions" }` para darle metadatos a la lección.
+- Flags útiles: `--publish` (publica módulo, lecciones y preguntas), `--dry-run` (valida todo y revierte), `--slug`, `--description`, `--icon`, `--module-order`, `--lesson-prefix`, `--lesson-icon`, `--pattern`.
+
+Después de importar, en el admin puedes ajustar íconos, descripciones y orden. Importar contenido **no** lo asigna a nadie: eso se hace en el paso siguiente.
 
 ### Asignar módulos a los alumnos
 

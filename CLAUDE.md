@@ -18,6 +18,10 @@ python manage.py makemigrations         # after model changes
 python manage.py migrate
 python manage.py createsuperuser        # admin access — required to author content
 python manage.py shell
+
+# bulk-import a module from a directory of MCQ JSON files (one file = one lesson)
+python manage.py import_mcq_module --name "Empatía" --dir Docs/mcqs-empathy --publish
+python manage.py backfill_profiles       # ensure every User has a UserProfile
 ```
 
 Tests live in [soft_skills/tests/](soft_skills/tests/) (API auth/answers/OCEAN + template smoke tests) — run with `python manage.py test soft_skills`. No linter config, no Docker/CI. SQLite DB lives at `db.sqlite3` (gitignored).
@@ -86,4 +90,11 @@ Auto-award is **gated per user** by `BadgeAssignment`: `check_and_award_badges` 
 
 ## Authoring MCQ content
 
-Reference question format and example data are in [Docs/mcqs-empathy/](Docs/mcqs-empathy/) (`MCQs-format.json` is the canonical shape). Each question has a scenario, the question text, four options, the correct letter, and a per-option explanation (A/B/C/D). The MCQ JSON files there are not auto-loaded — there is no management command for ingestion yet; content is entered via Django Admin.
+Reference question format and example data are in [Docs/mcqs-empathy/](Docs/mcqs-empathy/) (`MCQs-format.json` is the canonical shape). Each question has a scenario, the question text, four options, the correct letter, and a per-option explanation (A/B/C/D).
+
+Two authoring paths, both landing in the same models:
+
+- **Bulk import** — [import_mcq_module](soft_skills/management/commands/import_mcq_module.py) creates a `Module` from a directory of such JSON files: one file per `Lesson` (array of questions, or `{title, description, icon, questions}`), questions in array order. Re-running with the same `--name`/`--slug` is **idempotent** (updates in place, no duplicates); `MCQs-format.json` is always skipped as a sample. Useful flags: `--publish`, `--dry-run`, `--slug`, `--icon`, `--lesson-prefix`, `--pattern`.
+- **Django Admin** — for authoring by hand and for everything the import doesn't set (icons, descriptions, module assignment, badges).
+
+Importing content does **not** grant access to it: a user still needs a `UserModuleProgress` row (see "Assignment doubles as progress").

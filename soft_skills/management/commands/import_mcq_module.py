@@ -107,7 +107,6 @@ class Command(BaseCommand):
 
         if opts['dry_run']:
             self.stdout.write(self.style.WARNING('DRY RUN — all changes will be rolled back.'))
-            transaction.set_rollback(True)
 
         module = self._upsert_module(slug, opts)
 
@@ -126,6 +125,12 @@ class Command(BaseCommand):
             f'{verb} {total_lessons} lesson(s) and {total_questions} question(s) '
             f'into module "{module.name}" (slug={module.slug}).'
         ))
+
+        if opts['dry_run']:
+            # Rolled back only here: marking the atomic block for rollback earlier would
+            # block every query that follows inside it.
+            transaction.set_rollback(True)
+            self.stdout.write(self.style.WARNING('DRY RUN — rolled back, nothing was saved.'))
 
     # ------------------------------------------------------------------
     # Module

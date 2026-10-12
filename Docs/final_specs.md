@@ -247,9 +247,16 @@ alumno con buen desempeño puede superar el 100% del `XP_max`.
 
 ### 7.2 Entorno de desarrollo
 
-- Prototipo local: `python manage.py runserver`
+- Prototipo local: `python manage.py runserver` (o `runserver 8001` cuando corre junto al backend
+  psicométrico, que ocupa el :8000 — ver [api-integration-guide.md](api-integration-guide.md)).
 - No se requiere Docker, Nginx ni Gunicorn para el prototipo.
-- No hay suite de pruebas ni CI configurados.
+- **Pruebas:** 35 pruebas en [soft_skills/tests/](../soft_skills/tests/) (autenticación, respuestas y
+  OCEAN de la API, más pruebas de humo de las plantillas), se corren con
+  `python manage.py test soft_skills`. No hay CI ni configuración de linter.
+- **Carga masiva de contenido:** `python manage.py import_mcq_module --name "<módulo>" --dir <dir>
+  [--publish]` crea un módulo a partir de un directorio de JSON (un archivo por lección, formato de
+  [Docs/mcqs-empathy/MCQs-format.json](mcqs-empathy/MCQs-format.json)); es idempotente y admite
+  `--dry-run`. Ver [import_mcq_module.py](../soft_skills/management/commands/import_mcq_module.py).
 
 ## 8. Rutas (URL)
 
