@@ -29,7 +29,7 @@ Toda la interfaz y el contenido están en español de México. La especificació
 
 | Requisito | Versión | Notas |
 | --- | --- | --- |
-| Python | **3.12 o superior** | Django 6.0 no funciona con versiones anteriores. Verifica con `python3 --version`. |
+| Python | **3.12 o superior** | Django 6.0 no funciona con versiones anteriores. Verifica con `python --version`. |
 | pip + venv | incluidos con Python | En Debian/Ubuntu puede hacer falta `sudo apt install python3-venv python3-pip`. |
 | Git | cualquiera | Solo para clonar el repositorio. |
 
@@ -51,7 +51,7 @@ cd gamification
 ### 2.2 Crear y activar el entorno virtual
 
 ```bash
-python3 -m venv .venv
+python -m venv .venv
 ```
 
 ```bash
@@ -216,7 +216,7 @@ Reglas del formato:
 - Exactamente **4 opciones**, con `id` `A`, `B`, `C` y `D`.
 - Exactamente **una** con `"isCorrect": true`.
 - `feedback` es la explicación que ve el alumno para la opción que eligió — conviene llenar las cuatro.
-- Opcionalmente, en lugar del arreglo pelón, el archivo puede ser un objeto para darle metadatos a la lección:
+- Opcionalmente, en lugar de un arreglo simple de preguntas, el archivo puede ser un objeto que incluya metadatos de la lección:
 
 ```json
 {
@@ -433,7 +433,7 @@ Detalle completo del sistema en [Docs/gamification.md](Docs/gamification.md) y [
 
 | Síntoma | Causa y solución |
 | --- | --- |
-| `command not found: python` | Usa `python3` en Linux/macOS, o reinstala Python en Windows marcando "Add to PATH". |
+| `command not found: python` | En Ubuntu/Debian instala `sudo apt install python-is-python3` (o usa `python3` solo para crear el entorno virtual); en macOS usa `python3`; en Windows reinstala Python marcando "Add to PATH". Con el entorno virtual activado, `python` funciona en todos los sistemas. |
 | `ModuleNotFoundError: No module named 'django'` | El entorno virtual no está activado (falta el `(.venv)` en el prompt) o no corriste `pip install -r requirements.txt`. |
 | El alumno inicia sesión pero **no ve ningún módulo** | Falta asignarle el módulo (paso 6), o el módulo/lecciones/preguntas no tienen `is_published` marcado. |
 | El alumno no ve XP, rachas ni medallas | Su nivel de gamificación efectivo es 0 (o 1 para rachas y medallas). Revisa el paso 7. |
