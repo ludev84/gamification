@@ -2,6 +2,7 @@ Django==6.0.3
 djangorestframework==3.17.1
 django-cors-headers==4.9.0
 scikit-fuzzy==0.5.0
+packaging==25.0  # scikit-fuzzy 0.5.0 lo importa pero no lo declara como dependencia
 scipy==1.17.1
 numpy==2.4.3
 networkx==3.6.1

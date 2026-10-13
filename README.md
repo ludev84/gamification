@@ -292,7 +292,7 @@ Hay dos campos en el perfil y el **nivel efectivo** es:
 > **el nivel que el alumno eligió** (si eligió alguno) **, si no, el nivel definido por el administrador.**
 
 - **Nivel del administrador / recomendado** (`gamification_level_admin`): lo define el admin, y es el que se usa mientras el alumno no elija otro.
-- **Nivel del usuario** (`gamification_level_user`): la elección del propio alumno desde el selector **"Nivel de gamificación"** que aparece en el encabezado de su dashboard. El nivel recomendado por el admin aparece ahí marcado como "· recomendado". Si está vacío (`None`), el alumno sigue al del admin.
+- **Nivel del usuario** (`gamification_level_user`): la elección del propio alumno desde el selector **"Nivel de gamificación"** que aparece en el encabezado de su dashboard. El nivel recomendado por el admin aparece ahí marcado como "· recomendado". Si está vacío (`None`), el nivel seleccionado es el del admin.
 
 ### Cambiar el nivel de un usuario (admin)
 
